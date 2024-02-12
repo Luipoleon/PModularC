@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-hdpk0^d%-jg!*n%&9oh_2@-qoph(+cy53!2uj+bxa(m&70%93&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net']
+
+CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net"]
+
 
 
 # Application definition
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -75,13 +79,23 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '1aF3E-4*36B4Cg24Da2AGA324Gf2cgaf',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '15260',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
