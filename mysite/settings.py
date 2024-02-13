@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'login.apps.LoginConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['login/templates'],
+        'DIRS': ['login/templates', 'user/templates'],  # Separate the directory paths as separate entries in the 'DIRS' list
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
