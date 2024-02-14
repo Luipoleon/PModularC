@@ -1,0 +1,64 @@
+@import url("../../css/styles.css");
+
+/* Background */
+.gradient-custom {
+  /* fallback for old browsers */
+  background: var(--secondary-color-light);
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    var(--secondary-color-light),
+    var(--secondary-color-dark)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    var(--secondary-color-light),
+    var(--secondary-color-dark)
+  );
+  height: 100vh;
+}
+
+/* Card */
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.card {
+  background-color: var(--dark-grey);
+  border-radius: 3px;
+  width: 40rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.158);
+}
+.card-body {
+  height: 90%;
+}
+
+/* Form */
+
+.login-form {
+  padding: 2rem 4rem;
+}
+
+.form-register {
+  color: var(--primary-color-light);
+}
+
+.form-forgot-password {
+  color: var(--light-grey);
+}
+
+.form-submit {
+  transition: all 0.5s;
+}
+.form-submit:hover {
+  background-color: var(--primary-color-light);
+  transform: scale(1.05);
+}
