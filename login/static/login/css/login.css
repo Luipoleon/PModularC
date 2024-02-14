@@ -41,6 +41,10 @@
   height: 90%;
 }
 
+.card-title {
+  color: var(--primary-color);
+}
+
 /* Form */
 
 .login-form {
@@ -48,7 +52,7 @@
 }
 
 .form-register {
-  color: var(--primary-color-light);
+  color: var(--primary-color-light-2);
 }
 
 .form-forgot-password {
@@ -61,4 +65,17 @@
 .form-submit:hover {
   background-color: var(--primary-color-light);
   transform: scale(1.05);
+}
+
+/* logo */
+
+.logo {
+  position: absolute;
+  width: 8rem;
+  height: 8rem;
+  top: 4rem;
+  left: 4rem;
+  border-radius: 50%;
+  z-index: 1000;
+  box-shadow: 0 4rem 8rem rgba(0, 0, 0, 0.08);
 }

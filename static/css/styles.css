@@ -1,8 +1,9 @@
 /* Variables */
 
 :root {
-  --primary-color: #e39774;
-  --primary-color-light: #f2cfbf;
+  --primary-color: #e2936f;
+  --primary-color-light: #e39774;
+  --primary-color-light-2: #f2cfbf;
   --secondary-color-light: #5c9ead;
   --secondary-color-dark: #326273;
   --tertiary-color: #eee;
@@ -38,6 +39,7 @@ a.link {
 
 a.link:hover {
   color: var(--primary-color-light) !important;
+  transform: scale(1.05) !important ;
 }
 
 /* Helper classes */
