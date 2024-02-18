@@ -37,9 +37,6 @@
   width: 40rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.158);
 }
-.card-body {
-  height: 90%;
-}
 
 .card-title {
   color: var(--primary-color);
@@ -61,10 +58,14 @@
 
 .form-submit {
   transition: all 0.5s;
+  display: flex;
+  height: 3rem;
+  margin: 0 auto;
 }
 .form-submit:hover {
   background-color: var(--primary-color-light);
   transform: scale(1.05);
+  border: var(--primary-color-light-2);
 }
 
 /* logo */
