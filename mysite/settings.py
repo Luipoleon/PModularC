@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'login.apps.LoginConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['login/templates'],
+        'DIRS': ['login/templates', 'user/templates'],  # Separate the directory paths as separate entries in the 'DIRS' list
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,6 +137,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
                     os.path.join(BASE_DIR, "static"), 
                     os.path.join(BASE_DIR, "login", "static"),
+                    os.path.join(BASE_DIR, "user", "static"),
                 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
