@@ -12,19 +12,10 @@
       ></button>
     </div>
     <div class="modal-body">
-      <form>
+      <form class="form-recover-password">
         {% csrf_token %}
-        <div class="mb-xll">
-          <label for="email_recover" class="col-form-label w-100"
-            >Por favor ingresa tu correo:
-          </label>
-          <input
-            type="email_recover"
-            name="email_recover"
-            id="email_recover"
-            class="form-control form-control-lg fs-4"
-          />
-        </div>
+        <div class="recover-container"></div>
+        <div class="code-container"></div>
         <div class="mb-3 modal-message"></div>
       </form>
     </div>
