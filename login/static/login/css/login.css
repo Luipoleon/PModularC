@@ -63,21 +63,6 @@
   height: 56rem;
 }
 
-/* .flip-card.flipped .flip-card-front {
-  visibility: hidden;
-  opacity: 0;
-  display: none;
-}
-.flip-card.flipped .flip-card-back {
-  visibility: visible;
-  opacity: 1;
-}
-
-.flip-card-back {
-  visibility: hidden;
-  opacity: 0;
-} */
-
 .flip-card-front,
 .flip-card-back {
   width: 100%;

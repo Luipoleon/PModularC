@@ -49,7 +49,7 @@ btnRecoverPassword.addEventListener("click", () => {
     formRecoverPassword.submit();
   } else if (validateField("email_recover")) {
     const codeRecoverContent = ` <label for="code_recover" class="col-form-label w-100"
-          >Ingresa el código que recibiste en el correo ${
+          >Ingresa el código que fue enviado a ${
             document.querySelector("#email_recover").value
           }:
           </label>
