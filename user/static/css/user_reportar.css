@@ -27,14 +27,38 @@ background-color: var(--secondary-color-light)!important;
 }
 
 #mireportes{
+  display: flex;
   background-color: var(--primary-color-light-2);
-  padding: 20px;
-  margin: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
+  margin: 1px;
+  padding: 1px;
+}
+#mireportes1{
+  display: grid;
+  background-color: var(--primary-color-light-2);
+  margin: 1px;
+  padding: 1px;
 }
 #opciones{
+  display:inline-block;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
   
+
+}
+button{
+  background-color: var(--secondary-color-dark);
+  color: var(--tertiary-color);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition-duration: 0.4s;
 }
