@@ -8,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/user_index.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/user_reportes.css' %}" />
 
     <title></title>
   </head>
@@ -28,7 +28,7 @@
                 <a class="nav-link active" href="./reportes">Mis reportes</a>
               </li>
               <li class="nav-item px-3">
-                <a class="nav-link active" href="./reportar">reportar</a>
+                <a class="nav-link active" href="#">Reportar</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,16 +47,22 @@
         </div>
     </nav>
     </div>
-    <div class="container">
-      <h1 class="fw-bold display-5" id="newarrivals">Estadisticas</h1>
-      <div class="row">
-       <div class="card1 col-lg-4">
-         <img src="../static/assets/graphic.png" alt="" class="w-100">
-         <div class="text-center py-5">
-         <h4 class="fw-bolder">tara</h4>
-          <h5 class="text-danger"> s</h5>
-         </div>
-       </div>
+    <div class="container" id="mireportes">
+      <h1 class="fw-bold display-5" id="newarrivals">Reportar</h1>
+      <div class="row" id="opciones">
+        <a href="">jola</a>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Seleccionar</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+    </div>
+    <div class="card1 col-lg-4">
+      <h2>Estadisticas sobre reportes</h2>
+      <img src="/static/assets/graphic.png" alt="" class="w-100">
+      <div class="text-center py-5">
       </div>
     </div>
     <footer class="text-dark py-5" id="botfooter">
