@@ -25,3 +25,13 @@ background-color: var(--secondary-color-light)!important;
 #botfooter{
   background-color: var(--primary-color)!important;
 }
+
+#mireportes{
+  background-color: var(--primary-color-light-2);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
