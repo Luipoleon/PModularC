@@ -1,3 +1,4 @@
+"use strict";
 // DOM CONSTANTS
 const register = document.querySelectorAll(".form-register");
 const card = document.querySelector(".flip-card");
