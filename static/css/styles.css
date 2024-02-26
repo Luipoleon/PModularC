@@ -4,6 +4,8 @@
   --primary-color: #e2936f;
   --primary-color-light: #e39774;
   --primary-color-light-2: #f2cfbf;
+  --primary-color-dark: #cb8464;
+  --primary-color-dark-2: #b57659;
   --secondary-color-light: #5c9ead;
   --secondary-color-dark: #326273;
   --tertiary-color: #eee;
@@ -30,6 +32,7 @@ html {
 
 body {
   font-size: 1.6rem;
+  overflow-x: hidden;
 }
 
 a.link {
