@@ -16,6 +16,7 @@ colores grises
 
 body{
   background-color: var(--tertiary-color);
+  width: 100%;
 }
 
 #topmenu{
@@ -25,20 +26,33 @@ background-color: var(--secondary-color-light)!important;
 #botfooter{
   background-color: var(--primary-color)!important;
 }
-
-#mireportes{
+.TReportes{
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+.losreportes{
   display: flex;
   background-color: var(--primary-color-light-2);
-  margin: 1px;
+  margin: 0 auto;
   padding: 1px;
+  width: 100vw;
 }
-#mireportes1{
+.mireportes{
+  display: grid;
+  background-color: #ecdcd5 ;
+  margin: 0 auto;
+  padding: 1px;
+  width: 100%;
+}
+.mireportes1{
   display: grid;
   background-color: var(--primary-color-light-2);
   margin: 1px;
   padding: 1px;
+  width: 100%;
 }
-#opciones{
+.opciones{
   display:inline-block;
   justify-content: center;
   align-items: center;
@@ -47,15 +61,35 @@ background-color: var(--secondary-color-light)!important;
   
 
 }
-button{
+.enviar{
   background-color: var(--secondary-color-dark);
   color: var(--tertiary-color);
-  padding: 10px;
-  margin: 10px;
+  padding: 10px 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
   font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition-duration: 0.4s;
+}
+.menu{
+  transition: all 0.2s;
+}
+.menu:hover{
+  background-color: var(--secondary-color-dark);
+  color: var(--tertiary-color);
+  padding: 5px 5px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 19px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
