@@ -62,6 +62,7 @@ btnRecoverPassword.addEventListener("click", () => {
           required
           />`;
     recoverContainer.innerHTML = "";
+    this.textContent = "Recuperar contraseña";
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
