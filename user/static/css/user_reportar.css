@@ -58,8 +58,25 @@ background-color: var(--secondary-color-light)!important;
   align-items: center;
   margin: 20px;
   padding: 20px;
-  
+}
+.TOpciones{
+  display: block ;
+  text-align: center;
+  margin: 0 auto;
+  /* tamano letra */
+  font-size: 25px;
+  color: var(--dark-grey);
 
+}
+.OSelect{
+  text-align: center;
+  margin: 5px;
+  font-size: 16px;
+  padding: 2px;
+  background-color: var(--tertiary-color);
+}
+.form-control{
+  background-color: var(--tertiary-color);
 }
 .enviar{
   background-color: var(--secondary-color-dark);
