@@ -17,22 +17,15 @@ colores grises
 body{
   background-color: var(--tertiary-color);
 }
-
-#topmenu{
-z-index: 1000;
-background-color: var(--secondary-color-light)!important;
-}
 #botfooter{
   background-color: var(--primary-color)!important;
 }
 .PrincipalMenu{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  z-index: 1000;
+  background-color: var(--secondary-color-light)!important;
   margin: 0 auto;
   padding: 0;
   width: 100%;
-  text-align: center;
 }
 .menu{
   transition: all 0.3s;
@@ -48,7 +41,11 @@ background-color: var(--secondary-color-light)!important;
   border-radius: 10px;
   width: 100%;
   margin-top: 1;
+  font-weight: bold;
 
+}
+.menumovimiento{
+  width: 100%;
 }
 .menu:hover{
   color: var(--primary-color-light);

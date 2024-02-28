@@ -93,3 +93,5 @@ TipoEdificio.addEventListener('change', function() {
         hideAllElements();
     }
 });
+
+// Error, cambiar que cuando seleccione el edificio por default se ponga la opcion seleccionar
