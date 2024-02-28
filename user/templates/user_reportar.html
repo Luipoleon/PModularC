@@ -57,7 +57,7 @@
           <option value="Academico">Academico</option>
           <option value="Baños">Baños</option>
           <option value="AreasComunes">Areas comunes</option>
-          <option value="3">Direcciones</option>
+          <option value="Departamento">Departamento</option>
         </select>
       </div>
       <!-- Aqui entran las opciones de Academicos -->
@@ -135,9 +135,50 @@
           <h2 class="TOpciones">Escribe la ubicacion del area estacionamiento</h2>
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>  
         </div>
-      <!-- Aqui entran las opciones de Direcciones -->
-
-      <!-- Faltante voy aqui -->
+      <!-- Aqui entran las opciones de departamento -->
+      <div class="row opciones" id="TipoDepartamento" hidden="true">
+        <h2 class="TOpciones">Selecciona el tipo de departamento</h2>
+        <select class="form-select OSelect" id="TipoDepartamentos" aria-label="Large select example">
+          <option selected>Seleccionar</option>
+          <option value="Administrativos">Administrativos</option>
+          <option value="Cubiculos">Cubiculo</option>
+          <option value="Biblioteca">Biblioteca</option>
+          <option value="Coordinacion">Coordinacion</option>
+          <option value="5">Etc..</option>
+        </select>
+      </div>
+      <div class="row opciones" id="UAdministrativos" hidden="true">
+        <h2 class="TOpciones">Selecciona el edificio del departamento</h2>
+        <select class="form-select OSelect" aria-label="Large select example">
+          <option selected>Seleccionar</option>
+          <option value="1">Oficina de Servicio Social</option>
+          <option value="2">Oficina de Graduados</option>
+          <option value="3">etc.</option>
+          <option value="4">etc</option>
+          <option value="5">etc</option>
+        </select>
+      </div>
+      <div class="row opciones" id="UCubiculo" hidden="true">
+        <h2 class="TOpciones">Escribe la ubicacion del cubiculo</h2>
+        <h3>Ejemplo: Edificio:    Numero de salon:    Profesor a cargo:  </h3>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>  
+      </div>
+      <div class="row opciones" id="UBiblioteca" hidden="true">
+        <h2 class="TOpciones">Describe la zona de la Biblioteca</h2>
+        <h3>Ejemplo:Primera planta area de cabinas</h3>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>  
+      </div>
+      <div class="row opciones" id="UCoordinacion" hidden="true">
+        <h2 class="TOpciones">Selecciona la Coordinacion</h2>
+        <select class="form-select OSelect" aria-label="Large select example">
+          <option selected>Seleccionar</option>
+          <option value="1">Computacion</option>
+          <option value="2">Electronica</option>
+          <option value="3">Robotica</option>
+          <option value="4">etc</option>
+          <option value="5">etc</option>
+        </select>
+      </div>
     </div>
     <div class="container mireportes1">
       <h1 class="fw-bold display-5 TReportes" id="newarrivals">Problema</h1>
