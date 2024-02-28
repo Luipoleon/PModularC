@@ -95,22 +95,32 @@ background-color: var(--secondary-color-light)!important;
   display: inline-block;
   transition-duration: 0.4s;
 }
+.PrincipalMenu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
 .menu{
-  transition: all 0.2s;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 18px;
+  width: 100%;
+  margin: 2px;
+}
+#MenuPicked{
+  background-color: var(--primary-color-light-2);
+  opacity: 0.9;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 1;
+
 }
 .menu:hover{
-  background-color: var(--secondary-color-dark);
-  color: var(--tertiary-color);
-  padding: 5px 5px;
-  margin: 0 auto;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  font-size: 19px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  transition-duration: 0.4s;
+  color: var(--primary-color-light);
+  transform: scale(1.05);
 }

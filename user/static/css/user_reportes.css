@@ -35,3 +35,32 @@ background-color: var(--secondary-color-light)!important;
   justify-content: center;
   align-items: center;
 }
+.PrincipalMenu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+.menu{
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 18px;
+  width: 100%;
+  margin: 2px;
+}
+#MenuPicked{
+  background-color: var(--primary-color-light-2);
+  opacity: 0.9;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 1;
+
+}
+.menu:hover{
+  color: var(--primary-color-light);
+  transform: scale(1.05);
+}
