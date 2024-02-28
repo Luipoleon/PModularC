@@ -41,6 +41,7 @@ Array.from(register).forEach((r) => {
 });
 
 btnForgotPassword.addEventListener("click", () => {
+  btnRecoverPassword.textContent = "Enviar código";
   recoverContainer.innerHTML = emailRecoverContent;
   codeContainer.innerHTML = "";
 });
@@ -61,8 +62,9 @@ btnRecoverPassword.addEventListener("click", () => {
           class="form-control form-control-lg fs-4"
           required
           />`;
+
+    btnRecoverPassword.textContent = "Recuperar contraseña";
     recoverContainer.innerHTML = "";
-    this.textContent = "Recuperar contraseña";
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
