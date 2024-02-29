@@ -1,5 +1,10 @@
 @import url("../../css/styles.css");
 
+@media screen and (min-width: 1400px) {
+  html {
+    font-size: 0.8rem;
+  }
+}
 /* Background */
 .gradient-custom {
   /* fallback for old browsers */
@@ -46,8 +51,8 @@
 
 .flip-card {
   perspective: 200rem; /* Add 3D effect */
-  width: 40rem;
-  height: 54rem;
+  width: 44rem;
+  height: 58rem;
 }
 
 .flip-card-inner {
@@ -149,6 +154,9 @@
 
 /* Modal */
 
+.modal-dialog {
+  width: 60rem;
+}
 .btn-recover-password {
   background-color: var(--primary-color-dark);
   color: #eee;
