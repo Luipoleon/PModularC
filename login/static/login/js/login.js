@@ -7,7 +7,11 @@ const codeContainer = document.querySelector(".code-container");
 const recoverContainer = document.querySelector(".recover-container");
 const btnForgotPassword = document.querySelector(".form-forgot-password");
 const btnRecoverPassword = document.querySelector(".btn-recover-password");
+const btnLogin = document.querySelector(".btn-form-login");
+const btnRegister = document.querySelector(".btn-form-register");
 const formRecoverPassword = document.querySelector(".form-recover-password");
+const formLogin = document.querySelector(".formLogin");
+const formRegister = document.querySelector(".formRegister");
 
 // CONSTANTS
 const emailRecoverContent = ` <label for="email_recover" class="col-form-label w-100"
@@ -41,6 +45,7 @@ Array.from(register).forEach((r) => {
 });
 
 btnForgotPassword.addEventListener("click", () => {
+  btnRecoverPassword.textContent = "Enviar código";
   recoverContainer.innerHTML = emailRecoverContent;
   codeContainer.innerHTML = "";
 });
@@ -61,11 +66,27 @@ btnRecoverPassword.addEventListener("click", () => {
           class="form-control form-control-lg fs-4"
           required
           />`;
+
+    btnRecoverPassword.textContent = "Recuperar contraseña";
     recoverContainer.innerHTML = "";
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
 
-formRecoverPassword.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
+// btnRegister.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   const inputPassword = document.querySelector("input[name=password]");
+//   const inputPasswordConfirm = document.querySelector("input[name=passwordC]");
+
+//   Array.from(formRegister.querySelectorAll("input")).forEach((input) => {
+//     validateField(input.name);
+//   });
+//   // console.log(inputPassword.value, inputPasswordConfirm.value);
+//   // if (inputPassword.value === inputPasswordConfirm.value) {
+//   //   formRegister.submit();
+//   //   return;
+//   // }
+
+//   // inputPasswordConfirm.setCustomValidity("Passwords don't match!");
+//   // inputPasswordConfirm.reportValidity();
+// });
