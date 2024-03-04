@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import LoginForm, RegisterForm
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -57,7 +58,10 @@ def userExists(email):
     except:
         return False
 
-      
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 
