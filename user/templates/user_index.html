@@ -13,59 +13,47 @@
     <title></title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#"><img src="Logo" alt=""></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <div class="collapse navbar-collapse " id="navbarNav">
-             <ul class="navbar-nav">
-              <li class="nav-item px-3">
-                <a class="nav-link active" href="#">Inicio</a>
-              </li>
-              <li class="nav-item px-3">
-                <a class="nav-link active" href="./UserInfo">Informacion</a>
-              </li>
-              <li class="nav-item px-3">
-                <a class="nav-link active" href="#">Mis reportes</a>
-              </li>
-              <li class="nav-item px-3">
-                <a class="nav-link active" href="#">Edificios</a>
-              </li>
-              <li class="nav-item px-3">
-                <a class="nav-link active" href="#">Reportar</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Configuracion
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Cuenta</a></li>
-                  <li><a class="dropdown-item" href="#">Salir</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Informacion extra</a></li>
-                </ul>
-              </li>
-              <ul ></ul>
-             </ul>
-            </div>
-        </div>
-    </nav>
-    </div>
-    <div class="container">
-      <h1 class="fw-bold display-5" id="newarrivals">Estadisticas</h1>
-      <div class="row">
-       <div class="card1 col-lg-4">
-         <img src="../static/assets/graphic.png" alt="" class="w-100">
-         <div class="text-center py-5">
-         <h4 class="fw-bolder">tara</h4>
-          <h5 class="text-danger"> s</h5>
-         </div>
-       </div>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top PrincipalMenu" id="topmenu" >
+      <div class="container-fluid menumovimiento">
+        <!-- <a class="navbar-brand" href="#"><img src="Logo" alt=""></a> -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse " id="navbarNav">
+           <ul class="navbar-nav">
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" id="MenuPicked" href="{%url 'user_index'%}">Inicio</a>
+            </li>
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" href="{%url 'user_reportes'%}">Mis reportes</a>
+            </li>
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" href="{%url 'user_reportar'%}">Reportar</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle menu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Configuracion
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item menu" href="#">Cuenta</a></li>
+                <li><a class="dropdown-item menu" href="#">Salir</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item menu" href="#">Informacion extra</a></li>
+              </ul>
+            </li>
+           </ul>
+          </div>
       </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-9">Estadisticas</div>
+      <div class="col-4">.col-4<br>Since 9 + 4 = 13 &gt; 12, this 4-column-wide div gets wrapped onto a new line as one contiguous unit.</div>
+      <div class="col-6">.col-6<br>Subsequent columns continue along the new line.</div>
+      <div class="col-6">Contacto Support<br></div>
     </div>
-    <footer class="text-dark py-5">
+  </div>
+    <footer class="text-dark py-5" id="botfooter">
       <div class="container-fluid">
           <div class="row">
               <div class="col-lg-3 mb-4">

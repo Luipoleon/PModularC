@@ -1,0 +1,35 @@
+<div class="modal-dialog modal-password">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-2" id="exampleModalLabel">
+        ¿Olvidaste la contraseña?
+      </h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form class="form-recover-password">
+        {% csrf_token %}
+        <div class="recover-container"></div>
+        <div class="code-container"></div>
+        <div class="mb-3 modal-message"></div>
+      </form>
+    </div>
+    <div class="modal-footer modal-buttons">
+      <button
+        type="button"
+        class="btn btn-secondary fs-5"
+        data-bs-dismiss="modal"
+      >
+        Cerrar
+      </button>
+      <button type="button" class="btn btn-recover-password fs-5">
+        Recuperar contraseña
+      </button>
+    </div>
+  </div>
+</div>
