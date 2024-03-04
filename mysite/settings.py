@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login.apps.LoginConfig',
     'user.apps.UserConfig',
+    'adm.apps.AdmConfig',
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,7 @@ STATICFILES_DIRS = [
                     os.path.join(BASE_DIR, "static"), 
                     os.path.join(BASE_DIR, "login", "static"),
                     os.path.join(BASE_DIR, "user", "static"),
+                    os.path.join(BASE_DIR, "adm", "static"),
                 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

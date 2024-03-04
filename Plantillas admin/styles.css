@@ -1,0 +1,49 @@
+/* Variables */
+
+:root {
+    --primary-color: #e2936f;
+    --primary-color-light: #e39774;
+    --primary-color-light-2: #f2cfbf;
+    --secondary-color-light: #5c9ead;
+    --secondary-color-dark: #326273;
+    --tertiary-color: #eee;
+  
+    /* Gray tones */
+    --dark-grey: #333;
+    --ligth-grey: #999;
+  }
+  
+  /* General style */
+  
+  *,
+  ::after,
+  ::before {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  
+  html {
+    /* 1 rem = 10px */
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-size: 1.6rem;
+  }
+  
+  a.link {
+    transition: all 0.5s;
+    text-decoration: none;
+  }
+  
+  a.link:hover {
+    color: var(--primary-color-light) !important;
+    transform: scale(1.05) !important ;
+  }
+  
+  /* Helper classes */
+  
+  .text-white {
+    color: #fff;
+  }
