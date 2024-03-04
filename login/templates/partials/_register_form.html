@@ -6,12 +6,14 @@
       <input
         type="text"
         id="typeFirstame"
+        name="firstname"
         class="form-control form-control-lg firstname-input"
         required
       />
       <input
         type="text"
         id="typeLastname"
+        name="lastname"
         class="form-control form-control-lg lastname-input"
         required
       />
@@ -19,22 +21,26 @@
     <div class="fullname-container">
       <label
         class="form-label d-inline-block mr-5 firstname-tag lastname-input"
-        for="typePasswordX"
+        for="firstname"
         >Nombre</label
       >
-      <label class="form-label d-inline-block" for="typePasswordX"
-        >Apellido</label
-      >
+      <label class="form-label d-inline-block" for="lastname">Apellido</label>
     </div>
   </div>
   <div class="form-outline form-white mb-4">
-    <input type="email" id="typeEmailR" class="form-control form-control-lg" />
+    <input
+      type="email"
+      id="typeEmailR"
+      name="email"
+      class="form-control form-control-lg"
+    />
     <label class="form-label" for="typeEmailX">Email</label>
   </div>
   <div class="form-outline form-white mb-4">
     <input
       type="password"
-      id="typePasswordR"
+      id="passwordR"
+      name="password"
       class="form-control form-control-lg"
       required
     />
@@ -43,14 +49,18 @@
   <div class="form-outline form-white mb-4">
     <input
       type="password"
-      id="typePasswordC"
+      id="passwordC"
+      name="passwordC"
       class="form-control form-control-lg"
       required
     />
     <label class="form-label" for="typePasswordB">Confirmar contraseña</label>
   </div>
 
-  <button class="form-submit btn btn-outline-light btn-lg px-5" type="submit">
+  <button
+    class="form-submit btn-form-register btn btn-outline-light btn-lg px-5"
+    type="submit"
+  >
     Registrate
   </button>
   <div class="d-flex justify-content-center text-center mt-4 pt-1">
