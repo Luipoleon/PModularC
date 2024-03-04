@@ -5,6 +5,12 @@
     font-size: 0.8rem;
   }
 }
+
+@media screen and (min-height: 1000px) {
+  html {
+    font-size: 1rem;
+  }
+}
 /* Background */
 .gradient-custom {
   /* fallback for old browsers */
@@ -51,7 +57,7 @@
 
 .flip-card {
   perspective: 200rem; /* Add 3D effect */
-  width: 44rem;
+  width: 42rem;
   height: 58rem;
 }
 
@@ -155,8 +161,14 @@
 /* Modal */
 
 .modal-dialog {
-  width: 60rem;
+  display: flex;
+  justify-content: center;
 }
+
+.modal-content {
+  min-width: 50rem;
+}
+
 .btn-recover-password {
   background-color: var(--primary-color-dark);
   color: #eee;

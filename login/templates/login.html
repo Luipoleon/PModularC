@@ -21,10 +21,18 @@
       <div class="container py-5 h-100">
         <div class="flip-card">
           <div class="card flip-card-inner bg-dark text-white">
-            <form class="card-body p-5 text-center flip-card-front">
+            <form
+              action="/"
+              class="card-body p-5 text-center flip-card-front formLogin"
+              method="post"
+            >
               {% csrf_token %} {% include 'partials/_login_form.html' %}
             </form>
-            <form class="card-body p-5 text-center flip-card-back">
+            <form
+              action="/register/"
+              method="post"
+              class="card-body p-5 text-center flip-card-back formRegister"
+            >
               {% csrf_token %} {% include 'partials/_register_form.html' %}
             </form>
           </div>
