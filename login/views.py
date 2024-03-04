@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.views import View
 from .forms import LoginForm, RegisterForm
 
@@ -20,6 +20,7 @@ class Login(View):
            password = form.cleaned_data["password"]
 
            user = authenticate(username = email,  password =  password)
+           login(request, user)
         
            if user is not None:
                 return HttpResponseRedirect("/user")
