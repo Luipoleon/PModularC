@@ -28,9 +28,9 @@ class Login(View):
            else:
                return HttpResponseRedirect("/");
                
-def register(requests):
-    if requests.method == "POST":
-        form = RegisterForm(requests.POST)
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
         if form.is_valid():
            email = form.cleaned_data["email"]
            password = form.cleaned_data["password"]
@@ -42,6 +42,7 @@ def register(requests):
                 user.first_name = firstname
                 user.last_name = lastname
                 user.save()
+                login(request, user)
                 return HttpResponseRedirect("/user")
            else:
                return HttpResponseRedirect("/");
@@ -53,7 +54,7 @@ def register(requests):
 
 def userExists(email):
     try:
-        user  =  CustomUser.objects.get(username = email)
+        user  =  CustomUser.objects.get(email = email)
         return True
     except:
         return False
