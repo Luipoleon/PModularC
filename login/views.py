@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
+from login.models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import LoginForm, RegisterForm
@@ -20,7 +20,7 @@ class Login(View):
            email = form.cleaned_data["email"]
            password = form.cleaned_data["password"]
 
-           user = authenticate(username = email,  password =  password)
+           user = authenticate(email = email,  password =  password)
            login(request, user)
         
            if user is not None:
@@ -38,7 +38,7 @@ def register(requests):
            lastname = form.cleaned_data["lastname"]
         
            if not userExists(email):
-                user = User.objects.create_user(username=email, email=email, password = password)
+                user = CustomUser.objects.create_user(email=email, password = password)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.save()
