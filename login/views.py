@@ -5,6 +5,8 @@ from django.views import View
 from .forms import LoginForm, RegisterForm
 from django.shortcuts import redirect
 
+
+
 # Create your views here.
 
 class Login(View):
@@ -12,7 +14,11 @@ class Login(View):
     template_name = "login.html"
 
     def get(self, request):
-        return render(request, 'login.html', {})
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/user")
+        else:
+            return render(request, 'login.html', {})
+
     def post(self, request):
         form = LoginForm(request.POST)
         # check whether it's valid:
