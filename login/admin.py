@@ -4,7 +4,7 @@ from login.models import CustomUser
 # Register your models here.
 class AdminCustomUser(admin.ModelAdmin):
     model = CustomUser
-    list_display = [ 'get_id', 'email', 'first_name', 'last_name']
+    list_display = [ 'get_id', 'first_name', 'last_name', 'email', 'is_staff']
 
     def get_id(self, obj):
         return obj.id
@@ -14,6 +14,6 @@ class AdminCustomUser(admin.ModelAdmin):
     get_id.short_description = 'ID'  #Renames column head
 
     #Filtering on side - for some reason, this works
-    # list_filter = ['id']
+    list_filter = ['is_staff']
 
 admin.site.register(CustomUser, AdminCustomUser)

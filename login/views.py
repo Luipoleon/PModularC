@@ -21,9 +21,9 @@ class Login(View):
            password = form.cleaned_data["password"]
 
            user = authenticate(email = email,  password =  password)
-           login(request, user)
         
            if user is not None:
+                login(request, user)
                 return HttpResponseRedirect("/user")
            else:
                return HttpResponseRedirect("/");
@@ -53,7 +53,7 @@ def register(requests):
 
 def userExists(email):
     try:
-        user  = User.objects.get(username = email)
+        user  =  CustomUser.objects.get(username = email)
         return True
     except:
         return False
