@@ -1,9 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
 from login.models import CustomUser
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import LoginForm, RegisterForm
-from django.shortcuts import redirect
+
 
 
 
@@ -23,25 +24,33 @@ class Login(View):
         form = LoginForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-           email = form.cleaned_data["email"]
-           password = form.cleaned_data["password"]
+           email = form.cleaned_data["emailL"]
+           password = form.cleaned_data["passwordL"]
 
            user = authenticate(email = email,  password =  password)
-        
+           
+           validUser = {'email': email}
+
            if user is not None:
+                validUser['logged_in'] = True
                 login(request, user)
-                return HttpResponseRedirect("/user")
+             
            else:
-               return HttpResponseRedirect("/");
+               validUser['logged_in'] = False
+
+           return JsonResponse(validUser)
                
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-           email = form.cleaned_data["email"]
-           password = form.cleaned_data["password"]
+           email = form.cleaned_data["emailR"]
+           password = form.cleaned_data["passwordR"]
            firstname = form.cleaned_data["firstname"]
            lastname = form.cleaned_data["lastname"]
+
+           validUser = {'email': email}
+
         
            if not userExists(email):
                 user = CustomUser.objects.create_user(email=email, password = password)
@@ -49,9 +58,10 @@ def register(request):
                 user.last_name = lastname
                 user.save()
                 login(request, user)
-                return HttpResponseRedirect("/user")
+                validUser["registered"] = True
            else:
-               return HttpResponseRedirect("/");
+               validUser["registered"] = False
+           return JsonResponse(validUser);
 
 
     else:
@@ -64,7 +74,6 @@ def userExists(email):
         return True
     except:
         return False
-
 
 def logout_view(request):
     logout(request)
