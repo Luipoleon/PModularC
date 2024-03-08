@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-hdpk0^d%-jg!*n%&9oh_2@-qoph(+cy53!2uj+bxa(m&70%93&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net']
+ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net"]
 
@@ -44,9 +44,16 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'user.apps.UserConfig',
     'adm.apps.AdmConfig',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,14 +62,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['login/templates', 'user/templates'],  # Separate the directory paths as separate entries in the 'DIRS' list
+        'DIRS': ['login/templates', 'user/templates', 'adm/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,6 +111,17 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+LOGIN_REDIRECT_URL = 'login'
+ACCOUNT_ADAPTER = 'login.users.adapter.MyAccountAdapter'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -119,6 +139,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "login.CustomUser"
 
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '1435151220704464',
+            'secret': '165c79d4fd35433a083dc6648bcb0c30',
+        },
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+        ],
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

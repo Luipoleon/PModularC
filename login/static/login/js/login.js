@@ -35,6 +35,8 @@ type="email"
 required
 />`;
 
+// Utility functions
+
 function validateField(fieldName) {
   const field = document.querySelector(`input[name="${fieldName}"]`);
 
@@ -56,12 +58,26 @@ function checkFormInputs(form) {
   return true;
 }
 
+function checkPasswordsEqual(e) {
+  if (inputPasswordRegister.value === inputPasswordConfirmRegister.value) {
+    inputPasswordConfirmRegister.setCustomValidity("");
+    return true;
+  }
+  inputPasswordConfirmRegister.setCustomValidity("Passwords don't match!");
+  inputPasswordConfirmRegister.reportValidity();
+  return false;
+}
+
+// Visual effects
+
 Array.from(register).forEach((r) => {
   r.addEventListener("click", (e) => {
     e.preventDefault();
     card.classList.toggle("flipped");
   });
 });
+
+// Recover password
 
 btnForgotPassword.addEventListener("click", () => {
   btnRecoverPassword.textContent = "Enviar código";
@@ -91,6 +107,8 @@ btnRecoverPassword.addEventListener("click", () => {
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
+
+// Login form
 
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
@@ -123,19 +141,20 @@ btnLogin.addEventListener("click", (e) => {
     });
 });
 
+// Register form
+
+inputPasswordConfirmRegister.addEventListener("input", (e) =>
+  checkPasswordsEqual(e)
+);
+
 btnRegister.addEventListener("click", (e) => {
   e.preventDefault();
-
-  inputPasswordConfirmRegister.setCustomValidity("");
-  inputEmailRegister.setCustomValidity("");
 
   if (!checkFormInputs(formRegister)) {
     return;
   }
 
-  if (inputPasswordRegister.value !== inputPasswordConfirmRegister.value) {
-    inputPasswordConfirmRegister.setCustomValidity("Passwords don't match!");
-    inputPasswordConfirmRegister.reportValidity();
+  if (!checkPasswordsEqual(e)) {
     return;
   }
 
