@@ -1,0 +1,19 @@
+        .column {
+            flex: 1;
+            margin: 0 10px;
+            text-align: center; /* Alineación horizontal del texto */
+        }
+        .az-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .az-list li {
+            margin: 5px;
+        }
+        .column ul {
+            padding: 0;
+        }
+        .column ul a {
+            display: block;
+            margin-bottom: 10px; /* Agrega un espacio entre los elementos */
+        }

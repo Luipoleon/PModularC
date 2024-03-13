@@ -10,3 +10,6 @@ def admReportes(request):
 
 def admInfo(request):
     return render(request, 'adm_informacion.html', {})
+
+def admEdificios(request):
+    return render(request, 'adm_edificios.html', {})
