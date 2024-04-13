@@ -7,7 +7,6 @@ from .forms import LoginForm, RegisterForm
 
 
 
-
 # Create your views here.
 
 class Login(View):
