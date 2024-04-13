@@ -5,14 +5,14 @@
     <div class="d-flex">
       <input
         type="text"
-        id="typeFirstame"
+        id="firstname"
         name="firstname"
         class="form-control form-control-lg firstname-input"
         required
       />
       <input
         type="text"
-        id="typeLastname"
+        id="lastname"
         name="lastname"
         class="form-control form-control-lg lastname-input"
         required
@@ -30,21 +30,23 @@
   <div class="form-outline form-white mb-4">
     <input
       type="email"
-      id="typeEmailR"
-      name="email"
+      id="emailR"
+      name="emailR"
       class="form-control form-control-lg"
+      autocomplete="email"
     />
-    <label class="form-label" for="typeEmailX">Email</label>
+    <label class="form-label" for="emailR">Email</label>
   </div>
   <div class="form-outline form-white mb-4">
     <input
       type="password"
       id="passwordR"
-      name="password"
+      name="passwordR"
       class="form-control form-control-lg"
+      autocomplete="new-password"
       required
     />
-    <label class="form-label" for="typePasswordX">Contraseña</label>
+    <label class="form-label" for="passwordR">Contraseña</label>
   </div>
   <div class="form-outline form-white mb-4">
     <input
@@ -52,9 +54,10 @@
       id="passwordC"
       name="passwordC"
       class="form-control form-control-lg"
+      autocomplete="current-password"
       required
     />
-    <label class="form-label" for="typePasswordB">Confirmar contraseña</label>
+    <label class="form-label" for="passwordC">Confirmar contraseña</label>
   </div>
 
   <button

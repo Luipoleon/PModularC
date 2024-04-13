@@ -1,4 +1,6 @@
-{% load static %}
+{% load static %} {% load socialaccount %}
+{% load i18n %}
+{% load allauth %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,7 +50,16 @@
     >
       {% include 'partials/_modal.html' %}
     </div>
+    <!-- 
+    <div id="g_id_onload">
+      data-client_id="62340612505-o1n2rts9un7v4qfr999pbpu8083pmpm0.apps.googleusercontent.com"
+      data-login_uri="{% url 'google_login_by_token' %}"
+      data-auto_prompt="false" data-context="signin" data-ux_mode="redirect"
+      data-theme="outline" data-text="signin_with" data-size="large"
+      data-logo_alignment="left"
+    </div>
 
+    <script src="//accounts.google.com/gsi/client" async defer></script> -->
     <script
       src="https://kit.fontawesome.com/72399c8f18.js"
       crossorigin="anonymous"

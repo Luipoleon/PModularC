@@ -5,13 +5,23 @@ const card = document.querySelector(".flip-card");
 const modalPassword = document.querySelector(".modal-message");
 const codeContainer = document.querySelector(".code-container");
 const recoverContainer = document.querySelector(".recover-container");
+
 const btnForgotPassword = document.querySelector(".form-forgot-password");
 const btnRecoverPassword = document.querySelector(".btn-recover-password");
 const btnLogin = document.querySelector(".btn-form-login");
 const btnRegister = document.querySelector(".btn-form-register");
+
 const formRecoverPassword = document.querySelector(".form-recover-password");
 const formLogin = document.querySelector(".formLogin");
 const formRegister = document.querySelector(".formRegister");
+
+const inputPasswordRegister = document.querySelector("input[name=passwordR]");
+const inputPasswordConfirmRegister = document.querySelector(
+  "input[name=passwordC]"
+);
+const inputEmailRegister = document.querySelector("input[name=emailR]");
+
+const divLoginError = document.querySelector(".login-error");
 
 // CONSTANTS
 const emailRecoverContent = ` <label for="email_recover" class="col-form-label w-100"
@@ -25,6 +35,8 @@ type="email"
 required
 />`;
 
+// Utility functions
+
 function validateField(fieldName) {
   const field = document.querySelector(`input[name="${fieldName}"]`);
 
@@ -37,12 +49,35 @@ function validateField(fieldName) {
   }
 }
 
+function checkFormInputs(form) {
+  for (const input of form.querySelectorAll("input")) {
+    if (!validateField(input.name)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function checkPasswordsEqual(e) {
+  if (inputPasswordRegister.value === inputPasswordConfirmRegister.value) {
+    inputPasswordConfirmRegister.setCustomValidity("");
+    return true;
+  }
+  inputPasswordConfirmRegister.setCustomValidity("Passwords don't match!");
+  inputPasswordConfirmRegister.reportValidity();
+  return false;
+}
+
+// Visual effects
+
 Array.from(register).forEach((r) => {
   r.addEventListener("click", (e) => {
     e.preventDefault();
     card.classList.toggle("flipped");
   });
 });
+
+// Recover password
 
 btnForgotPassword.addEventListener("click", () => {
   btnRecoverPassword.textContent = "Enviar código";
@@ -73,20 +108,77 @@ btnRecoverPassword.addEventListener("click", () => {
   }
 });
 
-// btnRegister.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   const inputPassword = document.querySelector("input[name=password]");
-//   const inputPasswordConfirm = document.querySelector("input[name=passwordC]");
+// Login form
 
-//   Array.from(formRegister.querySelectorAll("input")).forEach((input) => {
-//     validateField(input.name);
-//   });
-//   // console.log(inputPassword.value, inputPasswordConfirm.value);
-//   // if (inputPassword.value === inputPasswordConfirm.value) {
-//   //   formRegister.submit();
-//   //   return;
-//   // }
+btnLogin.addEventListener("click", (e) => {
+  e.preventDefault();
 
-//   // inputPasswordConfirm.setCustomValidity("Passwords don't match!");
-//   // inputPasswordConfirm.reportValidity();
-// });
+  if (!checkFormInputs(formLogin)) {
+    return;
+  }
+
+  const formData = new FormData(formLogin);
+
+  fetch(formLogin.action, {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.logged_in) {
+        window.location.href = "/user/";
+      } else {
+        divLoginError.classList.remove("invisible");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
+
+// Register form
+
+inputPasswordConfirmRegister.addEventListener("input", (e) =>
+  checkPasswordsEqual(e)
+);
+
+btnRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (!checkFormInputs(formRegister)) {
+    return;
+  }
+
+  if (!checkPasswordsEqual(e)) {
+    return;
+  }
+
+  const formData = new FormData(formRegister);
+
+  fetch(formRegister.action, {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.registered) {
+        window.location.href = "/user/";
+      } else {
+        inputEmailRegister.setCustomValidity("Email already registered!");
+        inputEmailRegister.reportValidity();
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});

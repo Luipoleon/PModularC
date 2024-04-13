@@ -116,6 +116,21 @@
   border: var(--primary-color-light-2);
 }
 
+/* Login form */
+div.login-error {
+  background-color: var(--primary-color-light);
+  color: #fff;
+  border-radius: 4px;
+  height: 4rem;
+  transition: all 0.2s;
+}
+
+div.login-error.invisible {
+  height: 0;
+}
+
+/* Register form */
+
 /* Input */
 
 .firstname-input {

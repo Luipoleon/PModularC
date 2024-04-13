@@ -1,8 +1,11 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
+from login.models import CustomUser
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import LoginForm, RegisterForm
+
+
 
 # Create your views here.
 
@@ -11,38 +14,53 @@ class Login(View):
     template_name = "login.html"
 
     def get(self, request):
-        return render(request, 'login.html', {})
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/user")
+        else:
+            return render(request, 'login.html', {})
+
     def post(self, request):
         form = LoginForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-           email = form.cleaned_data["email"]
-           password = form.cleaned_data["password"]
+           email = form.cleaned_data["emailL"]
+           password = form.cleaned_data["passwordL"]
 
-           user = authenticate(username = email,  password =  password)
-        
+           user = authenticate(email = email,  password =  password)
+           
+           validUser = {'email': email}
+
            if user is not None:
-                return HttpResponseRedirect("/user")
+                validUser['logged_in'] = True
+                login(request, user)
+             
            else:
-               return HttpResponseRedirect("/");
+               validUser['logged_in'] = False
+
+           return JsonResponse(validUser)
                
-def register(requests):
-    if requests.method == "POST":
-        form = RegisterForm(requests.POST)
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
         if form.is_valid():
-           email = form.cleaned_data["email"]
-           password = form.cleaned_data["password"]
+           email = form.cleaned_data["emailR"]
+           password = form.cleaned_data["passwordR"]
            firstname = form.cleaned_data["firstname"]
            lastname = form.cleaned_data["lastname"]
+
+           validUser = {'email': email}
+
         
            if not userExists(email):
-                user = User.objects.create_user(username=email, email=email, password = password)
+                user = CustomUser.objects.create_user(email=email, password = password)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.save()
-                return HttpResponseRedirect("/user")
+                login(request, user)
+                validUser["registered"] = True
            else:
-               return HttpResponseRedirect("/");
+               validUser["registered"] = False
+           return JsonResponse(validUser);
 
 
     else:
@@ -51,12 +69,14 @@ def register(requests):
 
 def userExists(email):
     try:
-        user  = User.objects.get(username = email)
+        user  =  CustomUser.objects.get(email = email)
         return True
     except:
         return False
 
-      
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 
