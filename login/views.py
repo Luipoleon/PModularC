@@ -15,6 +15,7 @@ class Login(View):
 
     def get(self, request):
         if request.user.is_authenticated:
+            print(request.user.email)
             return HttpResponseRedirect("/user")
         else:
             return render(request, 'login.html', {})
@@ -50,13 +51,17 @@ def register(request):
 
            validUser = {'email': email}
 
-        
+           print(userExists(email))
+           
            if not userExists(email):
                 user = CustomUser.objects.create_user(email=email, password = password)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.save()
-                login(request, user)
+                # Specify the backend
+                # backend = 'django.contrib.auth.backends.ModelBackend'
+                # user.backend = backend
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 validUser["registered"] = True
            else:
                validUser["registered"] = False

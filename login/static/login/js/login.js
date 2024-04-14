@@ -107,78 +107,117 @@ btnRecoverPassword.addEventListener("click", () => {
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
-
 // Login form
 
+// This event listener is triggered when the login button is clicked
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
-
+  divLoginError.classList.add("invisible");
+  btnLogin.classList.add("placeholder");
+  btnLogin.querySelector(".spinner-border").classList.remove("hidden");
+  
+  // Check if all form inputs are valid
   if (!checkFormInputs(formLogin)) {
     return;
   }
 
+  // Create a new FormData object with the form data
   const formData = new FormData(formLogin);
 
+  // Send a POST request to the server with the form data
   fetch(formLogin.action, {
     method: "POST",
     body: formData,
   })
     .then((response) => {
+      // Check if the response is successful
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
+      // Parse the response as JSON
       return response.json();
     })
     .then((data) => {
+      // Check if the user is logged in
       if (data.logged_in) {
+        // Redirect the user to the user page
         window.location.href = "/user/";
       } else {
+        // Display an error message if login is unsuccessful
         divLoginError.classList.remove("invisible");
       }
     })
     .catch((error) => {
+      // Log any errors that occur during the request
       console.error("Error:", error);
+    })
+    .finally(() => {
+      btnLogin.classList.remove("placeholder");
+      btnLogin.querySelector(".spinner-border").classList.add("hidden");
     });
+
+ 
 });
 
 // Register form
 
+// This event listener is triggered when the password confirmation input changes
 inputPasswordConfirmRegister.addEventListener("input", (e) =>
   checkPasswordsEqual(e)
 );
 
+// This event listener is triggered when the register button is clicked
 btnRegister.addEventListener("click", (e) => {
   e.preventDefault();
+  inputEmailRegister.setCustomValidity("");
 
+  // Check if all form inputs are valid
   if (!checkFormInputs(formRegister)) {
+    console.log("Invalid form inputs");
     return;
   }
 
+  // Check if the passwords match
   if (!checkPasswordsEqual(e)) {
     return;
   }
+ 
+  btnRegister.classList.add("placeholder");
+  btnRegister.querySelector(".spinner-border").classList.remove("hidden");
 
+  // Create a new FormData object with the form data
   const formData = new FormData(formRegister);
 
+  // Send a POST request to the server with the form data
   fetch(formRegister.action, {
     method: "POST",
     body: formData,
   })
     .then((response) => {
+      // Check if the response is successful
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
+      // Parse the response as JSON
       return response.json();
     })
     .then((data) => {
+      // Check if the user is registered
+      console.log(data);
       if (data.registered) {
+        // Redirect the user to the user page
         window.location.href = "/user/";
       } else {
+        // Display an error message if registration is unsuccessful
         inputEmailRegister.setCustomValidity("Email already registered!");
         inputEmailRegister.reportValidity();
       }
     })
     .catch((error) => {
+      // Log any errors that occur during the request
       console.error("Error:", error);
+    }).finally(() => {
+      btnRegister.classList.remove("placeholder");
+      btnRegister.querySelector(".spinner-border").classList.add("hidden");
     });
 });

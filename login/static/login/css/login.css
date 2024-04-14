@@ -12,6 +12,7 @@
   }
 }
 /* Background */
+
 .gradient-custom {
   /* fallback for old browsers */
   background: var(--secondary-color-light);
@@ -114,6 +115,17 @@
   background-color: var(--primary-color-light);
   transform: scale(1.05);
   border: var(--primary-color-light-2);
+}
+
+.placeholder {
+  background-color: var(--primary-color-light);
+  color: var(--dark-grey);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.hidden{
+  display: none;
 }
 
 /* Login form */

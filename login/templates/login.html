@@ -18,29 +18,31 @@
   </head>
   <style></style>
   <body>
-    <img src="{% static 'img/logo-black.png' %}" alt="logo" class="logo" />
-    <section class="gradient-custom">
-      <div class="container py-5 h-100">
-        <div class="flip-card">
-          <div class="card flip-card-inner bg-dark text-white">
-            <form
-              action="/"
-              class="card-body p-5 text-center flip-card-front formLogin"
-              method="post"
-            >
-              {% csrf_token %} {% include 'partials/_login_form.html' %}
-            </form>
-            <form
-              action="/register/"
-              method="post"
-              class="card-body p-5 text-center flip-card-back formRegister"
-            >
-              {% csrf_token %} {% include 'partials/_register_form.html' %}
-            </form>
+    <div>
+      <img src="{% static 'img/logo-black.png' %}" alt="logo" class="logo" />
+      <section class="gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="flip-card">
+            <div class="card flip-card-inner bg-dark text-white">
+              <form
+                action="/"
+                class="card-body p-5 text-center flip-card-front formLogin"
+                method="post"
+              >
+                {% csrf_token %} {% include 'partials/_login_form.html' %}
+              </form>
+              <form
+                action="/register/"
+                method="post"
+                class="card-body p-5 text-center flip-card-back formRegister"
+              >
+                {% csrf_token %} {% include 'partials/_register_form.html' %}
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
     <div
       class="modal fade"
       id="forgotPasswordModal"
