@@ -13,3 +13,6 @@ def admInfo(request):
 
 def admEdificios(request):
     return render(request, 'adm_edificios.html', {})
+
+def admSeguimiento(request):
+    return render(request, 'adm_seguimiento.html', {})
