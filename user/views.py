@@ -16,3 +16,35 @@ def user_reportar(request):
 
 def user_cuenta(request):
     return render(request, 'user_cuenta.html', {})
+
+
+
+
+#Sending report
+def sendreport(request):
+    if request.method == "POST":
+        print("POST")
+
+    #     form = RegisterForm(request.POST)
+    #     if form.is_valid():
+
+    #        print(userExists(email))
+           
+    #        if not userExists(email):
+    #             user = CustomUser.objects.create_user(email=email, password = password)
+    #             user.first_name = firstname
+    #             user.last_name = lastname
+    #             user.save()
+    #             # Specify the backend
+    #             # backend = 'django.contrib.auth.backends.ModelBackend'
+    #             # user.backend = backend
+    #             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+    #             validUser["registered"] = True
+    #        else:
+    #            validUser["registered"] = False
+    #        return JsonResponse(validUser);
+
+
+    # else:
+    #     return HttpResponse("Method not valid!")
+
