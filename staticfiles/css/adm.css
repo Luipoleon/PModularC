@@ -1,12 +1,13 @@
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #eee; /* Celeste */
+    background-color: #cceeff; /* Celeste */
     color: #000000; /* Negro */
 }
 #header {
-    background-color: #326273; /* Blanco */
+    background-color: #51d1d5bf; /* Blanco */
     padding: 10px;
 }
 #top-row1, #top-row2 {
@@ -35,9 +36,11 @@ body {
     padding: 50px 0;
 }
 #footer {
-    background-color: #e2936f; /* Blanco */
+    background-color: #bcd0897d; /* Blanco */
     text-align: center;
     padding: 10px;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
+-->

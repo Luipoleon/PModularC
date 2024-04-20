@@ -1,6 +1,18 @@
 @import url("../../css/styles.css");
 
+@media screen and (min-width: 1400px) {
+  html {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (min-height: 1000px) {
+  html {
+    font-size: 1rem;
+  }
+}
 /* Background */
+
 .gradient-custom {
   /* fallback for old browsers */
   background: var(--secondary-color-light);
@@ -28,8 +40,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: all 2s;
   width: 100;
+  overflow: hidden;
 }
 
 .card-title {
@@ -46,18 +58,21 @@
 
 .flip-card {
   perspective: 200rem; /* Add 3D effect */
-  width: 40rem;
-  height: 55rem;
+  width: 42rem;
+  height: 58rem;
 }
 
 .flip-card-inner {
   text-align: center;
-  transition: transform 0.6s; /* Smooth animation */
+  transition: transform 1s; /* Smooth animation */
   transform-style: preserve-3d;
+  perspective: 200rem;
 }
 
-.flip-card.flipped .flip-card-inner {
+.flip-card.flipped .flip-card-inner,
+.flip-card.flipped .flip-card {
   transform: rotateY(180deg); /* Flip the card */
+  height: 56rem;
 }
 
 .flip-card-front,
@@ -66,10 +81,11 @@
   height: 100%;
   backface-visibility: hidden; /* Hide back of the card */
   position: absolute;
+  transform: rotateX(0deg);
 }
 
-.flip-card-front {
-}
+/* .flip-card-front {
+} */
 
 .flip-card-back {
   transform: rotateY(180deg); /* Start with the back facing */
@@ -101,6 +117,50 @@
   border: var(--primary-color-light-2);
 }
 
+.placeholder {
+  background-color: var(--primary-color-light);
+  color: var(--dark-grey);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.hidden{
+  display: none;
+}
+
+/* Login form */
+div.login-error {
+  background-color: var(--primary-color-light);
+  color: #fff;
+  border-radius: 4px;
+  height: 4rem;
+  transition: all 0.2s;
+}
+
+div.login-error.invisible {
+  height: 0;
+}
+
+/* Register form */
+
+/* Input */
+
+.firstname-input {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.lastname-input {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.fullname-container {
+  text-align: center;
+}
+
+.fullname-container label {
+  width: 49%;
+}
+
 /* logo */
 
 .logo {
@@ -112,4 +172,41 @@
   border-radius: 50%;
   z-index: 1000;
   box-shadow: 0 4rem 8rem rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  visibility: hidden;
+}
+
+.logo:hover {
+  box-shadow: 0 2rem 4rem rgba(255, 255, 255, 0.075);
+}
+@media screen and (min-width: 800px) {
+  .logo {
+    visibility: visible;
+  }
+}
+
+/* Modal */
+
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-content {
+  min-width: 50rem;
+}
+
+.btn-recover-password {
+  background-color: var(--primary-color-dark);
+  color: #eee;
+}
+
+.btn-recover-password:hover {
+  background-color: var(--primary-color-dark-2);
+  color: #eee;
+}
+
+.modal-buttons button {
+  padding: 1rem 1.5rem;
+  font-weight: 500;
 }
