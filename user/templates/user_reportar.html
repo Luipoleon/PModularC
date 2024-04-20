@@ -47,7 +47,8 @@
         </div>
     </nav>
     </div>
-  <form action="/academico/sending-report" method="post">
+  <form action="{% url 'sendreport'%}" method="post">
+   {% csrf_token %}
    <div class="container losreportes"> 
     <div class="container mireportes">
       <h1 class="fw-bold display-5 TReportes" id="newarrivals">Edificios</h1>
@@ -141,7 +142,7 @@
         <h2 class="TOpciones">Selecciona el tipo de departamento</h2>
         <select name="TipoDepartamentos" class="form-select OSelect" id="TipoDepartamentos" aria-label="Large select example">
           <option selected>Seleccionar</option>
-          <option value="Administrativos">Administrativos</option>
+          <option valAe="Administrativos">Administrativos</option>
           <option value="Cubiculos">Cubiculo</option>
           <option value="Biblioteca">Biblioteca</option>
           <option value="Coordinacion">Coordinacion</option>

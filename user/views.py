@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from .forms import sendreportform
 
 # Create your views here.
 
@@ -23,7 +25,15 @@ def user_cuenta(request):
 #Sending report
 def sendreport(request):
     if request.method == "POST":
-        print("POST")
+        # get the form variables
+
+
+        form = sendreportform(request.POST)
+        if form.is_valid():
+           
+            return HttpResponse(form.cleaned_data["TipoDepartamentos"])
+        return HttpResponse("Report sent!")
+    
 
     #     form = RegisterForm(request.POST)
     #     if form.is_valid():
