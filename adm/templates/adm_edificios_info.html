@@ -1,0 +1,183 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <title>Adm Información</title>
+        <link rel="stylesheet" href="{% static 'css/admIndex.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/admEdificios.css' %}" />
+
+    </head>
+    <body>
+
+    <div>
+     {% include 'partials/_menu.html' %}
+    </div>
+
+
+    <div id="content">
+        <div class="container building">
+            <h1 class="building__title fs-1"> Problemas Edificio "{{letra}}"</h1>
+            <div class="row">
+                <div class="classrooms col">
+                    <h2 class="building__subtitle fs-3 classrooms__title">
+                        Salones
+                    </h2>
+                    <div class="classrooms__content">
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;1</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;2</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;3</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;4</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;5</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;6</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;7</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;8</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;9</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;10</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;11</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;12</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;13</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;14</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;15</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;16</i>
+                            </div>
+                        </div>
+
+
+                        <div class="arrows">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="academics col">
+                    <h2 class="building__subtitle fs-3 academics__title">
+                        Académicos
+                    </h2>
+                    <div class="academics__content">
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;1</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;2</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;3</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;4</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;5</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;6</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;7</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;8</i>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle">&MediumSpace;9</i>
+                            </div>
+                        </div>
+
+                        <div class="arrows">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="common_areas col">
+                    <h2 class="building__subtitle fs-3 common_areas__title">
+                        Áreas Comunes
+                    </h2>
+                    <div class="common_areas__content">
+                        <div class="row">
+                            <div class="container col">
+                                <i class="fa-solid fa-person-dress"></i>
+                                <span>Baño Mujeres</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <i class="fa-solid fa-person"></i>
+                                <span>Baño Hombres</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer" class="footer">
+        <div style="font-size: 26px;">
+            Mantenimiento Centro CUCEI
+            <br>
+            <br>
+        </div>
+        <img src="{% static 'img/icono_email.png' %}" alt="Icono de email" style="width: 40px; height: 40px; margin-right: 5px;">
+        <span style="font-size: 15px;">Contacto Soporte:</span>
+    </div>
+
+    <script
+    src="https://kit.fontawesome.com/72399c8f18.js"
+    crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    </body>
+</html>
