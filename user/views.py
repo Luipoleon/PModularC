@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def user_index(request):
-    return render(request, 'user_index.html', {})
+    current_user = request.user
+    return render(request, 'user_index.html', {'user':current_user})
 
 def user_reportes(request):
     return render(request, 'user_reportes.html', {})
