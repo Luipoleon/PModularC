@@ -7,4 +7,5 @@ urlpatterns = [
     path('info/', views.admInfo, name="info"),
     path('edificios/', views.admEdificios, name="edificios"),
     path('seguimiento/', views.admSeguimiento, name="seguimiento"),
+    path('edificios/<str:letra>/', views.admGetEdificio, name="get_edificio")
 ]

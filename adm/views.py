@@ -16,3 +16,6 @@ def admEdificios(request):
 
 def admSeguimiento(request):
     return render(request, 'adm_seguimiento.html', {})
+
+def admGetEdificio(request, letra):
+    return render(request, 'adm_edificios_info.html', {"letra": letra})
