@@ -12,3 +12,6 @@ def user_reportes(request):
 
 def user_reportar(request):
     return render(request, 'user_reportar.html', {})
+
+def user_cuenta(request):
+    return render(request, 'user_cuenta.html', {})
