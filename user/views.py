@@ -18,7 +18,8 @@ def user_reportar(request):
     return render(request, 'user_reportar.html', {})
 
 def user_cuenta(request):
-    return render(request, 'user_cuenta.html', {})
+    current_user = request.user
+    return render(request, 'user_cuenta.html', {'user':current_user})
 
 
 
