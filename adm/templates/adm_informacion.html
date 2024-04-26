@@ -1,53 +1,130 @@
-{%load static%}
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Adm Información</title>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{% static 'css/admIndex.css' %}" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/user_reportes.css' %}" />
+
+    <title></title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top PrincipalMenu" id="topmenu" >
+      <div class="container-fluid">
+        <!-- <a class="navbar-brand" href="#"><img src="Logo" alt=""></a> -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse " id="navbarNav">
+            <div id="user-info" class="d-flex justify-content-start align-items-center flex-grow-1">
+              <img src="{% static 'img/imagen_usuario.webp' %}" alt="Imagen de usuario" style="width: 80px; height: 50px; border-radius: 50%; margin-right: 10px;">
+              <span style="margin-right: 100px;">Nombre de Usuario</span>
+            </div>
+           <ul class="navbar-nav">
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" href="/adm">Inicio</a>
+            </li>
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" id="MenuPicked" href="/adm/info">Información</a>
+            </li>
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" href="/adm/edificios">Edificios</a>
+            </li>
+            <li class="nav-item px-3">
+              <a class="nav-link active menu" href="/adm/reportes">Reportes</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle menu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Configuración
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item menu" href="#">Cuenta</a></li>
+                <li><a class="dropdown-item menu" href="#">Salir</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item menu" href="#">Información extra</a></li>
+              </ul>
+            </li>
+            <ul ></ul>
+           </ul>
+          </div>
+      </div>
+    </nav>
     
-</head>
-<body>
+    <div id="content" class="text-center py-5">
+        <h1 style="margin-top: 50px;">Información de Uso</h1>
+        <div class="container mt-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="alert alert-info" role="alert">
+                Esta es una página web en la que se manejarán reportes de mantenimiento de los edificios de CUCEI, para así poder lograr un mejor centro universitario decente y adecuado para sus estudiantes.
+              </div>
+              <div class="alert alert-info" role="alert">
+                Para el uso de esta aplicación web desde esta vista de Administrador, logramos conocer acerca de las pestañas de "Edificios", "Reportes" y "Configuración". Dentro de "Edificios" Será posible ver
+                un listado de edificios, edificios académicos y otros edificios para así llevar un control de su mantenimiento, en la pestaña de "Reportes" podremos ver todo el historial y listado de los reportes
+                tanto pendientes como a los que se les está dando seguimiento y los que han finalizado. Para cualquier duda o comentario acerca de todo esto, favor de contactarse con los desarrolladores Saludos!!
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
     
-<div id="header">
-    <div id="top-row1">
-        <hr style="width: 85%;">
-        <div id="user-info" class="d-flex justify-content-start align-items-center flex-grow-1">
-            <img src="{% static 'img/imagen_usuario.webp' %}" alt="Imagen de usuario" style="width: 80px; height: 50px; border-radius: 50%; margin-right: 10px;">
-            <span style="margin-right: 100px;">Nombre de Usuario</span>
-            <a href="/">Log out</a>
-        </div>
+    <div class="card1 col-lg-4">
+      <div class="text-center py-5">
+      </div>
     </div>
-    <div id="top-row2">
-        <img src="{% static 'img/logo_empresa.png' %}" alt="Logo de la empresa" style="width: 50px; height: 50px; margin-right: 10px;">
-        <h2 style="font-size: 46px;" class="m-0"><a href="/adm">Inicio</a></h2>
-        <div class="d-flex">
-            Información
-        </div>
-        <div class="d-flex">
-            <a href="/adm/edificios">Edificios</a>
-        </div>
-        <div class="d-flex">
-            <a href="/adm/reportes">Reportes</a>
-        </div>
+    <footer class="text-dark py-3 fixed-bottom" id="botfooter">
+        
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-3 mb-4">
+                  <img src="{% static 'img/logo_empresa.png' %}" alt="Logo" width="100">
+                  <p class="mt-3 pt-4 text-secondary"></p>
+              </div>
+              <div class="col-lg-3 mb-4">
+                  <h5 class="mb-3 fw-bold">Quick Links</h5>
+                  <ul class="list-unstyled text-secondary py-2 fs-6 fw-lighter">
+                      <li><a href="#">About</a></li>
+                      <li><a href="#">Offers & Discounts</a></li>
+                      <li><a href="#">Get Coupon</a></li>
+                      <li><a href="#">Contact Us</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3 mb-4">
+                  <h5 class="mb-3 fw-bold">New Products</h5>
+                  <ul class="list-unstyled text-secondary py-2 fs-6 fw-lighter">
+                      <li><a href="#">Woman Cloth</a></li>
+                      <li><a href="#">Fashion Accessories</a></li>
+                      <li><a href="#">Man Accessories</a></li>
+                      <li><a href="#">Rubber made Toys</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3 mb-4">
+                  <h5 class="mb-3 fw-bold">Support</h5>
+                  <ul class="list-unstyled text-secondary py-2 fs-6 fw-lighter">
+                      <li><a href="#">Frequently Asked Questions</a></li>
+                      <li><a href="#">Terms & Conditions</a></li>
+                      <li><a href="#">Privacy Policy</a></li>
+                      <li><a href="#">Report a Payment Issue</a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="text-center">
+        <img src="{% static 'img/icono_email.png' %}" alt="Icono de email" style="width: 20px; height: 20px; margin-right: 5px;">
+        <span>Contacto Soporte: -----</span>
+      </div>
+  </footer>
+  <div
+      class="modal fade"
+      id="InformacionReportes"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+
     </div>
-</div>
-
-<div id="content">
-    <h1>Información de uso</h1>
-</div>
-
-<div id="footer">
-    <div style="font-size: 26px;">
-        Mantenimiento Centro CUCEI
-        <br>
-        <br>
-    </div>
-    <img src="{% static 'img/icono_email.png' %}" alt="Icono de email" style="width: 40px; height: 40px; margin-right: 5px;">
-    <span style="font-size: 15px;">Contacto Soporte:</span>
-</div>
-
-</body>
-</html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSf
