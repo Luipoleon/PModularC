@@ -1,3 +1,4 @@
+
 @import url("styles.css");
 /* :root {
     --primary-color: #e2936f;
@@ -169,4 +170,24 @@
     color: #333 !important;
     font-weight: 500;
     text-shadow: 0.2px 0.2px 0.5px #ffffff6c;
+}
+
+.column {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center; /* Alineación horizontal del texto */
+}
+.az-list {
+    list-style-type: none;
+    padding: 0;
+}
+.az-list li {
+    margin: 5px;
+}
+.column ul {
+    padding: 0;
+}
+.column ul a {
+    display: block;
+    margin-bottom: 10px; /* Agrega un espacio entre los elementos */
 }
