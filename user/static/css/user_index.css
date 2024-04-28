@@ -51,3 +51,13 @@ body{
   color: var(--primary-color-light);
   transform: scale(1.05);
 }
+.menuconfig{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 30px;
+}
+.Lnombre{
+  margin-left: 30%;
+  margin-right: 5%;
+}
