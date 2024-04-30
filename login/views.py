@@ -15,8 +15,7 @@ class Login(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            print(request.user.email)
-            return HttpResponseRedirect("/user")
+            return HttpResponseRedirect("/adm" if request.user.is_staff else "/user")
         else:
             return render(request, 'login.html', {})
 
@@ -33,6 +32,7 @@ class Login(View):
 
            if user is not None:
                 validUser['logged_in'] = True
+                validUser['is_staff'] = user.is_staff
                 login(request, user)
              
            else:
@@ -65,7 +65,7 @@ def register(request):
                 validUser["registered"] = True
            else:
                validUser["registered"] = False
-           return JsonResponse(validUser);
+           return JsonResponse(validUser)
 
 
     else:

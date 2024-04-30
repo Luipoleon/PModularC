@@ -141,7 +141,7 @@ btnLogin.addEventListener("click", (e) => {
       // Check if the user is logged in
       if (data.logged_in) {
         // Redirect the user to the user page
-        window.location.href = "/user/";
+        window.location.href = data.is_staff ? '/adm/':"/user/";
       } else {
         // Display an error message if login is unsuccessful
         divLoginError.classList.remove("invisible");
