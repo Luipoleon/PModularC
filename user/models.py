@@ -4,10 +4,10 @@ from login.models import CustomUser
 # Create your models here.
 
 
-class Problemas(models.Model):
+class Problema(models.Model):
     id_usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     tipo_edificio = models.CharField(max_length=100) # este es el si es academico, baño etc..
-    estatus_problematica = models.CharField(max_length=100, default="procesando") # estatus aceptado, rechazado etc.. al estar completado crea un registro en otra tabla
+    estatus_problematica = models.CharField(max_length=100, default="Procesando") # estatus aceptado, rechazado etc.. al estar completado crea un registro en otra tabla
     fecha_creacion = models.DateTimeField(auto_now_add=True) #fecha de creacion
     tipo_problema = models.CharField(max_length=100)
     gravedad_problema = models.CharField(max_length=100)  
@@ -26,16 +26,16 @@ class Problemas(models.Model):
     def __str__(self):
         return self.tipo_edificio
     
-class ProblemasCompletados(models.Model):
-    id_problema = models.ForeignKey(Problemas, on_delete=models.CASCADE)
+class ProblemaCompletado(models.Model):
+    id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
     id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     info_adicional = models.TextField(blank=True)
     fecha_completado = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.id_problema
     
-class ProblemasRechazados(models.Model):
-    id_problema = models.ForeignKey(Problemas, on_delete=models.CASCADE)
+class ProblemaRechazado(models.Model):
+    id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
     id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     info_adicional = models.TextField(blank=True)
     fecha_rechazado = models.DateTimeField(auto_now_add=True)

@@ -2,21 +2,24 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
-from .models import Problemas, ProblemasCompletados, ProblemasRechazados
+from .models import Problema, ProblemaCompletado, ProblemaRechazado
 
 # Create your views here.
 
-@login_required
+@login_required(login_url='/')
 def user_index(request):
     current_user = request.user
     return render(request, 'user_index.html', {'user':current_user})
 
+@login_required(login_url='/')
 def user_reportes(request):
     return render(request, 'user_reportes.html', {})
 
+@login_required(login_url='/')
 def user_reportar(request):
     return render(request, 'user_reportar.html', {})
 
+@login_required(login_url='/')
 def user_cuenta(request):
     current_user = request.user
     return render(request, 'user_cuenta.html', {'user':current_user})
@@ -38,7 +41,7 @@ def sendreport(request):
             form = formDepartamento(request.POST)
       
         if form.is_valid():
-            report=Problemas.objects.create(
+            report=Problema.objects.create(
                 id_usuario=request.user,
                 tipo_edificio=tipoEdificio,
                 tipo_problema=form.cleaned_data["tipo_problema"],
