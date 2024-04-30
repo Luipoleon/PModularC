@@ -167,8 +167,5 @@ btnAbrirModal.addEventListener('click', function () {
 });
 
 
-// Call the hideAllElements function to hide all form elements
-hideBuildingElements();
-
 // Call the resetAllElements function to reset the values of all form elements
 resetAllElements();
