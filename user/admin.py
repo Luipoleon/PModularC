@@ -7,7 +7,9 @@ from .models import  Problema, ProblemaCompletado, ProblemaRechazado
 class ProblemasAdmin(admin.ModelAdmin):
 
     model = Problema
-    list_display = [ 'id', 'tipo_edificio', 'id_usuario', 'fecha_creacion']
+    list_display = [ 'id', 'tipo_edificio', 'id_usuario', 'fecha_creacion', 'estatus_problematica']
+    list_filter = ['tipo_edificio', 'estatus_problematica', 'fecha_creacion']
+    search_fields = ['tipo_edificio', 'id_usuario__email', 'estatus_problematica']
 
     
     def get_fields(self, request, obj=None):

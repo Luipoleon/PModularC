@@ -91,6 +91,22 @@ function resetAllElements() {
 }
 
 
+/**
+ * Function to reportValidity of sent inputs
+*/
+
+function reportValidityInputs(inputs) {
+    inputs.forEach((input) => {
+        input.setCustomValidity("");
+        if (!input.checkValidity()) {
+            input.setCustomValidity("Este campo es requerido");
+            input.reportValidity();
+            return;
+        }
+    });
+}
+
+
 /** 
  * Add data to the modal.
 */
@@ -103,11 +119,11 @@ function addDataToModal(datosEdificio, inputProblemas) {
     datosProblemaModal.innerHTML = '';
 
     inputProblemas.forEach((field) => {
-        htmlProblema += `<p>${field.dataset.titulo} ${field.value}</p>`;
+        htmlProblema += `<p class="fs-5"> <span class="fs-4 font-weight-bold">${field.dataset.titulo}</span> ${field.value}</p>`;
     });
  
     datosEdificio.forEach((field) => {
-        htmlEdificios += `<p>${field.dataset.titulo} ${field.value}</p>`;
+        htmlEdificios += `<p class="fs-5"> <span class="fs-4 font-weight-bold">${field.dataset.titulo}</span> ${field.value}</p>`;
     });
 
     // Add to modal 
@@ -165,15 +181,10 @@ btnAbrirModal.addEventListener('click', function () {
         .filter(input => !input.parentElement.hidden);
 
     const inputProblemas = Array.from(document.querySelectorAll('.mireportes1 select, .mireportes1 textarea'));
+    
+    // Report validity of inputs
+    reportValidityInputs([...inputEdificios, ...inputProblemas]);
 
-    [inputEdificios, inputProblemas].forEach((input) => {
-        input.forEach((field) => {
-            if (!field.checkValidity()) {
-                field.reportValidity();
-                return;
-            }
-        });
-    });
     addDataToModal(inputEdificios, inputProblemas);
 
     // Open the modal if all fields are valid

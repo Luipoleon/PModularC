@@ -35,7 +35,7 @@ def sendreport(request):
             form = formAcademicos(request.POST)
         elif tipoEdificio == "Baños":
             form = formBaños(request.POST)
-        elif tipoEdificio == "AreasComunes":
+        elif tipoEdificio == "Áreas comunes":
             form = formAreasComunes(request.POST)
         elif tipoEdificio == "Departamento":
             form = formDepartamento(request.POST)
