@@ -1,27 +1,27 @@
 "use strict";
 // DOM CONSTANTS
-const register = document.querySelectorAll(".form-register");
-const card = document.querySelector(".flip-card");
-const modalPassword = document.querySelector(".modal-message");
-const codeContainer = document.querySelector(".code-container");
-const recoverContainer = document.querySelector(".recover-container");
+const register = document.querySelectorAll(".form-register"); // Selects all elements with class "form-register"
+const card = document.querySelector(".flip-card"); // Selects the element with class "flip-card"
+const modalPassword = document.querySelector(".modal-message"); // Selects the element with class "modal-message"
+const codeContainer = document.querySelector(".code-container"); // Selects the element with class "code-container"
+const recoverContainer = document.querySelector(".recover-container"); // Selects the element with class "recover-container"
 
-const btnForgotPassword = document.querySelector(".form-forgot-password");
-const btnRecoverPassword = document.querySelector(".btn-recover-password");
-const btnLogin = document.querySelector(".btn-form-login");
-const btnRegister = document.querySelector(".btn-form-register");
+const btnForgotPassword = document.querySelector(".form-forgot-password"); // Selects the element with class "form-forgot-password"
+const btnRecoverPassword = document.querySelector(".btn-recover-password"); // Selects the element with class "btn-recover-password"
+const btnLogin = document.querySelector(".btn-form-login"); // Selects the element with class "btn-form-login"
+const btnRegister = document.querySelector(".btn-form-register"); // Selects the element with class "btn-form-register"
 
-const formRecoverPassword = document.querySelector(".form-recover-password");
-const formLogin = document.querySelector(".formLogin");
-const formRegister = document.querySelector(".formRegister");
+const formRecoverPassword = document.querySelector(".form-recover-password"); // Selects the element with class "form-recover-password"
+const formLogin = document.querySelector(".formLogin"); // Selects the element with class "formLogin"
+const formRegister = document.querySelector(".formRegister"); // Selects the element with class "formRegister"
 
-const inputPasswordRegister = document.querySelector("input[name=passwordR]");
+const inputPasswordRegister = document.querySelector("input[name=passwordR]"); // Selects the input element with name "passwordR"
 const inputPasswordConfirmRegister = document.querySelector(
   "input[name=passwordC]"
-);
-const inputEmailRegister = document.querySelector("input[name=emailR]");
+); // Selects the input element with name "passwordC"
+const inputEmailRegister = document.querySelector("input[name=emailR]"); // Selects the input element with name "emailR"
 
-const divLoginError = document.querySelector(".login-error");
+const divLoginError = document.querySelector(".login-error"); // Selects the element with class "login-error"
 
 // CONSTANTS
 const emailRecoverContent = ` <label for="email_recover" class="col-form-label w-100"
@@ -37,8 +37,9 @@ required
 
 // Utility functions
 
+// Validates a field based on its name
 function validateField(fieldName) {
-  const field = document.querySelector(`input[name="${fieldName}"]`);
+  const field = document.querySelector(`input[name="${fieldName}"]`); // Selects the input element with the specified name
 
   if (field) {
     if (!field.checkValidity()) {
@@ -49,6 +50,7 @@ function validateField(fieldName) {
   }
 }
 
+// Checks if all inputs in a form are valid
 function checkFormInputs(form) {
   for (const input of form.querySelectorAll("input")) {
     if (!validateField(input.name)) {
@@ -58,6 +60,7 @@ function checkFormInputs(form) {
   return true;
 }
 
+// Checks if the password and password confirmation match
 function checkPasswordsEqual(e) {
   if (inputPasswordRegister.value === inputPasswordConfirmRegister.value) {
     inputPasswordConfirmRegister.setCustomValidity("");
@@ -70,6 +73,7 @@ function checkPasswordsEqual(e) {
 
 // Visual effects
 
+// Adds event listeners to the register elements to toggle the "flipped" class on the card element
 Array.from(register).forEach((r) => {
   r.addEventListener("click", (e) => {
     e.preventDefault();
@@ -79,12 +83,14 @@ Array.from(register).forEach((r) => {
 
 // Recover password
 
+// Event listener for the "Forgot Password" button
 btnForgotPassword.addEventListener("click", () => {
   btnRecoverPassword.textContent = "Enviar código";
   recoverContainer.innerHTML = emailRecoverContent;
   codeContainer.innerHTML = "";
 });
 
+// Event listener for the "Recover Password" button
 btnRecoverPassword.addEventListener("click", () => {
   if (document.querySelector("#code_recover")) {
     formRecoverPassword.submit();
@@ -107,15 +113,16 @@ btnRecoverPassword.addEventListener("click", () => {
     codeContainer.innerHTML = codeRecoverContent;
   }
 });
+
 // Login form
 
-// This event listener is triggered when the login button is clicked
+// Event listener for the login button
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
   divLoginError.classList.add("invisible");
   btnLogin.classList.add("placeholder");
   btnLogin.querySelector(".spinner-border").classList.remove("hidden");
-  
+
   // Check if all form inputs are valid
   if (!checkFormInputs(formLogin)) {
     return;
@@ -155,18 +162,16 @@ btnLogin.addEventListener("click", (e) => {
       btnLogin.classList.remove("placeholder");
       btnLogin.querySelector(".spinner-border").classList.add("hidden");
     });
-
- 
 });
 
 // Register form
 
-// This event listener is triggered when the password confirmation input changes
+// Event listener for the password confirmation input
 inputPasswordConfirmRegister.addEventListener("input", (e) =>
   checkPasswordsEqual(e)
 );
 
-// This event listener is triggered when the register button is clicked
+// Event listener for the register button
 btnRegister.addEventListener("click", (e) => {
   e.preventDefault();
   inputEmailRegister.setCustomValidity("");
@@ -181,7 +186,7 @@ btnRegister.addEventListener("click", (e) => {
   if (!checkPasswordsEqual(e)) {
     return;
   }
- 
+
   btnRegister.classList.add("placeholder");
   btnRegister.querySelector(".spinner-border").classList.remove("hidden");
 
