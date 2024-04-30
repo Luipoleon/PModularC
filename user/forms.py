@@ -1,47 +1,29 @@
 from django import forms
 
-class sendreportformAcademicos(forms.Form):
-
-    TipoEdificio = forms.CharField(label="TipoEdificio", max_length=100)
-    NombreEdificioS= forms.CharField(label="NombreEdificioS", max_length=1)
-    NumeroEdificioS = forms.IntegerField(label="NumeroEdificioS")
-    Tipo_Problema = forms.CharField(label="Tipo_Problema", max_length=100)
-    Gravedad_Problema = forms.CharField(label="Gravedad_Problema", max_length=100)
-    Descripcion_Problema= forms.CharField(label="Descripcion_Problema", max_length=100)
-    Ubicacion_Exacta = forms.CharField(label="Ubicacion_Exacta", max_length=100,required=False)
-
-class sendreportformBaños(forms.Form):
-
-    TipoEdificio = forms.CharField(label="TipoEdificio", max_length=100)
-    TipoBañoS = forms.CharField(label="TipoBañoS", max_length=100)
-    EdificioBañoS = forms.CharField(label="EdificioBañoS", max_length=10)
-    PlantaBañoS = forms.CharField(label="PlantaBañoS", max_length=10)
-    Tipo_Problema = forms.CharField(label="Tipo_Problema", max_length=100)
-    Gravedad_Problema = forms.CharField(label="Gravedad_Problema", max_length=100)
-    Descripcion_Problema= forms.CharField(label="Descripcion_Problema", max_length=100)
-    Ubicacion_Exacta = forms.CharField(label="Ubicacion_Exacta", max_length=100,required=False)
+class formProblemData(forms.Form):
+    tipo_edificio = forms.CharField(label="tipo_edificio", max_length=100)
+    tipo_problema = forms.CharField(label="tipo_problema", max_length=100)
+    gravedad_problema = forms.CharField(label="gravedad_problema", max_length=100)
+    descripcion_problema = forms.CharField(label="descripcion_problema", max_length=100)
+    ubicacion_exacta = forms.CharField(label="ubicacion_exacta", max_length=100, required = False)
+   
+class formAcademicos(formProblemData):
+    letra_edificio = forms.CharField(label="letra_edificio", max_length=1)
+    numero_salon = forms.CharField(label="numero_salon")
 
 
-class sendreportformAreasComunes(forms.Form):
+class formBaños(formProblemData):
+    piso_baño = forms.CharField(label="piso_baño", max_length=100)
+    tipo_baño = forms.CharField(label="tipo_baño", max_length=100)
+    edificio_baño = forms.CharField(label="edificio_baño", max_length=100)
 
-    TipoEdificio = forms.CharField(label="TipoEdificio", max_length=100)
-    TipoAreaComun = forms.CharField(label="TipoAreaComun", max_length=100)
-    UAreaVerdeS = forms.CharField(label="UAreaVerdeS", max_length=100)
-    UAreaEstacionamientoS = forms.CharField(label="UAreaEstacionamientoS", max_length=100)
-    UAreaComedorS = forms.CharField(label="UAreaComedorS", max_length=100)
-    Tipo_Problema = forms.CharField(label="Tipo_Problema", max_length=100)
-    Gravedad_Problema = forms.CharField(label="Gravedad_Problema", max_length=100)
-    Descripcion_Problema= forms.CharField(label="Descripcion_Problema", max_length=100)
-    Ubicacion_Exacta = forms.CharField(label="Ubicacion_Exacta", max_length=100,required=False)
 
-class sendreportformDepartamento(forms.Form):
-    TipoEdificio = forms.CharField(label="TipoEdificio", max_length=100)
-    TipoDepartamentos = forms.CharField(label="TipoDepartamentos", max_length=100)
-    UCubicoloS = forms.CharField(label="UCubicolosS", max_length=100,required=False)
-    UAdministrativosS = forms.CharField(label="UAdministrativosS", max_length=100,required=False)
-    UBibliotecaS= forms.CharField(label="UBibliotecaS", max_length=100,required=False)
-    UCoordinacionS= forms.CharField(label="UCoordinacionS", max_length=100,required=False)
-    Tipo_Problema = forms.CharField(label="Tipo_Problema", max_length=100)
-    Gravedad_Problema = forms.CharField(label="Gravedad_Problema", max_length=100)
-    Descripcion_Problema= forms.CharField(label="Descripcion_Problema", max_length=100)
-    Ubicacion_Exacta = forms.CharField(label="Ubicacion_Exacta", max_length=100,required=False)
+class formAreasComunes(formProblemData):
+    tipo_area_comun = forms.CharField(label="tipo_area_comun", max_length=100)
+    ubicacion_area = forms.CharField(label="ubicacion_area", max_length=100)
+   
+
+class formDepartamento(formProblemData):
+    tipo_departamento = forms.CharField(label="tipo_departamento", max_length=100)
+    tipo_edificio_departamento = forms.CharField(label="tipo_edificio", max_length=100, required=False)
+    ubicacion_departamento = forms.CharField(label="ubicacion_departamento", max_length=100, required=False)
