@@ -55,7 +55,7 @@
             <h1 class="fw-bold display-5 TReportes" id="newarrivals">Edificios</h1>
             <div class="row opciones">
               <h2 class="TOpciones">Selecciona el tipo de edificio</h2>
-              <select name="tipo_edificio" data-titulo="Tipo: " id="tipo_edificio" class="form-select OSelect" aria-label="Large select example">
+              <select name="tipo_edificio" data-titulo="Tipo: " id="tipo_edificio" class="form-select OSelect" aria-label="Large select example" required>
                 <option value="" selected>Seleccionar</option>
                 <option value="Academico">Academico</option>
                 <option value="Baños">Baños</option>
@@ -159,7 +159,7 @@
             <h1 class="fw-bold display-5 TReportes" id="newarrivals">Problema</h1>
             <div class="row opciones">
               <h2 class="TOpciones">Tipo de problema</h2>
-              <select data-titulo="Tipo: " id="tipo_problema" name="tipo_problema" class="form-select OSelect" aria-label="Large select example">
+              <select required data-titulo="Tipo: " id="tipo_problema" name="tipo_problema" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
                 <option value="Eléctrico">Eléctrico</option>
                 <option value="Físico">Físico</option>
@@ -167,7 +167,7 @@
             </div>
             <div class="row opciones">
               <h2 class="TOpciones">Gravedad del problema</h2>
-              <select data-titulo="Gravedad: " id="gravedad_problema" name="gravedad_problema" class="form-select OSelect" aria-label="Large select example">
+              <select required data-titulo="Gravedad: " id="gravedad_problema" name="gravedad_problema" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
                 <option value="Menor">Menor</option>
                 <option value="Moderado">Moderado</option>
@@ -177,13 +177,13 @@
             </div>
             <div class="row opciones">
               <h2 class="TOpciones">Describe el problema</h2>
-              <textarea data-titulo="Descripción" id="descripcion_problema" name="descripcion_problema" class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>
+              <textarea required data-titulo="Descripción" id="descripcion_problema" name="descripcion_problema" class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>
             </div>
             <div class="row opciones">
               <h2 class="TOpciones">Ubicación exacta (Opcional)</h2>
               <textarea data-titulo="Ubicación: " id="ubicacion_exacta" name="ubicacion_exacta" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>  
             </div>
-            <button id="btn-abrir-modal" class="btn enviar" data-bs-toggle="modal" data-bs-target="#datosReportar" type="button">Enviar</button>
+            <button id="btn-abrir-modal" class="btn enviar" type="button">Enviar</button>
           </div>
         </div>
         {% include 'partials/modal_user-reportar.html'%}

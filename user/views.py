@@ -64,6 +64,6 @@ def sendreport(request):
                 report.tipo_edificio_departamento=form.cleaned_data["tipo_edificio_departamento"]
                 report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
             report.save()
-            return HttpResponse("Report sent!")
-        return HttpResponse("Error")
+            return HttpResponseRedirect('/user/reportar?success=true')
+        return HttpResponseRedirect('/user/reportar?success=false')
     

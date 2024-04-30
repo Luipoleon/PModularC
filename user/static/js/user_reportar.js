@@ -31,6 +31,7 @@ const ubicacionDepartamento = document.getElementById('ubicacionDepartamento-con
 
 // Modal
 
+const myModal = new bootstrap.Modal(document.getElementById('datosReportarModal'));
 const btnAbrirModal = document.getElementById('btn-abrir-modal');
 const datosEdificioModal = document.getElementById('datos_edificio_modal');
 const datosProblemaModal = document.getElementById('datos_problema_modal');
@@ -95,8 +96,8 @@ function resetAllElements() {
 */
 function addDataToModal(datosEdificio, inputProblemas) {
     
-    let htmlProblema = `<h3 class="datos_modal-titulo">Problema</h3>`; 
-    let htmlEdificios = `<h3 class="datos_modal-titulo">Edificio</h3>`;
+    let htmlProblema = `<h3 class="datos_modal-titulo fs-4">Problema</h3>`; 
+    let htmlEdificios = `<h3 class="datos_modal-titulo fs-4">Edificio</h3>`;
 
     datosEdificioModal.innerHTML = '';
     datosProblemaModal.innerHTML = '';
@@ -159,11 +160,26 @@ tipoAreaComunInput.addEventListener('change', function () {
  * Handles the logic for submitting the form based on the selected tipoEdificioInput value.
  */
 btnAbrirModal.addEventListener('click', function () {
+  
     const inputEdificios = Array.from(document.querySelectorAll('.mireportes select, .mireportes textarea'))
-    .filter(input => !input.parentElement.hidden);
-    
+        .filter(input => !input.parentElement.hidden);
+
     const inputProblemas = Array.from(document.querySelectorAll('.mireportes1 select, .mireportes1 textarea'));
-    addDataToModal(inputEdificios , inputProblemas);
+
+    [inputEdificios, inputProblemas].forEach((input) => {
+        input.forEach((field) => {
+            if (!field.checkValidity()) {
+                field.reportValidity();
+                return;
+            }
+        });
+    });
+    addDataToModal(inputEdificios, inputProblemas);
+
+    // Open the modal if all fields are valid
+    if (inputEdificios.every(field => field.checkValidity()) && inputProblemas.every(field => field.checkValidity())) {
+        myModal.show();
+    }
 });
 
 
