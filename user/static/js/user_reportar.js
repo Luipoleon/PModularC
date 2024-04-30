@@ -55,7 +55,7 @@ const opcionesEdificioDepartamento = {
 /**
  * Function to hide all form elements.
  */
-function hideAllElements() {
+function hideBuildingElements() {
     letraEdificio.hidden = true;
     numeroSalon.hidden = true;
     tipoBaño.hidden = true;
@@ -69,10 +69,10 @@ function hideAllElements() {
 }
 
 /** 
- * Reset values of all form elements.
+ * Reset values of all building form.
 */
 
-function resetAllElements() {
+function resetBuildingElements() {
     Array.from(document.querySelectorAll('.mireportes textarea')).forEach(input => input.value = "");
     Array.from(document.querySelectorAll('.mireportes select')).forEach(input => {
         if (input.id !== 'tipo_edificio') {
@@ -80,6 +80,15 @@ function resetAllElements() {
         }
     });
 }
+
+
+/** 
+ * Reset values of all building form.
+*/
+function resetAllElements() {
+    Array.from(document.querySelectorAll('textarea, select')).forEach(input => input.value = "");
+}
+
 
 /** 
  * Add data to the modal.
@@ -106,46 +115,44 @@ function addDataToModal(datosEdificio, inputProblemas) {
 
 }
 
-/**
- * Event listener for the 'change' event on the tipoEdificio select element.
- * Handles the logic for showing/hiding form elements based on the selected value.
- */
+// Function to handle input change and show/hide elements
+function handleInputChange(elementsToUnhide) {
+    hideBuildingElements(); // Hide all form elements
+    elementsToUnhide.forEach(element => element.hidden = false); // Unhide the selected elements
+}
+
+// Event listener for the 'change' event on the tipoEdificioInput select element
 tipoEdificioInput.addEventListener('change', function () {
-    hideAllElements();
-    resetAllElements();
-    if (tipoEdificioInput.value == 'Academico') {
-        letraEdificio.hidden = false;
-        numeroSalon.hidden = false;
-    } else if (tipoEdificioInput.value == 'Baños') {
-        tipoBaño.hidden = false;
-        edificioBaño.hidden = false;
-        pisoBaño.hidden = false;
-    } else if (tipoEdificioInput.value == 'AreasComunes') {
-        tipoAreaComun.hidden = false;
-        tipoAreaComunInput.addEventListener('change', function () {
-            hideAllElements();
-            tipoAreaComun.hidden = false;
-            ubicacionArea.hidden = false;
-        });
-    } else if (tipoEdificioInput.value == 'Departamento') {
-        tipoDepartamento.hidden = false;
-        tipoDepartamentoInput.addEventListener('change', function () {
-            hideAllElements();
-            tipoDepartamento.hidden = false;
-            if (tipoDepartamentoInput.value == 'Administrativos' 
-                || tipoDepartamentoInput.value == 'Coordinacion') {
-                tipoEdificioDepartamentoInput.innerHTML = opcionesEdificioDepartamento[tipoDepartamentoInput.value];
-                tipoEdificioDepartamento.hidden = false;
-            }
-            else if(tipoDepartamentoInput.value == '') {
-                return;
-            }
-            else {
-               ubicacionDepartamento.hidden = false;
-            } 
-        });
+    let elementsToUnhide;
+    if (tipoEdificioInput.value === 'Academico') {
+        elementsToUnhide = [letraEdificio, numeroSalon]; // Additional element to unhide for Academicos
+    } else if (tipoEdificioInput.value === 'Baños') {
+        elementsToUnhide = [edificioBaño, pisoBaño, tipoBaño]; // Additional element to unhide for Baños
+    } else if (tipoEdificioInput.value === 'Áreas comunes') {
+        elementsToUnhide = [tipoAreaComun]; // Additional element to unhide for AreasComunes
+    } else if (tipoEdificioInput.value === 'Departamento') {
+        elementsToUnhide = [tipoDepartamento]; // Additional element to unhide for Departamento
     }
+    handleInputChange(elementsToUnhide); // Call the handleInputChange function
 });
+
+// Event listener for the 'change' event on the tipoDepartamentoInput select element
+tipoDepartamentoInput.addEventListener('change', function () {
+    let elementToUnhide;
+    if (tipoDepartamentoInput.value === 'Administrativos' || tipoDepartamentoInput.value === 'Coordinacion') {
+        tipoEdificioDepartamentoInput.innerHTML = opcionesEdificioDepartamento[tipoDepartamentoInput.value];
+        elementToUnhide = tipoEdificioDepartamento; // Additional element to unhide for Administrativos and Coordinacion
+    } else if (tipoDepartamentoInput.value != '') {
+        elementToUnhide = ubicacionDepartamento; // Additional element to unhide for other options
+    }
+    handleInputChange([tipoDepartamento, elementToUnhide]); // Call the handleInputChange function
+});
+
+// Event listener for the 'change' event on the tipoAreaComunInput select element
+tipoAreaComunInput.addEventListener('change', function () {
+    handleInputChange([tipoAreaComun, ubicacionArea]); // Call the handleInputChange function
+});
+
 
 /**
  * Event listener for the 'click' event on the sendFormReportButton button.
@@ -160,13 +167,8 @@ btnAbrirModal.addEventListener('click', function () {
 });
 
 
-
-
 // Call the hideAllElements function to hide all form elements
-hideAllElements();
+hideBuildingElements();
 
 // Call the resetAllElements function to reset the values of all form elements
 resetAllElements();
-
-// Reset the value of the tipoEdificioInput select element
-tipoEdificioInput.value = '';

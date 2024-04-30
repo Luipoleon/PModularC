@@ -59,7 +59,7 @@
                 <option value="" selected>Seleccionar</option>
                 <option value="Academico">Academico</option>
                 <option value="Baños">Baños</option>
-                <option value="AreasComunes">Áreas comunes</option>
+                <option value="Áreas comunes">Áreas comunes</option>
                 <option value="Departamento">Departamento</option>
               </select>
             </div>
@@ -100,11 +100,11 @@
               <h2 class="TOpciones">Selecciona el edificio del baño</h2>
               <select id="edificio_baño" data-titulo="Edificio: " name="edificio_baño" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
-                <option value="1">A</option>
-                <option value="1">Cafeteria X</option>
-                <option value="2">B</option>
-                <option value="1">C</option>
-                <option value="2">D</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="Cafetería">Cafetería</option>
               </select>
             </div>
             <!-- Planta baño -->
@@ -119,17 +119,17 @@
               </div>
             <!--Aqui entran las opciones areas comunes -->
             <div class="row opciones"  id="tipoAreaComun-container" hidden="true">
-              <h2 class="TOpciones">Selecciona el tipo de area comun</h2>
+              <h2 class="TOpciones">Selecciona el tipo de área común</h2>
               <select id="tipo_area_comun" data-titulo="Área: " name="tipo_area_comun" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
-                <option value="Area Verde">Area Verde</option>
+                <option value="Área Verde">Área Verde</option>
                 <option value="Comedor">Comedor</option>
                 <option value="Estacionamiento">Estacionamiento</option>
               </select>
             </div>
             <!-- Ubicación  Área-->
             <div class="row opciones" id="ubicacion_area-container" hidden="true">
-              <h2 class="TOpciones">Escribe la ubicacion del area Verde</h2>
+              <h2 class="TOpciones">Escribe la ubicación: </h2>
               <textarea data-titulo="Ubicación: " id="ubicacion_area" name="ubicacion_area" class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>  
             </div>
             <!-- Aqui entran las opciones de departamento -->
@@ -141,7 +141,6 @@
                 <option value="Cubiculos">Cubiculo</option>
                 <option value="Biblioteca">Biblioteca</option>
                 <option value="Coordinacion">Coordinacion</option>
-                <option value="5">Etc..</option>
               </select>
             </div>
             <!-- Ubicación  Departamento-->
@@ -152,7 +151,6 @@
             <div class="row opciones" id="tipoEdificioDepartamento-container" hidden="true">
               <h2 class="TOpciones">Selecciona el edificio del departamento</h2>
               <select data-titulo="Edificio: " id="tipo_edificio_departamento" name="tipo_edificio_departamento" class="form-select OSelect" aria-label="Large select example">
-          
               </select>
             </div>
           </div>
@@ -163,20 +161,18 @@
               <h2 class="TOpciones">Tipo de problema</h2>
               <select data-titulo="Tipo: " id="tipo_problema" name="tipo_problema" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
-                <option value="1">Electrico</option>
-                <option value="2">Fisico</option>
-                <option value="3"></option>
-                <option value="3"></option>
+                <option value="Eléctrico">Eléctrico</option>
+                <option value="Físico">Físico</option>
               </select>
             </div>
             <div class="row opciones">
               <h2 class="TOpciones">Gravedad del problema</h2>
               <select data-titulo="Gravedad: " id="gravedad_problema" name="gravedad_problema" class="form-select OSelect" aria-label="Large select example">
                 <option value="" selected>Seleccionar</option>
-                <option value="1">Menor</option>
-                <option value="2">Moderado</option>
-                <option value="3">Serio</option>
-                <option value="3">Critico</option>
+                <option value="Menor">Menor</option>
+                <option value="Moderado">Moderado</option>
+                <option value="Serio">Serio</option>
+                <option value="Crítico">Critico</option>
               </select>
             </div>
             <div class="row opciones">
@@ -184,7 +180,7 @@
               <textarea data-titulo="Descripción" id="descripcion_problema" name="descripcion_problema" class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>
             </div>
             <div class="row opciones">
-              <h2 class="TOpciones">Ubicacion exacta (Opcional)</h2>
+              <h2 class="TOpciones">Ubicación exacta (Opcional)</h2>
               <textarea data-titulo="Ubicación: " id="ubicacion_exacta" name="ubicacion_exacta" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>  
             </div>
             <button id="btn-abrir-modal" class="btn enviar" data-bs-toggle="modal" data-bs-target="#datosReportar" type="button">Enviar</button>
