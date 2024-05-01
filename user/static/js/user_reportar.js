@@ -95,10 +95,10 @@ function resetAllElements() {
  * Function to reportValidity of sent inputs
 */
 
-function reportValidityInputs(inputs) {
+function reportValidityInputs(inputs, checkEmpty = true) {
     inputs.forEach((input) => {
         input.setCustomValidity("");
-        if (!input.checkValidity()) {
+        if (input.value == '') {
             input.setCustomValidity("Este campo es requerido");
             input.reportValidity();
             return;
