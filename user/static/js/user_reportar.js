@@ -95,10 +95,10 @@ function resetAllElements() {
  * Function to reportValidity of sent inputs
 */
 
-function reportValidityInputs(inputs, checkEmpty = true) {
+function reportValidityInputs(inputs, checkEmpty = false) {
     inputs.forEach((input) => {
         input.setCustomValidity("");
-        if (input.value == '') {
+        if ((input.value == '' && checkEmpty) || !input.checkValidity()) {
             input.setCustomValidity("Este campo es requerido");
             input.reportValidity();
             return;
@@ -183,7 +183,8 @@ btnAbrirModal.addEventListener('click', function () {
     const inputProblemas = Array.from(document.querySelectorAll('.mireportes1 select, .mireportes1 textarea'));
     
     // Report validity of inputs
-    reportValidityInputs([...inputEdificios, ...inputProblemas]);
+    reportValidityInputs(inputEdificios, true);
+    reportValidityInputs(inputProblemas);
 
     addDataToModal(inputEdificios, inputProblemas);
 
