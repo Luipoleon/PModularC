@@ -16,3 +16,6 @@ def admEdificios(request):
 
 def admSeguimiento(request):
     return render(request, 'adm_seguimiento.html', {})
+
+def admTerminados(request):
+    return render(request, 'adm_terminados.html', {})
