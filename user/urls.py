@@ -7,4 +7,5 @@ urlpatterns = [
     path('reportar/', views.user_reportar, name = "user_reportar"),   
     path('cuenta/', views.user_cuenta, name = "user_cuenta"),
     path('academico/sending-report/', views.sendreport, name = "sendreport"),
-]
+    path('reportes/aceptados', views.tablareport_aceptado, name= "tablareport_aceptado"),
+    ]

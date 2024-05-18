@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
+from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
 from .models import Problema, ProblemaAceptado, ProblemaRechazado
+from login.models import CustomUser
+import json
 
 # Create your views here.
 
@@ -15,10 +18,7 @@ def user_index(request):
 def user_reportes(request):
     current_user = request.user
     current_problemas=Problema.objects.filter(id_usuario=current_user)
-    registroP=Problema.objects.filter(id_usuario=current_user).values_list('id', 'tipo_edificio', 'tipo_problema')
-    for i in registroP:
-        print(i[0])
-    return render(request, 'user_reportes.html', {'user':current_user,'problemas':current_problemas})
+    return render(request, 'user_reportes.html', {'user':current_user,'problemas':current_problemas}) 
 
 
 @login_required(login_url='/')
@@ -34,6 +34,36 @@ def user_cuenta(request):
 
 
 #Sending report
+# tabla aceptados
+@login_required(login_url='/')
+def tablareport_aceptado(request):
+    if request.method == "GET":
+        problema_id = request.GET.get('id')
+        if problema_id:
+            problema_aceptado = get_object_or_404(ProblemaAceptado, id_problema=problema_id)
+            problema_aceptado_dict = model_to_dict(problema_aceptado)
+            # Agregando bug de fecha aceptado
+            fechaAceptado=problema_aceptado.fecha_aceptado
+            problema_aceptado_dict["fecha_aceptado"]=fechaAceptado
+            # Agregando al diccionario con CustumUser
+            idAdminCustom = problema_aceptado_dict['id_administrador']
+            nameAdminCustomObj = get_object_or_404(CustomUser, id=idAdminCustom)
+            nameAdminCustom= nameAdminCustomObj.first_name + " "+ nameAdminCustomObj.last_name
+            problema_aceptado_dict["adminName"]=nameAdminCustom
+            #agregando datos tabla problema
+            problemaUserObj = get_object_or_404(Problema, id=problema_id)
+            problema_dict=model_to_dict(problemaUserObj)
+            problema_aceptado_dict["ProblemasTabla"]=problema_dict
+
+            response = JsonResponse(problema_aceptado_dict, safe=False) # esta respuesta tiene los datos usados para mostrar en el modal
+            return response
+        else:
+            return JsonResponse({'error': 'ID no proporcionado'}, status=400)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+    
+
+# enviando reporte user
 def sendreport(request):
     if request.method == "POST":
         tipoEdificio = request.POST.get("tipo_edificio")
