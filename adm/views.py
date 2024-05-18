@@ -36,6 +36,9 @@ def admSeguimiento(request):
         return HttpResponseForbidden("Access denied")
     return render(request, 'adm_seguimiento.html', {})
 
+def admTerminados(request):
+    return render(request, 'adm_terminados.html', {})
+
 @login_required(login_url='/')
 def admGetEdificio(request, letra):
     if not request.user.is_staff:
