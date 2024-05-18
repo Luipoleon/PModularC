@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
-from .models import Problema, ProblemaCompletado, ProblemaRechazado
+from .models import Problema, ProblemaAceptado, ProblemaRechazado
 
 # Create your views here.
 
@@ -16,7 +16,6 @@ def user_reportes(request):
     current_user = request.user
     current_problemas=Problema.objects.filter(id_usuario=current_user)
     registroP=Problema.objects.filter(id_usuario=current_user).values_list('id', 'tipo_edificio', 'tipo_problema')
-    #variable registroP imprimir solo el id
     for i in registroP:
         print(i[0])
     return render(request, 'user_reportes.html', {'user':current_user,'problemas':current_problemas})

@@ -26,13 +26,13 @@ class Problema(models.Model):
     def __str__(self):
         return self.tipo_edificio
     
-class ProblemaCompletado(models.Model):
+class ProblemaAceptado(models.Model):
     id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
     id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     info_adicional = models.TextField(blank=True)
     fecha_completado = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.id_problema
+        return str(self.id_problema)
     
 class ProblemaRechazado(models.Model):
     id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
