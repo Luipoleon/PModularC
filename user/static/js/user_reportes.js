@@ -12,8 +12,9 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
         const divProblemaInfo = document.createElement("div");
         divAdminInfo.classList.add("AdminInfo","col")
         divProblemaInfo.classList.add("ProblemaInfo","col")
-        divAdminInfo.innerHTML =  ` <div>Problema ${idProblema}</div>
-                                    <div class='row'><span class='col'>Estatus</span> <span class='col'>${statusProblema}</span></div>`;
+        divAdminInfo.innerHTML =  ` <div class= 'text-center h2'><strong>Problema ${idProblema}</strong></div>
+                                    <div class='row h3'><span class='col border border-2'><strong>Estatus</strong></span> <span class='col border border-2'>${statusProblema}</span></div>`;
+        divProblemaInfo.innerHTML =  ` <div class= 'text-center h2'><strong>Información enviada</strong></div>`;
         
         if (statusProblema === "Aceptado") {
             const baseUrl = `${url.origin}`;
@@ -29,13 +30,13 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                     data.ProblemasTabla.id = null; 
                     data.ProblemasTabla.estatus_problematica = null;
                     data.ProblemasTabla.id_usuario = null;
-                    divAdminInfo.innerHTML += `<div class='row'><span class='col'>Estatus</span> <span class='col'>${data.adminName}</span></div>
-                                                <div class='row'><span class='col'>Estatus</span> <span class='col'>${data.fecha_aceptado.slice(0,10)}</span></div>
-                                                <div class='row'><span class='col'>Estatus</span> <span class='col'>${data.info_adicional}</span></div>`
+                    divAdminInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2'>${data.adminName}</span></div>
+                                                <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2'>${data.fecha_aceptado.slice(0,10)}</span></div>
+                                                <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2'>${data.info_adicional}</span></div>`
                     Object.entries(data.ProblemasTabla).forEach(([clave, valor]) => {
                         if (valor != null){
                             console.log(`Clave: ${clave}, Valor: ${valor}`);
-                            divProblemaInfo.innerHTML += `<div>${valor}</div>`
+                            divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${clave}</strong></span> <span class='col border border-2'>${valor}</span></div>`
                         }
                       });
                     // Actualizar el contenido del modal aquí, después de que los datos se hayan obtenido
