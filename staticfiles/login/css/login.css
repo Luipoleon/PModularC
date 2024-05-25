@@ -97,6 +97,7 @@
   padding: 2rem 4rem;
 }
 
+
 .form-register {
   color: var(--primary-color-light-2);
 }
@@ -108,7 +109,6 @@
 .form-submit {
   transition: all 0.5s;
   display: flex;
-  height: 3rem;
   margin: 0 auto;
 }
 .form-submit:hover {

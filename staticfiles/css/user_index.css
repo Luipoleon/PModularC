@@ -44,10 +44,20 @@ body{
   font-weight: bold;
 
 }
+
 .menumovimiento{
   width: 100%;
 }
 .menu:hover{
   color: var(--primary-color-light);
   transform: scale(1.05);
+}
+.menuconfig{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 30px;
+}
+.Lnombre{
+  margin-right: 1%;
 }

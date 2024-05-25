@@ -1,0 +1,71 @@
+@import url("../css/styles.68479da5894e.css");
+
+/* :root {
+  --primary-color: #e2936f;
+  --primary-color-light: #e39774;
+  --primary-color-light-2: #f2cfbf;
+  --secondary-color-light: #5c9ead;
+  --secondary-color-dark: #326273;
+  --tertiary-color: #eee;
+
+colores grises
+  --dark-grey: #333;
+  --ligth-grey: #999;
+} */
+
+
+body{
+  background-color: var(--tertiary-color);
+}
+#botfooter{
+  background-color: var(--primary-color)!important;
+}
+.PrincipalMenu{
+  z-index: 1000;
+  background-color: var(--secondary-color-light)!important;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+.menu{
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 18px;
+  width: 100%;
+  margin: 2px;
+}
+#MenuPicked{
+  background-color: var(--primary-color-light-2);
+  opacity: 0.9;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 1;
+  font-weight: bold;
+
+}
+.menumovimiento{
+  width: 100%;
+}
+.menu:hover{
+  color: var(--primary-color-light);
+  transform: scale(1.05);
+}
+.menuconfig{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 30px;
+}
+.Lnombre{
+  margin-left: 30%;
+  margin-right: 5%;
+}
+.Titulo{
+  color: var(--dark-grey);
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
