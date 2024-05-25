@@ -1,5 +1,11 @@
 'use strict';
 
+// Select current page on menú to add class 'MenuPicked'
+
+const reportar = document.querySelectorAll('.nav-item a').item(2);
+
+reportar.id = 'MenuPicked';
+
 // Get DOM elements
 // Formulario de reporte
 const formReporte = document.getElementById('formReport');
