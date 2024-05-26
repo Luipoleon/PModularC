@@ -92,29 +92,50 @@ body{
   line-height: 1.8;
   letter-spacing: 0.2rem;
   text-shadow: 1px 1px 1px #ffffff27;
+  text-align: center;
 }
 
 .span-1{
   color: #000;
+  background-color: rgba(209, 58, 31, 0.274);
   font-size: 2rem;
+  width: 55rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
 }
 
 .span-2{
-  color:var(--secondary-color-dark);
-  font-size: 2rem;
+  color: rgb(209, 58, 31);
+  margin-left: 8rem;
+  font-size: 1.9rem;
+  background-color: #ffffffc2;
+  width: 40rem;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%);
+  border-radius: 4px;
 }
+
+
 
 .span-3{
   color: #000;
+  background-color: #eeeeee85;
   font-size: 3.5rem;
   letter-spacing: 1rem;
+  background-color: none;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
 
 }
 
 .span-4{
-  color: var(--secondary-color-dark) ;
+  color: #fff;
+  background-color: #00000080;
   font-size: 1.5rem;
   text-decoration: underline;
+  margin-left: 18rem;
   cursor: pointer;
   letter-spacing: 0.1rem;
+  width: 17rem;
+  border-radius: 4px;
 }
