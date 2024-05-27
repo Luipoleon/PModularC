@@ -55,7 +55,7 @@ background-color: var(--secondary-color-light)!important;
 #MenuPicked{
   background: linear-gradient(50deg, #ddd 0%, #fff 100%);
   opacity: 0.9;
-  border-radius: 10px;
+  border-radius: 4px;
   width: 100%;
   margin-top: 1;
   font-weight: bold;
