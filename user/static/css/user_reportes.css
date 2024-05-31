@@ -53,13 +53,17 @@ background-color: var(--secondary-color-light)!important;
   margin: 2px;
 }
 #MenuPicked{
-  background-color: var(--primary-color-light-2);
+  background: linear-gradient(50deg, #ddd 0%, #fff 100%);
   opacity: 0.9;
-  border-radius: 10px;
+  border-radius: 4px;
   width: 100%;
   margin-top: 1;
+  font-weight: bold;
+  box-shadow: 1px 2px 2px  #11111127;
+  padding: initial 2rem !important;
 
 }
+
 .menu:hover{
   color: var(--primary-color-light);
   transform: scale(1.05);

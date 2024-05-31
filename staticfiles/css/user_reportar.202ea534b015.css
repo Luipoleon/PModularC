@@ -1,0 +1,126 @@
+@import url("../css/styles.68479da5894e.css");
+
+/* :root {
+  --primary-color: #e2936f;
+  --primary-color-light: #e39774;
+  --primary-color-light-2: #f2cfbf;
+  --secondary-color-light: #5c9ead;
+  --secondary-color-dark: #326273;
+  --tertiary-color: #eee;
+
+colores grises
+  --dark-grey: #333;
+  --ligth-grey: #999;
+} */
+
+
+body{
+  background-color: var(--tertiary-color);
+  width: 100%;
+}
+
+#topmenu{
+z-index: 1000;
+background-color: var(--secondary-color-light)!important;
+}
+#botfooter{
+  background-color: var(--primary-color)!important;
+}
+.TReportes{
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+.losreportes{
+  display: flex;
+  background-color: var(--primary-color-light-2);
+  margin: 0 auto;
+  padding: 1px;
+  width: 100vw;
+}
+.mireportes{
+  display: grid;
+  background-color: #ecdcd5 ;
+  margin: 0 auto;
+  padding: 1px;
+  width: 100%;
+}
+.mireportes1{
+  display: grid;
+  background-color: var(--primary-color-light-2);
+  margin: 1px;
+  padding: 1px;
+  width: 100%;
+}
+.opciones{
+  display:inline-block;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  padding: 20px;
+}
+.TOpciones{
+  display: block ;
+  text-align: center;
+  margin-bottom: 10px;
+  /* tamano letra */
+  font-size: 25px;
+  color: var(--dark-grey);
+
+}
+.OSelect{
+  text-align: center;
+  margin: 5px;
+  font-size: 16px;
+  padding: 2px;
+  background-color: var(--tertiary-color);
+}
+.form-control{
+  background-color: var(--tertiary-color);
+  font-size: 16px;
+}
+.enviar{
+  background-color: var(--secondary-color-dark);
+  color: var(--tertiary-color);
+  padding: 10px 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition-duration: 0.4s;
+}
+.PrincipalMenu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+.menu{
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 18px;
+  width: 100%;
+  margin: 2px;
+}
+#MenuPicked{
+  background-color: var(--primary-color-light-2);
+  opacity: 0.9;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 1;
+
+}
+.menu:hover{
+  color: var(--primary-color-light);
+  transform: scale(1.05);
+}

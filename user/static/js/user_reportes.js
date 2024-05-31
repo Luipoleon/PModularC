@@ -1,8 +1,3 @@
-let BodyModal = document.querySelector('.modal-body');
-let content = "";
-const currentUrl = window.location.href;
-const url = new URL(currentUrl); // obtiene ruta relativa
-
 Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (element) {
     element.addEventListener('click', function () {
         let datosUser = this.closest('tr');
@@ -201,3 +196,5 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
         }
     });
 });
+
+

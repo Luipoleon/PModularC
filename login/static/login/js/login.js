@@ -119,14 +119,15 @@ btnRecoverPassword.addEventListener("click", () => {
 // Event listener for the login button
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
-  divLoginError.classList.add("invisible");
-  btnLogin.classList.add("placeholder");
-  btnLogin.querySelector(".spinner-border").classList.remove("hidden");
 
   // Check if all form inputs are valid
   if (!checkFormInputs(formLogin)) {
     return;
   }
+
+  divLoginError.classList.add("invisible");
+  btnLogin.classList.add("placeholder");
+  btnLogin.querySelector(".spinner-border").classList.remove("hidden");
 
   // Create a new FormData object with the form data
   const formData = new FormData(formLogin);
