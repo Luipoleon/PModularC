@@ -1,3 +1,14 @@
+let BodyModal = document.querySelector('.modal-body');
+let content = "";
+const currentUrl = window.location.href;
+const url = new URL(currentUrl); // obtiene ruta relativa
+
+// Select current page on menú to add class 'MenuPicked'
+
+const reportar = document.querySelectorAll('.nav-item a').item(1);
+
+reportar.id = 'MenuPicked';
+
 Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (element) {
     element.addEventListener('click', function () {
         let datosUser = this.closest('tr');

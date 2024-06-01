@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Problema, ProblemaAceptado, ProblemaRechazado
+from .models import  Problema, ProblemaEnCurso
 
 # Register your models here.
 
@@ -25,6 +25,5 @@ class ProblemasAdmin(admin.ModelAdmin):
         else:
             return super().get_fields(request, obj)
 
-admin.site.register(ProblemaAceptado)
-admin.site.register(ProblemaRechazado)
+admin.site.register(ProblemaEnCurso)
 admin.site.register(Problema, ProblemasAdmin)

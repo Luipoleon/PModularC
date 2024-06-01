@@ -67,7 +67,13 @@
         <tr>
           <th scope="row">Contraseña</th>
           <td>**************</td>
-          <td scope="row">Cambiar Contraseña</td>
+          <td scope="row" > <button
+            href="#!"
+            data-bs-toggle="modal"
+            data-bs-target="#forgotPasswordModal"
+            class="link form-forgot-password"
+            >Cambiar contraseña</
+          ></td>
         </tr>
       </tbody>
     </table>
@@ -113,5 +119,10 @@
         <a class="text-body" href="#">Centro Universitario CUCEI</a>
       </div>
   </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  {% include './partials/_chatBot.html'%}
+  {% include './partials/modal_cuenta.html'%}
+  
+
+  <script src="{% static 'js/user_cuenta.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </html>

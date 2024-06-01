@@ -3,7 +3,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
-from .models import Problema, ProblemaAceptado, ProblemaRechazado
+from .models import Problema, ProblemaEnCurso
 from login.models import CustomUser
 import json
 
@@ -40,8 +40,9 @@ def tablareport_aceptado(request):
     if request.method == "GET":
         problema_id = request.GET.get('id')
         if problema_id:
-            problema_aceptado = get_object_or_404(ProblemaAceptado, id_problema=problema_id)
+            problema_aceptado = get_object_or_404(ProblemaEnCurso, id_problema=problema_id)
             problema_aceptado_dict = model_to_dict(problema_aceptado)
+            print(problema_aceptado)
             # Agregando bug de fecha aceptado
             fechaAceptado=problema_aceptado.fecha_aceptado
             problema_aceptado_dict["fecha_aceptado"]=fechaAceptado
@@ -64,6 +65,7 @@ def tablareport_aceptado(request):
     
 
 # enviando reporte user
+@login_required(login_url='/')
 def sendreport(request):
     if request.method == "POST":
         tipoEdificio = request.POST.get("tipo_edificio")
@@ -85,6 +87,11 @@ def sendreport(request):
                 descripcion_problema=form.cleaned_data["descripcion_problema"],
                 ubicacion_exacta=form.cleaned_data["ubicacion_exacta"]
             )
+            reporteEnProceso = ProblemaEnCurso.objects.create(
+                id_problema=report,
+                id_administrador=CustomUser.objects.get(id=1),
+                info_adicional="Hola",
+            )
             if tipoEdificio == "Academico":
                 report.letra_edificio=form.cleaned_data["letra_edificio"]
                 report.numero_salon=form.cleaned_data["numero_salon"]
@@ -100,6 +107,20 @@ def sendreport(request):
                 report.tipo_edificio_departamento=form.cleaned_data["tipo_edificio_departamento"]
                 report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
             report.save()
+            reporteEnProceso.save()
             return HttpResponseRedirect('/user/reportar?success=true')
         return HttpResponseRedirect('/user/reportar?success=false')
     
+# Cambiar contraseña
+
+def change_password(request):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        user = request.user
+        if user.check_password(data['old_password']):
+            user.set_password(data['new_password'])
+            user.save()
+            return JsonResponse({'message': 'Contraseña cambiada exitosamente'}, status=200)
+        else:
+            return JsonResponse({'error': 'Contraseña actual incorrecta'}, status=400)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

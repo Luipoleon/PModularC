@@ -26,19 +26,15 @@ class Problema(models.Model):
     def __str__(self):
         return self.tipo_edificio
     
-class ProblemaAceptado(models.Model):
+class ProblemaEnCurso(models.Model):
     id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
     id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     info_adicional = models.TextField(blank=True)
     fecha_aceptado = models.DateTimeField(auto_now_add=True)
+    fecha_completado = models.DateTimeField(blank=True, null=True)
+    comentario_completado = models.TextField(blank=True, null=True)
     def __str__(self):
         return str(self.id_problema)
     
-class ProblemaRechazado(models.Model):
-    id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
-    id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    info_adicional = models.TextField(blank=True)
-    fecha_rechazado = models.DateTimeField(auto_now_add=True)
-    reaceptado = models.BooleanField(default=False)
-    def __str__(self):
-        return self.id_problema
+
+
