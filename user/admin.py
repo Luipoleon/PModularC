@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Problema, ProblemaEnCurso
+from .models import  Problema, ProblemaEnCurso, Notification
 
 # Register your models here.
 
@@ -27,3 +27,4 @@ class ProblemasAdmin(admin.ModelAdmin):
 
 admin.site.register(ProblemaEnCurso)
 admin.site.register(Problema, ProblemasAdmin)
+admin.site.register(Notification)

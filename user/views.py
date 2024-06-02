@@ -3,7 +3,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
-from .models import Problema, ProblemaEnCurso
+from .models import Problema, ProblemaEnCurso, Notification
 from login.models import CustomUser
 import json
 
@@ -42,7 +42,6 @@ def tablareport_aceptado(request):
         if problema_id:
             problema_aceptado = get_object_or_404(ProblemaEnCurso, id_problema=problema_id)
             problema_aceptado_dict = model_to_dict(problema_aceptado)
-            print(problema_aceptado)
             # Agregando bug de fecha aceptado
             fechaAceptado=problema_aceptado.fecha_aceptado
             problema_aceptado_dict["fecha_aceptado"]=fechaAceptado
@@ -68,7 +67,6 @@ def tablareport_aceptado(request):
 @login_required(login_url='/')
 def sendreport(request):
     if request.method == "POST":
-        print(request.POST)
         tipoEdificio = request.POST.get("tipo_edificio")
         if tipoEdificio == "Academico":
             form = formAcademicos(request.POST)
@@ -117,7 +115,7 @@ def sendreport(request):
         return HttpResponseRedirect('/user/reportar?success=false')
     
 # Cambiar contraseña
-
+@login_required(login_url='/')
 def change_password(request):
     if request.method == "PUT":
         data = json.loads(request.body)
@@ -129,3 +127,14 @@ def change_password(request):
         else:
             return JsonResponse({'error': 'Contraseña actual incorrecta'}, status=400)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+# Notificaciones
+@login_required(login_url='/')
+def send_notification(request):
+    if request.method == "GET":
+        notifications = Notification.objects.filter(user=request.user).values(
+            'id', 'user', 'type', 'title', 'message', 'created_at', 'updated_at', 'read_status'
+        )
+        notifications_list = list(notifications)
+        return JsonResponse(notifications_list, safe=False)

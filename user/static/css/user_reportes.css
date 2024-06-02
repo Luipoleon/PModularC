@@ -68,3 +68,21 @@ background-color: var(--secondary-color-light)!important;
   color: var(--primary-color-light);
   transform: scale(1.05);
 }
+.estatus-en-proceso {
+  background-color: #fff59d; /* Amarillo moderado */
+}
+
+.estatus-aceptado {
+  background-color: #a5d6a7; /* Verde moderado */
+  color: #1a441c;
+}
+
+.estatus-rechazado {
+  background-color: #ef9a9a; /* Rojo moderado */
+  color: #6e1818;
+}
+
+.estatus-completado {
+  background-color: #90caf9; /* Azul moderado */
+  color: #0f3663;
+}

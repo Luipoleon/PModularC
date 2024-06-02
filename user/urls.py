@@ -9,4 +9,5 @@ urlpatterns = [
     path('academico/sending-report/', views.sendreport, name = "sendreport"),
     path('reportes/aceptados', views.tablareport_aceptado, name= "tablareport_aceptado"),
     path('cuenta/cambiar-contraseña/', views.change_password, name='change_password'),
+    path('notificaciones',views.send_notification, name='send_notification'),
     ]

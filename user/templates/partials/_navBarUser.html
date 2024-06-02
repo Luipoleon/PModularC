@@ -1,6 +1,30 @@
+{% load static %}
 <style>
   .navbar{
     background: linear-gradient(50deg, #5c9ead 94%, #cb8464 100%) ;
+  }
+  .notification {
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+  }
+  .notification:hover {
+      background-color: #e2e6ea;
+  }
+  .notification h3 {
+      margin: 0;
+      font-size: 1.25em;
+      color: #343a40;
+  }
+  .notification p {
+      margin: 5px 0 10px;
+      color: #6c757d;
+  }
+  .notification small {
+      color: #adb5bd;
   }
 </style>
 <nav class="navbar p-2 navbar-expand-lg navbar-light sticky-top PrincipalMenu f-flex align-items-center" id="topmenu" >
@@ -22,8 +46,17 @@
         </li>
        </ul>
       </div>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: none;">
+            <span class="fs-8 p-2 rounded bg-gradient me-2" style="background-color: #EED7BE"><i class="fs-3 fa-regular fa-bell"></i></span> 
+        </button>
+        <ul class="fs-1 dropdown-menu " id="notifications-container" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Mis Notificaciones</a></li>
+        </ul>
+    </div>
+    
       <div class="Lnombre  px-4 m-1" >
-        <h1 class="fs-4 pt-2 px-3"> 
+        <h1 class="fs-4 pt-2 px-3">
         <span class="fs-8 p-2 rounded bg-gradient" style="background-color: #dadaff"><i class="fa-solid fa-user"></i></span> 
         <span class="ms-4">{{user.first_name}} {{user.last_name}}</span>
       </h1>
@@ -47,7 +80,9 @@
         
       </div>
 </nav>
+<script src="{% static 'js/_navBarUser.js'%}"></script>
 <script
+
   src="https://kit.fontawesome.com/72399c8f18.js"
   crossorigin="anonymous"
 ></script>
