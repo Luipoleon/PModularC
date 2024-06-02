@@ -68,6 +68,7 @@ def tablareport_aceptado(request):
 @login_required(login_url='/')
 def sendreport(request):
     if request.method == "POST":
+        print(request.POST)
         tipoEdificio = request.POST.get("tipo_edificio")
         if tipoEdificio == "Academico":
             form = formAcademicos(request.POST)
@@ -103,9 +104,13 @@ def sendreport(request):
                 report.tipo_area=form.cleaned_data["tipo_area_comun"]
                 report.ubicacion_area=form.cleaned_data["ubicacion_area"]
             elif tipoEdificio == "Departamento":
+                tipo_edificio_departamento = form.cleaned_data["tipo_edificio_departamento"]
+                ubicacion_departamento = report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
                 report.tipo_departamento=form.cleaned_data["tipo_departamento"]
-                report.tipo_edificio_departamento=form.cleaned_data["tipo_edificio_departamento"]
-                report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
+                if tipo_edificio_departamento == '':
+                    report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
+                elif ubicacion_departamento == '':
+                    report.tipo_edificio_departamento=form.cleaned_data["tipo_edificio_departamento"]
             report.save()
             reporteEnProceso.save()
             return HttpResponseRedirect('/user/reportar?success=true')
