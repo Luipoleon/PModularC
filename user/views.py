@@ -99,7 +99,7 @@ def sendreport(request):
                 report.piso_baño=form.cleaned_data["piso_baño"]
                 report.tipo_baño=form.cleaned_data["tipo_baño"]
                 report.edificio_baño=form.cleaned_data["edificio_baño"]
-            elif tipoEdificio == "AreasComunes":
+            elif tipoEdificio == "Áreas comunes":
                 report.tipo_area=form.cleaned_data["tipo_area_comun"]
                 report.ubicacion_area=form.cleaned_data["ubicacion_area"]
             elif tipoEdificio == "Departamento":

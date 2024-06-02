@@ -3,7 +3,8 @@
 // Select current page on menú to add class 'MenuPicked'
 
 const reportar = document.querySelectorAll('.nav-item a').item(2);
-
+let BodyModal = document.querySelector('.modal-body');
+const boton_reportar = document.querySelector('#mandar_reporte_btn');
 reportar.id = 'MenuPicked';
 
 // Get DOM elements
@@ -200,6 +201,12 @@ btnAbrirModal.addEventListener('click', function () {
     }
 });
 
-
+boton_reportar.addEventListener('click',function(){
+    BodyModal.innerHTML = `<div id="loading" class="loading-container">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>`;  
+});
 // Call the resetAllElements function to reset the values of all form elements
 resetAllElements();
