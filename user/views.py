@@ -143,6 +143,7 @@ def send_notification(request):
         notifications_list = list(notifications)
         return JsonResponse(notifications_list, safe=False)
     if request.method == "PUT":
+        print("put")
         data = json.loads(request.body)
         notification = Notification.objects.get(id=data['id'])
         notification.read_status = True
