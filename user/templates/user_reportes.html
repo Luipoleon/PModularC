@@ -43,7 +43,9 @@
               <td>{{p.estatus_problematica}}</td>
               <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
               <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|time:"H:i:s"}}</td>
-              <td><button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> > </button></td>
+              <td><button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
+                <i class="fa-solid fa-arrow-up-long"></i>
+              </button></td>
             </tr>
             {% endfor %}
           </tbody>

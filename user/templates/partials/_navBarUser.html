@@ -3,8 +3,56 @@
   .navbar{
     background: linear-gradient(50deg, #5c9ead 94%, #cb8464 100%) ;
   }
+
+  .bell{
+    border: 0.1rem solid #f8f8f8;
+   
+  } 
+
+
+  .clicked{
+    color: #f2cfbf;
+    border: 0.1rem solid #f2cfbf;
+  }
+
+  
+
+  .exclamacion{
+    position: absolute;
+    top: 0rem;
+    right: 1.6rem;
+    color: red;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    padding: 0.2rem;
+    opacity: 0;
+  }
+
+  .bell.notifications i:nth-of-type(1){
+    color: #fff59d;
+   
+  }
+  
+  .bell.notifications .exclamacion{
+    opacity: 1;
+  }
+
+
+
+
+  #notifications-container{
+    margin-left: -0.5rem;
+    padding: 0 !important; 
+  }
+  .notifications .dropdown-toggle::after{
+    display: none !important;
+  }
+
+
   .notification {
-      padding: 15px;
+      width: 25rem;
+      padding: 0.10rem;
+      padding-left: 1rem;
       margin-bottom: 10px;
       border-radius: 5px;
       background-color: #f8f9fa;
@@ -22,10 +70,9 @@
   .notification p {
       margin: 5px 0 10px;
       color: #6c757d;
+      text-decoration: none !important;
   }
-  .notification small {
-      color: #adb5bd;
-  }
+ 
 </style>
 <nav class="navbar p-2 navbar-expand-lg navbar-light sticky-top PrincipalMenu f-flex align-items-center" id="topmenu" >
   <div class="container-fluid menumovimiento">
@@ -46,12 +93,22 @@
         </li>
        </ul>
       </div>
-      <div class="dropdown">
+      <div class="dropdown notifications">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: none;">
-            <span class="fs-8 p-2 rounded bg-gradient me-2" style="background-color: #EED7BE"><i class="fs-3 fa-regular fa-bell"></i></span> 
+            <span class="fs-8 p-2 pt-3 rounded bg-gradient me-2 bell">
+              <i class="fs-3 fa-regular fa-bell"></i>
+              <i class="exclamacion fa-solid fa-exclamation"></i>
+            </span> 
+            
         </button>
-        <ul class="fs-1 dropdown-menu " id="notifications-container" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">Mis Notificaciones</a></li>
+        <ul class="fs-1 dropdown-menu" id="notifications-container" aria-labelledby="dropdownMenuButton1">
+            <li>
+              <a class="dropdown-item fs-3 d-flex justify-content-between" 
+                 style='background-color: #aaa' href="{% url 'notificaciones' %}">
+                <span class='ml-3'> Notificaciones  </span>
+                <span class='mr-3'><i class="fa-solid fa-arrow-right"></i></span>
+              </a>
+            </li>
         </ul>
     </div>
     

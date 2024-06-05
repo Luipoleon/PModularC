@@ -218,6 +218,6 @@ var qValue = urlParams.get('success');
 if (qValue === 'true'){
     alert('Se envío correctamente!');
 }
-else{
+else if (qValue === 'false'){
     alert('Ocurrio un error');
 }

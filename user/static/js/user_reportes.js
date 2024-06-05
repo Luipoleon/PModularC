@@ -15,10 +15,11 @@ const statusColors = {
 };
 
 Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (element) {
+    
     element.addEventListener('click', function () {
         let datosUser = this.closest('tr');
         let idProblema = datosUser.querySelector('th').textContent;
-        let statusProblema = datosUser.querySelector('td').textContent;
+        let statusProblema = datosUser.querySelectorAll('td').item(1).textContent;
         const divAdminInfo = document.createElement("div");
         const divProblemaInfo = document.createElement("div");
         divAdminInfo.classList.add("AdminInfo", "col");
@@ -31,7 +32,7 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
             <div class='row h3'><span class='col border border-2'><strong>Estatus</strong></span> <span class='col border border-2 text-center ${colorEstatus}'>${statusProblema}</span></div>
         `;
         divProblemaInfo.innerHTML = `<div class='text-center h2'><strong>INFORMACION ENVIADA</strong></div>`;
-
+        
         if (["Aceptado", "Procesando", "Rechazado", "Completado"].includes(statusProblema)) {
             BodyModal.innerHTML = `<div id="loading" class="loading-container">
                                         <div class="spinner-border text-primary" role="status">
@@ -39,6 +40,7 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                                         </div>
                                     </div>`;
             const baseUrl = `${url.origin}`;
+          
             fetch(`${baseUrl}/user/reportes/aceptados?id=${idProblema}`)
                 .then((response) => {
                     if (!response.ok) {

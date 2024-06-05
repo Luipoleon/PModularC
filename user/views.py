@@ -31,7 +31,11 @@ def user_cuenta(request):
     return render(request, 'user_cuenta.html', {'user':current_user})
 
 
-
+@login_required(login_url='/')
+def user_notificaciones(request):
+    current_user = request.user
+    current_notificacion = Notification.objects.filter(user =current_user)
+    return render(request, 'user_notificaciones.html', {'notificaciones':current_notificacion})
 
 #Sending report
 # tabla aceptados
@@ -138,3 +142,9 @@ def send_notification(request):
         )
         notifications_list = list(notifications)
         return JsonResponse(notifications_list, safe=False)
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        notification = Notification.objects.get(id=data['id'])
+        notification.read_status = True
+        notification.save()
+        return JsonResponse({'message': 'Notificación marcada como leída'}, status=200)

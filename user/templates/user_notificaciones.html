@@ -1,0 +1,68 @@
+{% load static %}
+{% load tz %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/user_notificaciones.css' %}" />
+
+    <title></title>
+  </head>
+  <body>
+    
+    {% include './partials/_navBarUser.html'%}
+    <div class="container" id="mireportes">
+      <h1 class="fw-bold display-5" id="newarrivals">Notificaciones</h1>
+      <div class="row">
+        <table class="table" >
+          <thead>
+            <tr>
+              <th scope="col">Título</th>
+              <th scope='col'>Mensaje</th>
+              <th scope="col">Tipo Mensaje</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
+              <th scope="col"> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in notificaciones %}
+            
+            <tr class="
+                {% if p.read_status == True %} estatus-leido{% endif %}
+                {% if p.read_status == False %} estatus-no-leido{% endif %}
+            ">
+              <th scope="row">{{p.title}}</th>
+              <td>{{p.message}}</td>
+              <td>{{p.type}}</td>
+              <td>{{p.created_at|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
+              <td>{{p.created_at|timezone:"America/Mexico_City"|time:"H:i:s"}}</td>
+              <td><button id={{p.id}} class="eliminar_notificacion btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> <i class="fa-solid fa-trash-can"></i> </button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    {% include './partials/_footer.html'%}
+    {% include './partials/_chatBot.html'%}
+  <div
+      class="modal fade"
+      id="InformacionReportes"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      {% include 'partials/modal_user-notificaciones.html' %}
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{% static 'js/user_notificaciones.js' %}"></script>
+    </body>
+</html>
+
