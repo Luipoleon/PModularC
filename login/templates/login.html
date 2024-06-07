@@ -29,14 +29,16 @@
                 class="card-body p-5 text-center flip-card-front formLogin"
                 method="post"
               >
-                {% csrf_token %} {% include 'partials/_login_form.html' %}
+                {% csrf_token %} 
+                {% include 'partials/_login_form.html' %}
               </form>
               <form
                 action="/register/"
                 method="post"
                 class="card-body p-5 text-center flip-card-back formRegister"
               >
-                {% csrf_token %} {% include 'partials/_register_form.html' %}
+                {% csrf_token %} 
+                {% include 'partials/_register_form.html' %}
               </form>
             </div>
           </div>

@@ -215,6 +215,8 @@ btnRegister.addEventListener("click", (e) => {
         window.location.href = "/user/";
       } else {
         // Display an error message if registration is unsuccessful
+        console.log("Email already registered!");
+        alert("¡El email ya está registrado!");
         inputEmailRegister.setCustomValidity("Email already registered!");
         inputEmailRegister.reportValidity();
       }

@@ -60,8 +60,20 @@ function displayNotifications(notifications) {
         notificationsContainer.appendChild(notificationElement);
 
         notificationElement.addEventListener('click', () => {
-            console.log("hola");
-            notificationElement.classList.add('read');
+            notificationsContainer.removeChild(notificationElement);
+            if(notificationsContainer.children.length === 0) {
+                const notificationElement = document.createElement('li');
+                const alertBell = document.querySelector('.bell');
+
+                alertBell.classList.remove('notifications');
+                notificationElement.classList.add('notification', 'list-group-item');
+                notificationElement.innerHTML = `
+                    <a href='#'>
+                        <h3 class='fs-4'>No hay notificaciones</h3>
+                    </a>`;
+                notificationsContainer.appendChild(notificationElement);
+            }
+
             fetch(`/user/notificaciones/a76783`, {
                 method: 'PUT',
                 headers: {
@@ -78,6 +90,7 @@ function displayNotifications(notifications) {
                 })
                 .then(data => {
                     console.log('Notification read:', data);
+                    window.location = "/user/notificaciones";
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
