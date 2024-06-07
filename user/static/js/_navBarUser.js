@@ -83,6 +83,7 @@ function displayNotifications(notifications) {
                 body: JSON.stringify({ id: notification.id }),
             })
                 .then(response => {
+                    window.location = "/user/notificaciones";
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
@@ -90,7 +91,6 @@ function displayNotifications(notifications) {
                 })
                 .then(data => {
                     console.log('Notification read:', data);
-                    window.location = "/user/notificaciones";
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
