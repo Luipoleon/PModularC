@@ -4,16 +4,16 @@ Array.from(
     document.getElementsByClassName('eliminar_notificacion')).forEach(
         function (element) {
             element.addEventListener('click', function () {
-                let idNotificacion = this.closest('th').id;
-                console.log(this);
+                let idNotificacion = this.id;
+                console.log(idNotificacion);
                 const baseUrl = `${url.origin}`;
                 fetch(`${baseUrl}/user/notificaciones`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')  // Add this line
+                        'X-CSRFToken': getCookie('csrftoken')
                     },
-                    body: JSON.stringify({ id: idNotificacion }),
+                    body: JSON.stringify({'id': `${idNotificacion}`}),
                 })
                     .then((response) => {
                         if (!response.ok) {
