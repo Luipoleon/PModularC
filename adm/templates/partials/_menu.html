@@ -1,35 +1,128 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top PrincipalMenu" id="topmenu" >
-    <div class="container-fluid menumovimiento">
-      <!-- <a class="navbar-brand" href="#"><img src="Logo" alt=""></a> -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-        <div class="collapse navbar-collapse " id="navbarNav">
-         <ul class="navbar-nav">
-          <li class="nav-item px-3">
-            <a class="nav-link active menu" id="MenuPicked" href="{%url 'inicio'%}">Inicio</a>
-          </li>
-          <li class="nav-item px-3">
-            <a class="nav-link active menu" href="{%url 'reportes'%}">Reportes</a>
-          </li>
-          <li class="nav-item px-3">
-            <a class="nav-link active menu" href="{%url 'edificios' %}">Edificio</a>
-          </li>
-          <li class="nav-item px-3">
-            <a class="nav-link active menu" href="{%url 'info'%}">Información</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle menu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Configuracion
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item menu" href="#">Cuenta</a></li>
-              <li><a class="dropdown-item menu" href="{% url 'logout' %}">Salir</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item menu" href="#">Informacion extra</a></li>
-            </ul>
-          </li>
-         </ul>
+{% load static %}
+<style>
+  .navbar {
+    background: linear-gradient(50deg, #5c9ead 94%, #cb8464 100%);
+  }
+
+  .bell {
+    border: 0.1rem solid #f8f8f8;
+  }
+
+  .navbar-nav .nav-link.active {
+    background-color: #f2cfbf !important;
+    color: #fff !important;
+  }
+
+  .exclamacion {
+    position: absolute;
+    top: 0rem;
+    right: 1.6rem;
+    color: red;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    padding: 0.2rem;
+    opacity: 0;
+  }
+
+  .bell.notifications i:nth-of-type(1) {
+    color: #fff59d;
+  }
+
+  .bell.notifications .exclamacion {
+    opacity: 1;
+  }
+
+  #notifications-container {
+    margin-left: -0.5rem;
+    padding: 0 !important;
+  }
+
+  .notifications .dropdown-toggle::after {
+    display: none !important;
+  }
+
+  .notification {
+    width: 25rem;
+    padding: 0.10rem;
+    padding-left: 1rem;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .notification:hover {
+    background-color: #e2e6ea;
+  }
+
+  .notification h3 {
+    margin: 0;
+    font-size: 1.25em;
+    color: #343a40;
+  }
+
+  .notification p {
+    margin: 5px 0 10px;
+    color: #6c757d;
+    text-decoration: none !important;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top PrincipalMenu" id="topmenu">
+  <div class="container-fluid menumovimiento">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item px-3">
+          <a class="nav-link menu" id="inicio-link" href="{% url 'inicio' %}">Inicio</a>
+        </li>
+        <li class="nav-item dropdown px-3">
+          <a class="nav-link dropdown-toggle menu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Reportes
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'reportes' %}">Reportes pendientes</a></li>
+            <li><a class="dropdown-item" href="/adm/seguimiento">Seguimiento</a></li>
+            <li><a class="dropdown-item" href="/adm/terminados">Reportes Terminados</a></li>
+          </ul>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link menu" id="edificios-link" href="{% url 'edificios' %}">Edificio</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link menu" id="info-link" href="{% url 'info' %}">Información</a>
+        </li>
+      </ul>
+
+      <div class="ms-auto d-flex align-items-center">
+        <div class="Lnombre px-4 m-1">
+          <h1 class="fs-4 pt-2 px-3">
+            <span class="fs-8 p-2 rounded bg-gradient" style="background-color: #dadaff">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <span class="ms-4">{{ user.first_name }} {{ user.last_name }}</span>
+          </h1>
         </div>
+
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle menu fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-gear"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="fs-3 dropdown-item menu" href="{% url 'user_cuenta' %}">Cuenta</a></li>
+            <li><a class="fs-3 dropdown-item menu" href="{% url 'logout' %}">Salir</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="fs-3 dropdown-item menu" href="#">Información extra</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 </nav>
+
+<script src="{% static 'js/_navBarUser.js' %}"></script>
+<script src="https://kit.fontawesome.com/72399c8f18.js" crossorigin="anonymous"></script>
