@@ -13,7 +13,7 @@ Array.from(
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken')
                     },
-                    body: JSON.stringify({'id': `${idNotificacion}`}),
+                    // body: JSON.stringify({'id': `${idNotificacion}`}),
                 })
                     .then((response) => {
                         if (!response.ok) {
