@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from .forms import formAcademicos, formBaños, formAreasComunes, formDepartamento, formProblemData
 from .models import Problema, ProblemaEnCurso, Notification
 from login.models import CustomUser
+from django.core.exceptions import ObjectDoesNotExist
 import json
 
 # Create your views here.
@@ -143,9 +144,32 @@ def send_notification(request):
         notifications_list = list(notifications)
         return JsonResponse(notifications_list, safe=False)
     if request.method == "PUT":
-        print("put")
         data = json.loads(request.body)
         notification = Notification.objects.get(id=data['id'])
         notification.read_status = True
         notification.save()
         return JsonResponse({'message': 'Notificación marcada como leída'}, status=200)
+    if request.method== "DELETE":
+        try:
+            # Parse JSON body
+            data = json.loads(request.body)
+            notification_id = data.get('id')
+
+            # Check if ID is provided
+            if not notification_id:
+                return JsonResponse({'error': 'Notification ID not provided'}, status=400)
+            
+            try:
+                # Retrieve notification by ID
+                notification = Notification.objects.get(id=notification_id)
+                notification.delete()
+                return JsonResponse({'message': 'Notification deleted successfully'}, status=200)
+            
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 'Notification not found'}, status=404)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
