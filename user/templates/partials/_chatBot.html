@@ -34,18 +34,31 @@
         bottom: 4%;
         right: 4%;
         width: 40rem;
-        background-color: #ccc;
+        background: linear-gradient(130deg, #ccc 80%, #5c9eadaa 100%);
+        border: 0.1rem solid #22222aa;
         z-index: 50;
         border-radius: 0.5rem;
         transition: all 0.1s;
+        box-shadow: 0.1rem 0.2rem 0.3rem #0000001a;
      
     }
     
     .chatBot__header{
-        background-color: #5c9ead;
         height: 100%;
         border-radius: 0.5rem 0.5rem 0 0;
-        padding: 0.5rem 1rem;
+        diplay: flex;
+        padding-top: 1rem;
+        aligh-items: center;
+    }
+
+    .chatBot__header h3{
+        padding: 0.5rem;
+        background-color: #5c9eadaa;
+        diplay: inline-block;
+        border-radius: 0.5rem;
+        width: 10rem;
+        margin: 0 auto;
+
     }
 
     .chatBot__body{
