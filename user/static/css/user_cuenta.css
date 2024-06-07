@@ -69,3 +69,8 @@ body{
   margin-top: 10px;
   margin-bottom: 40px;
 }
+
+.cuenta-container{
+  height: calc(100vh - 24rem);
+  margin-top: 2rem;
+}
