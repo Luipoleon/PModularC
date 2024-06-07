@@ -1,5 +1,5 @@
 const currentUrl = window.location.href;
-const url = new URL(currentUrl); // obtiene ruta relativa
+const url = new URL(currentUrl); // obtiene ruta relativas
 Array.from(
     document.getElementsByClassName('eliminar_notificacion')).forEach(
         function (element) {
@@ -13,7 +13,7 @@ Array.from(
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken')
                     },
-                    // body: JSON.stringify({'id': `${idNotificacion}`}),
+                    body: JSON.stringify({'id': `${idNotificacion}`}),
                 })
                     .then((response) => {
                         if (!response.ok) {
