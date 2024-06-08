@@ -73,7 +73,6 @@ function displayNotifications(notifications) {
                     </a>`;
                 notificationsContainer.appendChild(notificationElement);
             }
-
             fetch(`/user/notificaciones/a76783`, {
                 method: 'PUT',
                 headers: {
@@ -83,7 +82,7 @@ function displayNotifications(notifications) {
                 body: JSON.stringify({ id: notification.id }),
             })
                 .then(response => {
-                    window.location = "/user/notificaciones";
+                    window.location = "/user/notificaciones?id="+notification.id;
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
