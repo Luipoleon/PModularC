@@ -1,13 +1,23 @@
 {% load static %}
 <style>
   .navbar {
-    background: linear-gradient(50deg, #5c9ead 94%, #cb8464 100%);
+    background: linear-gradient(50deg, #333 93%, #eee 100%);
   }
-
   .bell {
     border: 0.1rem solid #f8f8f8;
   }
+  #MenuPicked{
+  background: linear-gradient(50deg, #ddd 0%, #fff 100%);
+  color: black !important;
+  opacity: 0.9;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 1;
+  font-weight: bold;
+  box-shadow: 1px 2px 2px  #11111127;
+  padding: initial 2rem !important;
 
+}
   .navbar-nav .nav-link.active {
     background-color: #f2cfbf !important;
     color: #fff !important;
@@ -78,23 +88,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item px-3">
-          <a class="nav-link menu" id="inicio-link" href="{% url 'inicio' %}">Inicio</a>
-        </li>
-        <li class="nav-item dropdown px-3">
-          <a class="nav-link dropdown-toggle menu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Reportes
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'reportes' %}">Reportes pendientes</a></li>
-            <li><a class="dropdown-item" href="/adm/seguimiento">Seguimiento</a></li>
-            <li><a class="dropdown-item" href="/adm/terminados">Reportes Terminados</a></li>
-          </ul>
+          <a class="nav-link menu text-light" id="inicio-link" href="{% url 'inicio' %}">Inicio</a>
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link menu" id="edificios-link" href="{% url 'edificios' %}">Edificio</a>
+          <a class="nav-link menu text-light" id="reportes-link" href="{% url 'reportes' %}">Reportes</a>
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link menu" id="info-link" href="{% url 'info' %}">Información</a>
+          <a class="nav-link menu text-light" id="edificios-link" href="{% url 'edificios' %}">Edificio</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link menu text-light" id="info-link" href="{% url 'info' %}">Información</a>
         </li>
       </ul>
 
@@ -104,13 +107,13 @@
             <span class="fs-8 p-2 rounded bg-gradient" style="background-color: #dadaff">
               <i class="fa-solid fa-user"></i>
             </span>
-            <span class="ms-4">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="ms-4 text-light">{{ user.first_name }} {{ user.last_name }}</span>
           </h1>
         </div>
 
         <div class="nav-item dropdown">
           <a class="nav-link dropdown-toggle menu fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear "></i>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="fs-3 dropdown-item menu" href="{% url 'user_cuenta' %}">Cuenta</a></li>

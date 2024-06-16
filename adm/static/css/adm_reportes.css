@@ -1,0 +1,77 @@
+@import url("../css/styles.css");
+
+/* :root {
+  --primary-color: #e2936f;
+  --primary-color-light: #e39774;
+  --primary-color-light-2: #f2cfbf;
+  --secondary-color-light: #5c9ead;
+  --secondary-color-dark: #326273;
+  --tertiary-color: #eee;
+
+colores grises
+  --dark-grey: #333;
+  --ligth-grey: #999;
+} */
+
+
+body{
+  background-color: var(--tertiary-color);
+}
+
+#topmenu{
+z-index: 1000;
+background-color: var(--dark-grey)!important;
+}
+#botfooter{
+  background-color: var(--primary-color)!important;
+}
+
+#mireportes{
+  background-color: var(--primary-color-light-2);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+.PrincipalMenu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+.menu{
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 18px;
+  width: 100%;
+  margin: 2px;
+}
+
+.menu:hover{
+  color: var(--primary-color-light);
+  transform: scale(1.05);
+}
+.estatus-en-proceso {
+  background-color: #fff59d; /* Amarillo moderado */
+}
+
+.estatus-aceptado {
+  background-color: #a5d6a7; /* Verde moderado */
+  color: #1a441c;
+}
+
+.estatus-rechazado {
+  background-color: #ef9a9a; /* Rojo moderado */
+  color: #6e1818;
+}
+
+.estatus-completado {
+  background-color: #90caf9; /* Azul moderado */
+  color: #0f3663;
+}
