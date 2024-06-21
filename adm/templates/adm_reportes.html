@@ -40,7 +40,7 @@
                 {% if p.estatus_problematica == 'Completado' %}estatus-completado{% endif %}
             ">
               <th scope="row">{{p.id}}</th>
-              <td>{{p.id_usuario.first_name}}</td>
+              <td>{{p.id_usuario.first_name}}#{{p.id_usuario.id}} </td>
               <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
               <td>{{p.estatus_problematica}}</td>
               <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>

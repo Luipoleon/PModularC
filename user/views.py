@@ -93,8 +93,8 @@ def sendreport(request):
             )
             reporteEnProceso = ProblemaEnCurso.objects.create(
                 id_problema=report,
-                id_administrador=CustomUser.objects.get(id=1),
-                info_adicional="Hola",
+                # id_administrador=CustomUser.objects.get(id=1),
+                info_adicional="...",
             )
             if tipoEdificio == "Academico":
                 report.letra_edificio=form.cleaned_data["letra_edificio"]
@@ -118,7 +118,23 @@ def sendreport(request):
             reporteEnProceso.save()
             return HttpResponseRedirect('/user/reportar?success=true')
         return HttpResponseRedirect('/user/reportar?success=false')
-    
+    elif request.method == "PUT":
+        # Parse JSON body
+        data = json.loads(request.body)
+        problema_id = data.get('id')
+        status_problema = data.get('status')
+        info_adicional = data.get('info_adicional')
+
+        problema = Problema.objects.get(id = problema_id)
+        problema_en_curso = ProblemaEnCurso.objects.get(id_problema = problema)
+
+        problema.estatus_problematica = status_problema
+        problema_en_curso.info_adicional = info_adicional
+
+        problema.save()
+        problema_en_curso.save()
+        return JsonResponse({'message': 'Reporte actualizado exitosamente'}, status=200)
+     
 # Cambiar contraseña
 @login_required(login_url='/')
 def change_password(request):
