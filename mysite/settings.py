@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'user.apps.UserConfig',
     'adm.apps.AdmConfig',
+    'api_registros.apps.ApiRegistrosConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

@@ -25,13 +25,17 @@
               <th scope="col">Reporte #</th>
               <th scope="col">User</th>
               <th scope='col'>Info</th>
+              <th scope="col">Gravedad</th>
               <th scope="col">Estatus</th>
               <th scope="col">Fecha</th>
-              <th scope="col">Hora</th>
               <th scope="col">Seguimiento</th>
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
+                {% comment %} <label class="form-check-label">All</label> {% endcomment %}
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id = 'contenedor_problemas'>
             {% for p in problemas %}
             <tr class="
                 {% if p.estatus_problematica == 'Procesando' %}estatus-en-proceso{% endif %}
@@ -42,15 +46,29 @@
               <th scope="row">{{p.id}}</th>
               <td>{{p.id_usuario.first_name}}#{{p.id_usuario.id}} </td>
               <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
+              <td>{{p.gravedad_problema}}</td>
               <td>{{p.estatus_problematica}}</td>
               <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
-              <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|time:"H:i:s"}}</td>
-              <td><button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
-                <i class="fa-solid fa-arrow-up-long"></i>
-              </button></td>
+              <td>
+                <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
+                  <i class="fa-solid fa-arrow-up-long"></i>
+                </button>
+              </td>
+              <td class="form-check d-flex justify-content-center mb-2">
+                <input class="form-check-input" type="checkbox" name="option1" value="something">
+                {% comment %} <label class="form-check-label">Option 1</label> {% endcomment %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>
+          <tfoot class='mt-2 pt-2 container'>
+            <tr>
+              <td colspan="8">
+                <button class="btn btn-light invisible" id='btn_problema_anterior'><</button>
+                <button class="btn btn-light invisible" id='btn_problem_siguiente'>></button>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

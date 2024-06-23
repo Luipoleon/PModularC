@@ -17,7 +17,8 @@ def admlogin(request):
 def admReportes(request):
     if not request.user.is_staff:
         return HttpResponseForbidden("Access denied")
-    current_problemas=Problema.objects.all()
+    current_problemas = Problema.objects.filter(estatus_problematica='Procesando').order_by('id').iterator()
+    current_problemas = list(current_problemas)[:10]
     return render(request, 'adm_reportes.html', {'problemas':current_problemas}) 
 
 @login_required(login_url='/')

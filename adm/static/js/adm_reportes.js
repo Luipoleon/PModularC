@@ -11,7 +11,10 @@ const btnStatusAceptar = document.createElement('button');
 let idProblema;
 
 const btnStatusRechazar = document.createElement('button');
-
+const btnProblemaSiguiente = document.querySelector('#btn_problem_siguiente');
+const btnProblemaAnterior = document.querySelector('#btn_problema_anterior');
+const contenedorProblemas = document.querySelector('#contenedor_problemas');
+let problemas, pagina = 1, numPages;
 
 
 
@@ -22,138 +25,244 @@ const statusColors = {
     "Completado": 'bg-info text-white'
 };
 
+// Event listener para los botones siguiente pagina
 
-
-Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function(element) {
-    element.addEventListener('click', function() {
-        let datosUser = this.closest('tr');
-        let statusProblema = datosUser.querySelectorAll('td').item(2).textContent;
-        const divAdminInfo = document.createElement("div");
-        const divProblemaInfo = document.createElement("div");
-        divAdminInfo.classList.add("AdminInfo", "col");
-        divProblemaInfo.classList.add("ProblemaInfo", "col");
-
-        let idProblema = datosUser.querySelector('th').textContent; // Utilizamos let para evitar problemas de alcance
-
-        let colorEstatus = statusColors[statusProblema] || '';
-
-        divAdminInfo.innerHTML = `
-            <div class='text-center h2'><strong>PROBLEMA #${idProblema}</strong></div>
-            <div class='row h3'><span class='col border border-2'><strong>Estatus</strong></span> <span class='col border border-2 text-center ${colorEstatus}'>${statusProblema}</span></div>
-        `;
-        divProblemaInfo.innerHTML = `<div class='text-center h2'><strong>INFORMACION ENVIADA</strong></div>`;
-
-        if (["Aceptado", "Procesando", "Rechazado", "Completado"].includes(statusProblema)) {
-            BodyModal.innerHTML = `<div id="loading" class="loading-container">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>`;
-            const baseUrl = `${url.origin}`;
-
-            fetch(`${baseUrl}/user/reportes/aceptados?id=${idProblema}`)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (statusProblema === "Aceptado") {
-                        divAdminInfo.innerHTML += `
-                            <div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                            <div class='row h3'>
-                                <span class='col border border-2'><strong>Informacion adicional</strong></span> 
-                                <textarea class='col border border-2 text-center'>${data.info_adicional}</textarea></div>
-                        `;
-                    } else if (statusProblema === "Procesando") {
-                        divAdminInfo.innerHTML += `
-                            <div class='row h3 text-center'>
-                                <span class='col border border-2'><strong>Informacion adicional</strong></span> 
-                            </div>
-                             <div class='row h3 text-start'>
-                                <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
-                            </div>
-                            <div class='row h3 text-start'>
-
-                                <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2"  data-bs-dismiss="modal">
-                                    Rechazar
-                                </button>
-                                
-                                <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2">
-                                    Aceptar
-                                 </button>
-                            </div>
-                        `;
-                    } else if (statusProblema === "Rechazado") {
-                        divAdminInfo.innerHTML += `
-                            <div class='row h3'><span class='col border border-2'><strong>Rechazado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Fecha de rechazo</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Motivo de rechazo</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
-                        `;
-                    } else if (statusProblema === "Completado") {
-                        divAdminInfo.innerHTML += `
-                            <div class='row h3'><span class='col border border-2'><strong>Completado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center text-success'>${data.fecha_completado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
-                        `;
-                    }
-
-                    updateProblemInfo(divProblemaInfo, data.ProblemasTabla);
-                    BodyModal.innerHTML = ""; // Limpiamos el contenido anterior
-                    BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
-                    BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
-
-                    // Configuramos los event listeners después de insertar los botones en el DOM
-                    const btnStatusAceptar = document.querySelector('#aceptar_problema');
-                    const btnStatusRechazar = document.querySelector('#rechazar_problema');
-
-                    if (btnStatusAceptar) {
-                        btnStatusAceptar.addEventListener('click', function() {
-                        
-                            fetch('/user/academico/sending-report/', {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': getCookie('csrftoken')
-                                },
-                                body: JSON.stringify({ 
-                                    id: idProblema,
-                                    status: 'Aceptado',
-                                    info_adicional: document.querySelector('textarea').value
-                                 })
-                            })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                // Manejar la respuesta del servidor aquí
-                            })
-                            .catch(error => {
-                                console.error('Hubo un problema con la operación fetch:', error);
-                            });
-                        });
-                    }
-
-                    if (btnStatusRechazar) {
-                        btnStatusRechazar.addEventListener('click', function() {
-                            // Event listener para el botón rechazar
-                        });
-                    }
-
-                })
-                .catch((error) => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        }
-    });
+btnProblemaSiguiente.addEventListener('click', () => {
+    btnProblemaAnterior.classList.remove('invisible');
+    pagina++;
+    if(pagina == numPages){
+        btnProblemaSiguiente.classList.add('invisible');
+    }
+    mostrarProblemas(pagina);
+    addEvents();
 });
+
+btnProblemaAnterior.addEventListener('click', () => {
+    btnProblemaSiguiente.classList.remove('invisible');
+    pagina--;
+    if(pagina <= 1){
+        btnProblemaAnterior.classList.add('invisible');
+    }
+   
+    mostrarProblemas(pagina);
+    addEvents();
+});
+
+function addEvents(){
+    Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function(element) {
+        element.addEventListener('click', function() {
+            let datosUser = this.closest('tr');
+            let statusProblema = datosUser.querySelectorAll('td').item(3).textContent;
+            const divAdminInfo = document.createElement("div");
+            const divProblemaInfo = document.createElement("div");
+            divAdminInfo.classList.add("AdminInfo", "col");
+            divProblemaInfo.classList.add("ProblemaInfo", "col");
+    
+            let idProblema = datosUser.querySelector('th').textContent; // Utilizamos let para evitar problemas de alcance
+    
+            let colorEstatus = statusColors[statusProblema] || '';
+    
+            divAdminInfo.innerHTML = `
+                <div class='text-center h2'><strong>PROBLEMA #${idProblema}</strong></div>
+                <div class='row h3'><span class='col border border-2'><strong>Estatus</strong></span> <span class='col border border-2 text-center ${colorEstatus}'>${statusProblema}</span></div>
+            `;
+            divProblemaInfo.innerHTML = `<div class='text-center h2'><strong>INFORMACION ENVIADA</strong></div>`;
+    
+            if (["Aceptado", "Procesando", "Rechazado", "Completado"].includes(statusProblema)) {
+                BodyModal.innerHTML = `<div id="loading" class="loading-container">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>`;
+                const baseUrl = `${url.origin}`;
+    
+                fetch(`${baseUrl}/user/reportes/aceptados?id=${idProblema}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (statusProblema === "Aceptado") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
+                                <div class='row h3'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                    <textarea class='col border border-2 text-center'>${data.info_adicional}</textarea></div>
+                            `;
+                        } else if (statusProblema === "Procesando") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                 <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+    
+                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2"  data-bs-dismiss="modal">
+                                        Rechazar
+                                    </button>
+                                    
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2">
+                                        Aceptar
+                                     </button>
+                                </div>
+                            `;
+                        } else if (statusProblema === "Rechazado") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3'><span class='col border border-2'><strong>Rechazado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Fecha de rechazo</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Motivo de rechazo</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
+                            `;
+                        } else if (statusProblema === "Completado") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3'><span class='col border border-2'><strong>Completado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center text-success'>${data.fecha_completado.slice(0, 10)}</span></div>
+                                <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
+                            `;
+                        }
+    
+                        updateProblemInfo(divProblemaInfo, data.ProblemasTabla);
+                        BodyModal.innerHTML = ""; // Limpiamos el contenido anterior
+                        BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
+                        BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
+    
+                        // Configuramos los event listeners después de insertar los botones en el DOM
+                        const btnStatusAceptar = document.querySelector('#aceptar_problema');
+                        const btnStatusRechazar = document.querySelector('#rechazar_problema');
+    
+                        if (btnStatusAceptar) {
+                            btnStatusAceptar.addEventListener('click', function() {
+                            
+                                fetch('/user/academico/sending-report/', {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCookie('csrftoken')
+                                    },
+                                    body: JSON.stringify({ 
+                                        id: idProblema,
+                                        status: 'Aceptado',
+                                        info_adicional: document.querySelector('textarea').value
+                                     })
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    // Manejar la respuesta del servidor aquí
+                                })
+                                .catch(error => {
+                                    console.error('Hubo un problema con la operación fetch:', error);
+                                });
+                            });
+                        }
+    
+                        if (btnStatusRechazar) {
+                            btnStatusRechazar.addEventListener('click', function() {
+                                // Event listener para el botón rechazar
+                                fetch('/user/academico/sending-report/', {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCookie('csrftoken')
+                                    },
+                                    body: JSON.stringify({ 
+                                        id: idProblema,
+                                        status: 'Rechazado',
+                                        info_adicional: document.querySelector('textarea').value
+                                     })
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .catch(error => {
+                                    console.error('Hubo un problema con la operación fetch:', error);
+                                });
+                                
+                            });
+                        }
+    
+                    })
+                    .catch((error) => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            }
+        });
+    });
+}
+
+// Cargar la información de los problemas en la tabla
+function cargarProblemas() {
+    fetch(`/api_registros/problema/`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            problemas = data;
+            numPages = Math.ceil(problemas.length / 10);
+            btnProblemaSiguiente.classList.remove('invisible');
+            mostrarProblemas();
+            addEvents();
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+function mostrarProblemas(pagina=1){
+    let problemasPagina = problemas.slice((pagina-1)*10, pagina*10);
+    contenedorProblemas.innerHTML = "";
+    problemasPagina.forEach((p) => {
+        let tr = document.createElement('tr');
+        let claseEstatus;
+        
+       // Condiciones en JavaScript para asignar el valor a claseEstatus
+        if (p.estatus_problematica === 'Procesando') {
+            claseEstatus = 'estatus-en-proceso';
+        } else if (p.estatus_problematica === 'Aceptado') {
+            claseEstatus = 'estatus-aceptado';
+        } else if (p.estatus_problematica === 'Rechazado') {
+            claseEstatus = 'estatus-rechazado';
+        } else if (p.estatus_problematica === 'Completado') {
+            claseEstatus = 'estatus-completado';
+        }
+
+        tr.classList.add(claseEstatus);
+
+        tr.innerHTML = `
+           <th scope="row">${p.id}</th>
+              <td>${p.user_first_name}#${p.id_usuario} </td>
+              <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
+              <td>${p.gravedad_problema}</td>
+              <td>${p.estatus_problematica}</td>
+              <td>${p.fecha_creacion}</td>
+              <td>
+                <button id="p.${p.id}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
+                  <i class="fa-solid fa-arrow-up-long"></i>
+                </button>
+              </td>
+              <td class="form-check d-flex justify-content-center mb-2">
+                <input class="form-check-input" type="checkbox" name="option1" value="something">
+              </td>
+        `;
+        contenedorProblemas.appendChild(tr);
+    });
+}
 
 function updateProblemInfo(divProblemaInfo, ProblemasTabla) {
     ProblemasTabla.id = null;
@@ -221,3 +330,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+addEvents();
+cargarProblemas();
