@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    fetch('/user/notificaciones/a76783')
+    fetch('/api_registros/notificacion/')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -73,7 +73,7 @@ function displayNotifications(notifications) {
                     </a>`;
                 notificationsContainer.appendChild(notificationElement);
             }
-            fetch(`/user/notificaciones/a76783`, {
+            fetch(`/api_registros/notificacion/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -6,9 +6,6 @@ urlpatterns = [
     path('reportes/', views.user_reportes, name = "user_reportes"),
     path('reportar/', views.user_reportar, name = "user_reportar"),   
     path('cuenta/', views.user_cuenta, name = "user_cuenta"),
-    path('academico/sending-report/', views.sendreport, name = "sendreport"),
-    path('reportes/aceptados', views.tablareport_aceptado, name= "tablareport_aceptado"),
     path('cuenta/cambiar-contraseña/', views.change_password, name='change_password'),
-    path('notificaciones/a76783',views.send_notification, name='send_notification'),
     path('notificaciones',views.user_notificaciones, name='notificaciones'),
     ]

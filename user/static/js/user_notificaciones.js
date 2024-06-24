@@ -16,7 +16,7 @@ Array.from(
 btnEliminar.addEventListener('click', function () {
     let idNotificacion = idnotificacionglobal;
     const registro_actual = document.querySelector(`button[id="${idNotificacion}"]`).closest('tr');
-    fetch(`/user/notificaciones/a76783`, {
+    fetch(`/api_registros/notificacion/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

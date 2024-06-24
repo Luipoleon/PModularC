@@ -208,12 +208,13 @@ boton_reportar.addEventListener('click',function(){
                                         </div>
                                     </div>`;  
 });
+
 // Call the resetAllElements function to reset the values of all form elements
 resetAllElements();
 // Obtener la cadena de consulta de la URL
-var queryString = window.location.search;
-var urlParams = new URLSearchParams(queryString);
-var qValue = urlParams.get('success');
+let queryString = window.location.search;
+let urlParams = new URLSearchParams(queryString);
+let qValue = urlParams.get('success');
 
 if (qValue === 'true'){
     alert('Se envío correctamente!');

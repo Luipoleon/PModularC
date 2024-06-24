@@ -41,7 +41,7 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                                     </div>`;
             const baseUrl = `${url.origin}`;
           
-            fetch(`${baseUrl}/user/reportes/aceptados?id=${idProblema}`)
+            fetch(`${baseUrl}/api_registros/problema/${idProblema}/`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

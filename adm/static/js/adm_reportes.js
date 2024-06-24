@@ -43,7 +43,6 @@ btnProblemaAnterior.addEventListener('click', () => {
     if(pagina <= 1){
         btnProblemaAnterior.classList.add('invisible');
     }
-   
     mostrarProblemas(pagina);
     addEvents();
 });
@@ -76,7 +75,7 @@ function addEvents(){
                                         </div>`;
                 const baseUrl = `${url.origin}`;
     
-                fetch(`${baseUrl}/user/reportes/aceptados?id=${idProblema}`)
+                fetch(`${baseUrl}/api_registros/problema/${idProblema}`)
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -139,14 +138,13 @@ function addEvents(){
                         if (btnStatusAceptar) {
                             btnStatusAceptar.addEventListener('click', function() {
                             
-                                fetch('/user/academico/sending-report/', {
+                                fetch(`/api_registros/problema/${idProblema}/`, {
                                     method: 'PUT',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'X-CSRFToken': getCookie('csrftoken')
                                     },
                                     body: JSON.stringify({ 
-                                        id: idProblema,
                                         status: 'Aceptado',
                                         info_adicional: document.querySelector('textarea').value
                                      })
@@ -169,14 +167,13 @@ function addEvents(){
                         if (btnStatusRechazar) {
                             btnStatusRechazar.addEventListener('click', function() {
                                 // Event listener para el botón rechazar
-                                fetch('/user/academico/sending-report/', {
+                                fetch(`/api_registros/problema/${idProblema}/`, {
                                     method: 'PUT',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'X-CSRFToken': getCookie('csrftoken')
                                     },
                                     body: JSON.stringify({ 
-                                        id: idProblema,
                                         status: 'Rechazado',
                                         info_adicional: document.querySelector('textarea').value
                                      })
