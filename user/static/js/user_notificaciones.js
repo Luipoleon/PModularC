@@ -16,14 +16,13 @@ Array.from(
 btnEliminar.addEventListener('click', function () {
     let idNotificacion = idnotificacionglobal;
     const registro_actual = document.querySelector(`button[id="${idNotificacion}"]`).closest('tr');
-    fetch(`/api_registros/notificacion/`, {
+    fetch(`/api_registros/notificacion/${idNotificacion}/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({'id': `${idNotificacion}`}),
-            })
+        })
         .then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

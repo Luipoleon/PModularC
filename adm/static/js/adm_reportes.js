@@ -75,7 +75,7 @@ function addEvents(){
                                         </div>`;
                 const baseUrl = `${url.origin}`;
     
-                fetch(`${baseUrl}/api_registros/problema/${idProblema}`)
+                fetch(`/api_registros/problema_en_curso/${idProblema}/`)
                     .then((response) => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -126,7 +126,7 @@ function addEvents(){
                             `;
                         }
     
-                        updateProblemInfo(divProblemaInfo, data.ProblemasTabla);
+                        updateProblemInfo(divProblemaInfo, data.problema);
                         BodyModal.innerHTML = ""; // Limpiamos el contenido anterior
                         BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
                         BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
@@ -243,7 +243,7 @@ function mostrarProblemas(pagina=1){
 
         tr.innerHTML = `
            <th scope="row">${p.id}</th>
-              <td>${p.user_first_name}#${p.id_usuario} </td>
+              <td>${p.user_email}#${p.id_usuario} </td>
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
               <td>${p.estatus_problematica}</td>
@@ -261,12 +261,12 @@ function mostrarProblemas(pagina=1){
     });
 }
 
-function updateProblemInfo(divProblemaInfo, ProblemasTabla) {
-    ProblemasTabla.id = null;
-    ProblemasTabla.estatus_problematica = null;
-    ProblemasTabla.id_usuario = null;
+function updateProblemInfo(divProblemaInfo, problema) {
+    problema.id = null;
+    problema.estatus_problematica = null;
+    problema.id_usuario = null;
 
-    Object.entries(ProblemasTabla).forEach(([clave, valor]) => {
+    Object.entries(problema).forEach(([clave, valor]) => {
         if (valor != null) {
             let tipoColorTexto = '';
             if (clave == 'tipo_problema') {

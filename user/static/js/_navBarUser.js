@@ -73,13 +73,12 @@ function displayNotifications(notifications) {
                     </a>`;
                 notificationsContainer.appendChild(notificationElement);
             }
-            fetch(`/api_registros/notificacion/`, {
+            fetch(`/api_registros/notificacion/${notification.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')  // Add this line
                 },
-                body: JSON.stringify({ id: notification.id }),
             })
                 .then(response => {
                     window.location = "/user/notificaciones?id="+notification.id;

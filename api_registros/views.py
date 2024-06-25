@@ -1,58 +1,166 @@
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from user.models import Problema, ProblemaEnCurso, Notification
-from django.forms.models import model_to_dict
 import pytz
+from rest_framework.permissions import IsAuthenticated
 from api_registros.forms import formAcademicos, formBaños, formAreasComunes, formDepartamento
 from login.models import CustomUser
 import json
 from django.core.exceptions import ObjectDoesNotExist
-
+from .serializers import ProblemaSerializer, ProblemaEnCursoSerializer, NotificacionSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 # Zona horaria de México
 timezone = pytz.timezone('America/Mexico_City')
 
-# Problema
-@login_required(login_url='/')
-def problema(request, id = None):
-    if request.method == 'GET':
-        # Obtiene un problema en específico
-        if id:
-            problema_aceptado = get_object_or_404(ProblemaEnCurso, id_problema=id)
-            problema_aceptado_dict = model_to_dict(problema_aceptado)
-            # Agregando bug de fecha aceptado
-            fechaAceptado=problema_aceptado.fecha_aceptado
-            problema_aceptado_dict["fecha_aceptado"]=fechaAceptado
-            # Agregando al diccionario con CustumUser
-            idAdminCustom = problema_aceptado_dict['id_administrador']
-            nameAdminCustomObj = get_object_or_404(CustomUser, id=idAdminCustom)
-            nameAdminCustom= nameAdminCustomObj.first_name + " "+ nameAdminCustomObj.last_name
-            problema_aceptado_dict["adminName"]=nameAdminCustom
-            #agregando datos tabla problema
-            problemaUserObj = get_object_or_404(Problema, id=id)
-            problema_dict=model_to_dict(problemaUserObj)
-            problema_aceptado_dict["ProblemasTabla"]=problema_dict
-
-            response = JsonResponse(problema_aceptado_dict, safe=False) # esta respuesta tiene los datos usados para mostrar en el modal
-            return response
-        
-        # Obtiene todos los problemas
-        problemas = Problema.objects.all().order_by('id')
-        problemas_lista = [model_to_dict(problema) for problema in problemas]
-        # Agregar fecha a campo fecha_creacion
-        for i in range(len(problemas)):
-            # Ajusta la fecha y hora a la zona horaria de México
-            fecha_mexico = problemas[i].fecha_creacion.astimezone(timezone)
-            # Formatea la fecha en el formato día/mes/año (por ejemplo, 22/06/2024)
-            fecha_formateada = fecha_mexico.strftime('%d/%m/%Y')
-            problemas_lista[i]['fecha_creacion'] = fecha_formateada
-            problemas_lista[i]['user_first_name'] = problemas[i].id_usuario.first_name
-
-        return JsonResponse(problemas_lista, safe=False)
+class NotificacionesAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    def get(self, request, *args, **kwargs):
+        # List all objects
+        queryset = Notification.objects.filter(user=request.user).order_by('id')
+        serializer = NotificacionSerializer(queryset, many=True)
+        return Response(serializer.data)
     
-    # Crea un nuevo problema
-    if request.method == 'POST':
+   
+class NotificacionAPIView(APIView):
 
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        if id is not None:
+            # Retrieve a single object
+            try:
+                instance = Notification.objects.get(id=id)
+                if(instance.user != request.user):
+                    return Response({'error': 'Notification does not belong to user'}, status=400)
+                serializer = NotificacionSerializer(instance)
+                return Response(serializer.data)
+            except Problema.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+          return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    @swagger_auto_schema(
+        operation_summary="Mark a notification as read",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['id'],  # Specify required fields here
+            properties={
+                'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID of the notification'),
+            },
+        ),
+        responses={
+            200: "Notification marked as read",
+            400: "Invalid data"
+        }
+    )
+    def put(self, request, *args, **kwargs):
+        notification_id = kwargs.get('id')
+        notification = Notification.objects.get(id=notification_id)
+        if(notification.user != request.user):
+            return Response({'error': 'Notification does not belong to user'}, status=400)
+        notification.read_status = True
+        notification.save()
+        return Response({'message': 'Notification marked as read'}, status=200)
+    
+    @swagger_auto_schema(
+        operation_summary="Delete a notification",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+        ),
+        responses={
+            200: "Notification deleted successfully",
+            400: "Invalid data"
+        }
+    )
+    def delete(self, request, *args, **kwargs):
+        try:
+            # Parse JSON body
+            notification_id = kwargs.get('id')
+
+            # Check if ID is provided
+            if not notification_id:
+                return Response({'error': 'Notification ID not provided'}, status=400)
+            
+            try:
+                # Retrieve notification by ID
+                notification = Notification.objects.get(id=notification_id)
+                if(notification.user != request.user):
+                    return Response({'error': 'Notification does not belong to user'}, status=400)
+                notification.delete()
+                return Response({'message': 'Notification deleted successfully'}, status=200)
+            
+            except ObjectDoesNotExist:
+                return Response({'error': 'Notification not found'}, status=404)
+        
+        except json.JSONDecodeError:
+            return Response({'error': 'Invalid JSON'}, status=400)
+        
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)  
+        
+class ProblemasAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    def get(self, request, *args, **kwargs):
+        # List all objects
+        queryset = Problema.objects.all().order_by('id')
+        serializer = ProblemaSerializer(queryset, many=True)
+        list = serializer.data.copy()
+        
+        if request.user.is_staff:
+            # Add user.email to every dict in list
+            if request.user.is_staff:
+                # Add user.email to every dict in list
+                for item in list:
+                    item['user_email'] = request.user.email
+           
+        return Response(list)
+    
+    @swagger_auto_schema(
+        operation_summary="Create a new Problema object",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['id_usuario', 'tipo_edificio', 'tipo_problema', 'gravedad_problema', 'descripcion_problema', 'ubicacion_exacta'],  # Specify required fields here
+            properties={
+                'id_usuario': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID of the user'),
+                'tipo_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Type of building'),
+                'estatus_problematica': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='Procesando'),
+                'letra_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Letter of the building', default=None, blank=True, null=True),
+                'numero_salon': openapi.Schema(type=openapi.TYPE_INTEGER, description='Number of the salon', default=None, blank=True, null=True),
+                'piso_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Floor of the bathroom', default=None, blank=True, null=True),
+                'tipo_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Type of bathroom', default=None, blank=True, null=True,),
+                'edificio_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Building of the bathroom', default=None, blank=True, null=True),
+                'tipo_area': openapi.Schema(type=openapi.TYPE_STRING, description='Type of common area', default=None, blank=True, null=True),
+                'ubicacion_area': openapi.Schema(type=openapi.TYPE_STRING, description='Location of the common area', default=None, blank=True, null=True),
+                'tipo_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Type of department', default=None, blank=True, null=True),
+                'tipo_edificio_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Type of building for department', default=None, blank=True, null=True),
+                'ubicacion_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Location of the department', default=None, blank=True, null=True),
+                'tipo_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Type of problem'),
+                'gravedad_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Severity of the problem'),
+                'descripcion_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Description of the problem'),
+                'ubicacion_exacta': openapi.Schema(type=openapi.TYPE_STRING, description='Exact location of the problem', default=None, blank=True, null=True),
+            },
+        ),
+        responses={
+            201: ProblemaSerializer,
+            400: "Invalid data"
+        }
+    )
+
+    def post(self, request, *args, **kwargs):
         tipoEdificio = request.POST.get("tipo_edificio")
 
         if tipoEdificio == "Academico":
@@ -63,107 +171,127 @@ def problema(request, id = None):
             form = formAreasComunes(request.POST)
         elif tipoEdificio == "Departamento":
             form = formDepartamento(request.POST)
-      
+        
         if form.is_valid():
-            report=Problema.objects.create(
-                id_usuario=request.user,
-                tipo_edificio=tipoEdificio,
-                tipo_problema=form.cleaned_data["tipo_problema"],
-                gravedad_problema=form.cleaned_data["gravedad_problema"],
-                descripcion_problema=form.cleaned_data["descripcion_problema"],
-                ubicacion_exacta=form.cleaned_data["ubicacion_exacta"]
-            )
-            reporteEnProceso = ProblemaEnCurso.objects.create(
-                id_problema=report,
-                id_administrador=CustomUser.objects.get(id=1),
-                info_adicional="...",
-            )
-            if tipoEdificio == "Academico":
-                report.letra_edificio=form.cleaned_data["letra_edificio"]
-                report.numero_salon=form.cleaned_data["numero_salon"]
-            elif tipoEdificio == "Baños":
-                report.piso_baño=form.cleaned_data["piso_baño"]
-                report.tipo_baño=form.cleaned_data["tipo_baño"]
-                report.edificio_baño=form.cleaned_data["edificio_baño"]
-            elif tipoEdificio == "Áreas comunes":
-                report.tipo_area=form.cleaned_data["tipo_area_comun"]
-                report.ubicacion_area=form.cleaned_data["ubicacion_area"]
-            elif tipoEdificio == "Departamento":
-                tipo_edificio_departamento = form.cleaned_data["tipo_edificio_departamento"]
-                ubicacion_departamento = report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
-                report.tipo_departamento=form.cleaned_data["tipo_departamento"]
-                if tipo_edificio_departamento == '':
-                    report.ubicacion_departamento=form.cleaned_data["ubicacion_departamento"]
-                elif ubicacion_departamento == '':
-                    report.tipo_edificio_departamento=form.cleaned_data["tipo_edificio_departamento"]
 
-            report.save()
-            reporteEnProceso.save()
+            data = form.cleaned_data
+            data['id_usuario'] = request.user.id
+            serializer = ProblemaSerializer(data=data)
+            if serializer.is_valid():
+                report = serializer.save()
+                reporteEnProceso = ProblemaEnCursoSerializer(data={
+                    'id_problema': report.id,
+                    'id_administrador': 1,
+                    'info_adicional': '...'
+                })
+                if reporteEnProceso.is_valid():
+                    reporteEnProceso.save()
+                else:
+                    return Response(reporteEnProceso.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(reporteEnProceso.errors, status=status.HTTP_400_BAD_REQUEST)
 
             return HttpResponseRedirect('/user/reportar?success=true')
         
         return HttpResponseRedirect('/user/reportar?success=false')
-    
-    # Actualiza el estado de un problema
-    if request.method == "PUT":
-        if not id:
-            return JsonResponse({'message': 'No se ha proporcionado un ID'}, status=400)
-        # Parse JSON body
-        datos = json.loads(request.body)
-        problema_id = id
-        estatus_problema = datos.get('status')
-        info_adicional = datos.get('info_adicional')
+        
+class ProblemaAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
 
-        problema = Problema.objects.get(id = problema_id)
-        problema_en_curso = ProblemaEnCurso.objects.get(id_problema = problema)
-
-        problema.estatus_problematica = estatus_problema
-        problema_en_curso.info_adicional = info_adicional
-
-        problema.save()
-        problema_en_curso.save()
-
-        return JsonResponse({'message': 'Reporte actualizado exitosamente'}, status=200)
-    
-    return HttpResponse("Hello, world. You're at the polls index.")
-
-@login_required(login_url='/')
-def notificacion(request):
-    if request.method == "GET":
-        notifications = Notification.objects.filter(user=request.user).values(
-            'id', 'user', 'type', 'title', 'message', 'created_at', 'updated_at', 'read_status'
-        )
-        notifications_list = list(notifications)
-        return JsonResponse(notifications_list, safe=False)
-    
-    if request.method == "PUT":
-        data = json.loads(request.body)
-        notification = Notification.objects.get(id=data['id'])
-        notification.read_status = True
-        notification.save()
-        return JsonResponse({'message': 'Notificación marcada como leída'}, status=200)
-    
-    if request.method== "DELETE":
-        try:
-            # Parse JSON body
-            data = json.loads(request.body)
-            notification_id = data.get('id')
-
-            # Check if ID is provided
-            if not notification_id:
-                return JsonResponse({'error': 'Notification ID not provided'}, status=400)
-            
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        if id is not None:
+            # Retrieve a single object
             try:
-                # Retrieve notification by ID
-                notification = Notification.objects.get(id=notification_id)
-                notification.delete()
-                return JsonResponse({'message': 'Notification deleted successfully'}, status=200)
-            
-            except ObjectDoesNotExist:
-                return JsonResponse({'error': 'Notification not found'}, status=404)
+                instance = Problema.objects.get(id=id)
+                serializer = ProblemaSerializer(instance)
+                return Response(serializer.data)
+            except Problema.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+          return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    @swagger_auto_schema(
+        operation_summary="Change problem status",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['estatus'],  # Specify required fields here
+            properties={
+                'estatus': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem'),
+                'info_adicional' : openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='...'),
+            },
+        ),
+        responses={
+            201: ProblemaSerializer,
+            400: "Invalid data"
+        }
+    )
+    def put(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        estatus = request.data['status']
+        info_adicional = request.data["info_adicional"]
+        if id is not None:
+            try:
+                instance = Problema.objects.get(id=id)
+                instance.estatus_problematica = estatus
+                instance.info_adicional = info_adicional
+                instance.save()
+                return Response({'message': 'Status changed'}, status=200)
+                
+            except Problema.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+   
+
+class ProblemasEnCursoAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    def get(self, request, *args, **kwargs):
+        # List all objects
+        queryset = ProblemaEnCurso.objects.all().order_by('id')
+        serializer = ProblemaEnCursoSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    
+class ProblemaEnCursoAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    @swagger_auto_schema(
+    operation_summary="Retrieve a single Problema object",
+        responses={
+            200: ProblemaSerializer,
+            404: "Object not found"
+        }
+    )
+
+
+    def get(self, request, *args, **kwargs):
+        id_problema = kwargs.get('id_problema')
+        if id_problema is not None:
+            # Retrieve a single object
+            try:
+                instance = ProblemaEnCurso.objects.get(id_problema=id_problema)
+                serializer = ProblemaEnCursoSerializer(instance)
+                dict = serializer.data.copy()
+                problema = Problema.objects.get(id=dict['id_problema'])
+                serializer = ProblemaSerializer(problema)
+
+                dict['problema'] = serializer.data
+                dict['adminName'] = instance.id_administrador.first_name
+                dict.pop('id_problema', None)
+                return Response(dict)
+            except ProblemaEnCurso.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
         
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-        
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)

@@ -41,7 +41,7 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                                     </div>`;
             const baseUrl = `${url.origin}`;
           
-            fetch(`${baseUrl}/api_registros/problema/${idProblema}/`)
+            fetch(`${baseUrl}/api_registros/problema_en_curso/${idProblema}/`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -79,7 +79,7 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                         `;
                     }
 
-                    updateProblemInfo(divProblemaInfo, data.ProblemasTabla);
+                    updateProblemInfo(divProblemaInfo, data.problema);
                     BodyModal.innerHTML = "";
                     BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
                     BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
@@ -91,12 +91,12 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
     });
 });
 
-function updateProblemInfo(divProblemaInfo, ProblemasTabla) {
-    ProblemasTabla.id = null;
-    ProblemasTabla.estatus_problematica = null;
-    ProblemasTabla.id_usuario = null;
+function updateProblemInfo(divProblemaInfo, problema) {
+    problema.id = null;
+    problema.estatus_problematica = null;
+    problema.id_usuario = null;
 
-    Object.entries(ProblemasTabla).forEach(([clave, valor]) => {
+    Object.entries(problema).forEach(([clave, valor]) => {
         if (valor != null) {
             let tipoColorTexto = '';
             if (clave == 'tipo_problema') {
