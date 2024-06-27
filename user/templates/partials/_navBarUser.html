@@ -1,79 +1,5 @@
 {% load static %}
-<style>
-  .navbar{
-    background: linear-gradient(50deg, #5c9ead 94%, #cb8464 100%) ;
-  }
 
-  .bell{
-    border: 0.1rem solid #f8f8f8;
-   
-  } 
-
-
-  .clicked{
-    color: #f2cfbf;
-    border: 0.1rem solid #f2cfbf;
-  }
-
-  
-
-  .exclamacion{
-    position: absolute;
-    top: 0rem;
-    right: 1.6rem;
-    color: red;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    padding: 0.2rem;
-    opacity: 0;
-  }
-
-  .bell.notifications i:nth-of-type(1){
-    color: #fff59d;
-   
-  }
-  
-  .bell.notifications .exclamacion{
-    opacity: 1;
-  }
-
-
-
-
-  #notifications-container{
-    margin-left: -0.5rem;
-    padding: 0 !important; 
-  }
-  .notifications .dropdown-toggle::after{
-    display: none !important;
-  }
-
-
-  .notification {
-      width: 25rem;
-      padding: 0.10rem;
-      padding-left: 1rem;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      background-color: #f8f9fa;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease;
-  }
-  .notification:hover {
-      background-color: #e2e6ea;
-  }
-  .notification h3 {
-      margin: 0;
-      font-size: 1.25em;
-      color: #343a40;
-  }
-  .notification p {
-      margin: 5px 0 10px;
-      color: #6c757d;
-      text-decoration: none !important;
-  }
- 
-</style>
 <nav class="navbar p-2 navbar-expand-lg navbar-light sticky-top PrincipalMenu f-flex align-items-center" id="topmenu" >
   <div class="container-fluid menumovimiento">
     <!-- <a class="navbar-brand" href="#"><img src="Logo" alt=""></a> -->
@@ -137,9 +63,3 @@
         
       </div>
 </nav>
-<script src="{% static 'js/_navBarUser.js'%}"></script>
-<script
-
-  src="https://kit.fontawesome.com/72399c8f18.js"
-  crossorigin="anonymous"
-></script>

@@ -1,4 +1,3 @@
-@import url("../css/styles.css");
 
 /* :root {
   --primary-color: #e2936f;
@@ -17,49 +16,7 @@ colores grises
 body{
   background-color: var(--tertiary-color);
 }
-#botfooter{
-  background-color: var(--primary-color)!important;
-}
-.PrincipalMenu{
-  z-index: 1000;
-  background-color: var(--secondary-color-light)!important;
-  margin: 0 auto;
-  padding: 0;
-  width: 100%;
-}
-.menu{
-  transition: all 0.3s;
-  text-decoration: none;
-  color: var(--dark-grey);
-  font-size: 18px;
-  width: 100%;
-  margin: 2px;
-}
-#MenuPicked{
-  background: linear-gradient(50deg, #ddd 0%, #fff 100%);
-  opacity: 0.9;
-  border-radius: 4px;
-  width: 100%;
-  margin-top: 1;
-  font-weight: bold;
-  box-shadow: 1px 2px 2px  #11111127;
-  padding: initial 2rem !important;
 
-}
-
-.menumovimiento{
-  width: 100%;
-}
-.menu:hover{
-  color: var(--primary-color-light);
-  transform: scale(1.05);
-}
-.menuconfig{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 30px;
-}
 .Lnombre{
   margin-right: 1%;
 }
