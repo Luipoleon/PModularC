@@ -1,0 +1,7 @@
+@import url("styles.9d1db68e6e20.css");
+.logo{
+    border-radius: 50%;
+}
+#botfooter{
+    background-color: var(--primary-color)!important;
+}

@@ -7,12 +7,13 @@ from api_registros.forms import formAcademicos, formBaños, formAreasComunes, fo
 from login.models import CustomUser
 import json
 from django.core.exceptions import ObjectDoesNotExist
-from .serializers import ProblemaSerializer, ProblemaEnCursoSerializer, NotificacionSerializer
+from .serializers import ProblemaSerializer, ProblemaEnCursoSerializer, NotificacionSerializer, UsuarioSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from login.forms import LoginForm, RegisterForm
 # Zona horaria de México
 timezone = pytz.timezone('America/Mexico_City')
 
@@ -109,6 +110,7 @@ class NotificacionAPIView(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=500)  
         
+
 class ProblemasAPIView(APIView):
     """
     View for handling both list and retrieve operations based on the request type.
@@ -195,6 +197,7 @@ class ProblemasAPIView(APIView):
         
         return HttpResponseRedirect('/user/reportar?success=false')
         
+
 class ProblemaAPIView(APIView):
     """
     View for handling both list and retrieve operations based on the request type.
@@ -294,4 +297,86 @@ class ProblemaEnCursoAPIView(APIView):
         else:
             return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
+class UsuariosAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    def get(self, request, *args, **kwargs):
+        # List all objects
+        queryset = CustomUser.objects.all().order_by('id')
+        serializer = UsuarioSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    # @swagger_auto_schema(
+    #     operation_summary="Create a new user",
+    #     request_body=openapi.Schema(
+    #         type=openapi.TYPE_OBJECT,
+    #         required=['email', 'first_name', 'last_name', 'password'],  # Specify required fields here
+    #         properties={
+    #             'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email of the user'),
+    #             'first_name': openapi.Schema(type=openapi.TYPE_STRING, description='First name of the user'),
+    #             'last_name': openapi.Schema(type=openapi.TYPE_STRING, description='Last name of the user'),
+    #             'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password of the user'),
+    #         },
+    #     ),
+    #     responses={
+    #         201: UsuarioSerializer,
+    #         400: "Invalid data"
+    #     }
+    # )
+
+    # def post():
+    #     pass
+
+    
+class UsuarioAPIView(APIView):
+    """
+    View for handling both list and retrieve operations based on the request type.
+    """
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        if id is not None:
+            # Retrieve a single object
+            try:
+                instance = CustomUser.objects.get(id=id)
+                serializer = UsuarioSerializer(instance)
+                return Response(serializer.data)
+            except CustomUser.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+          return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
         
+    @swagger_auto_schema(
+        operation_summary="Change user data and password",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['password', 'current_password'],  # Specify required fields here
+            properties={
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='New password'),
+                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Current password'),
+            },
+        ),
+        responses={
+            200: "Password changed",
+            400: "Invalid data"
+        }
+    )
+    def put(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        password = request.data['password']
+        current_password = request.data['current_password']
+        if id is not None:
+            try:
+                instance = CustomUser.objects.get(id=id)
+                if not instance.check_password(current_password):
+                    return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+                instance.set_password(password)
+                instance.save()
+                return Response({'message': 'Password changed'}, status=200)
+                
+            except CustomUser.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,0 +1,42 @@
+
+/* :root {
+  --primary-color: #e2936f;
+  --primary-color-light: #e39774;
+  --primary-color-light-2: #f2cfbf;
+  --secondary-color-light: #5c9ead;
+  --secondary-color-dark: #326273;
+  --tertiary-color: #eee;
+
+colores grises
+  --dark-grey: #333;
+  --ligth-grey: #999;
+} */
+
+
+body{
+  background-color: var(--tertiary-color);
+}
+
+
+#mireportes{
+  background-color: var(--primary-color-light-2);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  margin: 3rem auto 10rem;
+}
+
+
+.estatus-leido{
+   background-color: #ccc /* Gris claro */
+}
+
+.estatus-no-leido {
+  background-color: #eaeaea;  /* Blanco */
+}
+
+
+.notifications-container{
+  display: flex;
+  height: 100vh;
+}

@@ -1,83 +1,4 @@
 {% load static %}
-<style>
-  .navbar {
-    background: linear-gradient(50deg, #333 93%, #eee 100%);
-  }
-  .bell {
-    border: 0.1rem solid #f8f8f8;
-  }
-  #MenuPicked{
-  background: linear-gradient(50deg, #ddd 0%, #fff 100%);
-  color: black !important;
-  opacity: 0.9;
-  border-radius: 4px;
-  width: 100%;
-  margin-top: 1;
-  font-weight: bold;
-  box-shadow: 1px 2px 2px  #11111127;
-  padding: initial 2rem !important;
-
-}
-  .navbar-nav .nav-link.active {
-    background-color: #f2cfbf !important;
-    color: #fff !important;
-  }
-
-  .exclamacion {
-    position: absolute;
-    top: 0rem;
-    right: 1.6rem;
-    color: red;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    padding: 0.2rem;
-    opacity: 0;
-  }
-
-  .bell.notifications i:nth-of-type(1) {
-    color: #fff59d;
-  }
-
-  .bell.notifications .exclamacion {
-    opacity: 1;
-  }
-
-  #notifications-container {
-    margin-left: -0.5rem;
-    padding: 0 !important;
-  }
-
-  .notifications .dropdown-toggle::after {
-    display: none !important;
-  }
-
-  .notification {
-    width: 25rem;
-    padding: 0.10rem;
-    padding-left: 1rem;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-  }
-
-  .notification:hover {
-    background-color: #e2e6ea;
-  }
-
-  .notification h3 {
-    margin: 0;
-    font-size: 1.25em;
-    color: #343a40;
-  }
-
-  .notification p {
-    margin: 5px 0 10px;
-    color: #6c757d;
-    text-decoration: none !important;
-  }
-</style>
 
 <nav class="navbar navbar-expand-lg navbar-light sticky-top PrincipalMenu" id="topmenu">
   <div class="container-fluid menumovimiento">
@@ -105,15 +26,15 @@
         <div class="Lnombre px-4 m-1">
           <h1 class="fs-4 pt-2 px-3">
             <span class="fs-8 p-2 rounded bg-gradient" style="background-color: #dadaff">
-              <i class="fa-solid fa-user"></i>
+              <i class="fa-solid fa-user"> </i>
             </span>
             <span class="ms-4 text-light">{{ user.first_name }} {{ user.last_name }}</span>
           </h1>
         </div>
 
         <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle menu fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-gear "></i>
+          <a class="nav-link dropdown-toggle menu fs-4"  style="color: #000 !important;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-gear "  style="color: #000 !important;"> </i>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="fs-3 dropdown-item menu" href="{% url 'user_cuenta' %}">Cuenta</a></li>
@@ -126,6 +47,3 @@
     </div>
   </div>
 </nav>
-
-<script src="{% static 'js/_navBarUser.js' %}"></script>
-<script src="https://kit.fontawesome.com/72399c8f18.js" crossorigin="anonymous"></script>

@@ -1,12 +1,5 @@
 {% load static %}
-<style> 
-    .logo{
-        border-radius: 50%;
-    }
-  
-</style>
-
-<footer class="text-dark py-5 fixed-bottom" id="botfooter">
+<footer class="text-dark py-5" id="botfooter">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3 mb-4 ps-5 pt-1">
@@ -16,22 +9,25 @@
             <div class="col-lg-3 mb-4">
                 <h5 class="mb-3 fw-bold">Navegación</h5>
                 <ul class="list-unstyled py-2 fs-6 fw-lighter">
-                    <li><a class = "fs-5 link-dark fw-normal" href="{%url 'inicio'%}">Inicio</a></li>
-                    <li><a class = "fs-5 link-dark fw-normal" href="{%url 'info'%}">Informacion</a></li>
-                    <li><a class = "fs-5 link-dark fw-normal" href="{%url 'edificios' %}">Edificios</a></li>
-                    <li><a class = "fs-5 link-dark fw-normal" href="{%url 'reportes'%}">Reportes</a></li>
+                    <li><a class = "fs-5 link-dark fw-normal" href="{% url 'user_index' %}">Inicio</a></li>
+                    <li><a class = "fs-5 link-dark fw-normal" href="{% url 'user_reportes' %}">Mis reportes</a></li>
+                    <li><a class = "fs-5 link-dark fw-normal" href="{% url 'user_reportar' %}">Reportar</a></li>
                 </ul>
             </div>
-            
+            <div class="col-lg-3 mb-4">
+                <h5 class="mb-3 fw-bold">Contacto</h5>
+                <ul class="list-unstyled text-secondary py-2 fs-6 fw-lighter">
+                    <li><a class = "fs-5 link-dark fw-normal" href="#">Envianos un mensaje</a></li>
+                </ul>
+            </div>
             <div class="col-lg-3 mb-4">
                 <h5 class="mb-3 fw-bold">Ayuda</h5>
                 <ul class="list-unstyled text-secondary py-2 fs-6 fw-lighter">
-                    <li><a class = "fs-5 link-dark fw-normal" href="#">Guía para Administradores</a></li>
+                    <li><a class = "fs-5 link-dark fw-normal" href="#">Guía de uso</a></li>
                     
                 </ul>
             </div>
         </div>
-        
     </div>
     </div>
 </footer>

@@ -1,0 +1,79 @@
+@import url("styles.css");
+
+.navbar {
+    background: linear-gradient(50deg, #333 93%, #eee 100%);
+  }
+  .bell {
+    border: 0.1rem solid #f8f8f8;
+  }
+  #MenuPicked{
+  background: linear-gradient(50deg, #ddd 0%, #fff 100%);
+  color: black !important;
+  opacity: 0.9;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 1;
+  font-weight: bold;
+  box-shadow: 1px 2px 2px  #11111127;
+  padding: initial 2rem !important;
+
+}
+  .navbar-nav .nav-link.active {
+    background-color: #f2cfbf !important;
+    color: #fff !important;
+  }
+
+  .exclamacion {
+    position: absolute;
+    top: 0rem;
+    right: 1.6rem;
+    color: red;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    padding: 0.2rem;
+    opacity: 0;
+  }
+
+  .bell.notifications i:nth-of-type(1) {
+    color: #fff59d;
+  }
+
+  .bell.notifications .exclamacion {
+    opacity: 1;
+  }
+
+  #notifications-container {
+    margin-left: -0.5rem;
+    padding: 0 !important;
+  }
+
+  .notifications .dropdown-toggle::after {
+    display: none !important;
+  }
+
+  .notification {
+    width: 25rem;
+    padding: 0.10rem;
+    padding-left: 1rem;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .notification:hover {
+    background-color: #e2e6ea;
+  }
+
+  .notification h3 {
+    margin: 0;
+    font-size: 1.25em;
+    color: #343a40;
+  }
+
+  .notification p {
+    margin: 5px 0 10px;
+    color: #6c757d;
+    text-decoration: none !important;
+  }

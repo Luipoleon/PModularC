@@ -1,55 +1,30 @@
+{% extends 'adm_base.html' %}
+
 {% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Adm Información</title>
-    <link rel="stylesheet" href="{% static 'css/user_reportes.css' %}" />
+{% block title %}Información de Uso{% endblock %}
 
-    <title></title>
-  </head>
-  <body>
-    <div>
-      {% include 'partials/_menu.html' %}
-    </div>
-    
-    <div id="content" class="text-center py-5">
-        <h1 style="margin-top: 50px;">Información de Uso</h1>
-        <div class="container mt-5">
-          <div class="row justify-content-center">
-            <div class="col-lg-8">
-              <div class="alert alert-info" role="alert">
-                Esta es una página web en la que se manejarán reportes de mantenimiento de los edificios de CUCEI, para así poder lograr un mejor centro universitario decente y adecuado para sus estudiantes.
-              </div>
-              <div class="alert alert-info" role="alert">
-                Para el uso de esta aplicación web desde esta vista de Administrador, logramos conocer acerca de las pestañas de "Edificios", "Reportes" y "Configuración". Dentro de "Edificios" Será posible ver
-                un listado de edificios, edificios académicos y otros edificios para así llevar un control de su mantenimiento, en la pestaña de "Reportes" podremos ver todo el historial y listado de los reportes
-                tanto pendientes como a los que se les está dando seguimiento y los que han finalizado. Para cualquier duda o comentario acerca de todo esto, favor de contactarse con los desarrolladores Saludos!!
-              </div>
-            </div>
-          </div>
+{% block css %} 
+  <link rel="stylesheet" href="{% static 'css/admIndex.css' %}" /> 
+{% endblock %}
+
+{% block contenido %}
+<div id="content" class="text-center py-5">
+  <h1 style="margin-top: 50px;">Información de Uso</h1>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="alert alert-info" role="alert">
+          Esta es una página web en la que se manejarán reportes de mantenimiento de los edificios de CUCEI, para así poder lograr un mejor centro universitario decente y adecuado para sus estudiantes.
         </div>
-    </div>
-    
-    <div class="card1 col-lg-4">
-      <div class="text-center py-5">
+        <div class="alert alert-info" role="alert">
+          Para el uso de esta aplicación web desde esta vista de Administrador, logramos conocer acerca de las pestañas de "Edificios", "Reportes" y "Configuración". Dentro de "Edificios" Será posible ver
+          un listado de edificios, edificios académicos y otros edificios para así llevar un control de su mantenimiento, en la pestaña de "Reportes" podremos ver todo el historial y listado de los reportes
+          tanto pendientes como a los que se les está dando seguimiento y los que han finalizado. Para cualquier duda o comentario acerca de todo esto, favor de contactarse con los desarrolladores Saludos!!
+        </div>
       </div>
     </div>
+  </div>
+</div>
+{% endblock %}
 
-    {% include './partials/_footeradm.html'%}
-
-  <div
-      class="modal fade"
-      id="InformacionReportes"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSf

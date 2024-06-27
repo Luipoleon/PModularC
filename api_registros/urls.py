@@ -24,6 +24,8 @@ urlpatterns = [
     path('problema/<int:id>/', views.ProblemaAPIView.as_view(), name="problema_con_id"),
     path('problema_en_curso/', views.ProblemasEnCursoAPIView.as_view(), name="problema_en_curso"),
     path('problema_en_curso/<int:id_problema>/', views.ProblemaEnCursoAPIView.as_view(), name="problema_en_curso_con_id"),
+    path('usuario/', views.UsuariosAPIView.as_view(), name="usuarios"),
+    path('usuario/<int:id>/', views.UsuarioAPIView.as_view(), name="usuario_con_id"),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
 ]

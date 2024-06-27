@@ -2,7 +2,7 @@
 
 @media screen and (min-width: 1400px) {
   html {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -60,6 +60,8 @@
   perspective: 200rem; /* Add 3D effect */
   width: 42rem;
   height: 58rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .flip-card-inner {
@@ -209,4 +211,9 @@ div.login-error.invisible {
 .modal-buttons button {
   padding: 1rem 1.5rem;
   font-weight: 500;
+}
+
+.spinner-border {
+  width: 1.6rem;
+  height: 1.6rem;
 }
