@@ -18,8 +18,8 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
     
     element.addEventListener('click', function () {
         let datosUser = this.closest('tr');
-        let idProblema = datosUser.querySelector('th').textContent;
-        let statusProblema = datosUser.querySelectorAll('td').item(1).textContent;
+        let idProblema = datosUser.querySelector('th span').textContent;
+        let statusProblema = datosUser.querySelectorAll('td').item(1).querySelector('span').textContent;
         const divAdminInfo = document.createElement("div");
         const divProblemaInfo = document.createElement("div");
         divAdminInfo.classList.add("AdminInfo", "col");

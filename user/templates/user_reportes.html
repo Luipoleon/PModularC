@@ -10,7 +10,7 @@
 
 {% block contenido %}
   <div class="container" id="mireportes">
-    <h1 class="fw-bold display-5" id="newarrivals">Mis reportes</h1>
+    <h1 class="fw-bold display-5 text-center mb-5" id="newarrivals">Mis reportes</h1>
     <div class="row">
       <table class="table" >
         <thead>
@@ -25,15 +25,17 @@
         </thead>
         <tbody>
           {% for p in problemas %}
-          <tr class="
+          <tr>
+            <th scope="row">
+              <span class="bg-light rounded-pill p-2">{{p.id}}</span>
+            </th>
+            <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
+            <td> <span  class="
               {% if p.estatus_problematica == 'Procesando' %}estatus-en-proceso{% endif %}
               {% if p.estatus_problematica == 'Aceptado' %}estatus-aceptado{% endif %}
               {% if p.estatus_problematica == 'Rechazado' %}estatus-rechazado{% endif %}
               {% if p.estatus_problematica == 'Completado' %}estatus-completado{% endif %}
-          ">
-            <th scope="row">{{p.id}}</th>
-            <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
-            <td>{{p.estatus_problematica}}</td>
+          ">{{p.estatus_problematica}}</span></td>
             <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
             <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|time:"H:i:s"}}</td>
             <td><button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 

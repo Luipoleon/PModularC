@@ -12,23 +12,12 @@ colores grises
   --ligth-grey: #999;
 } */
 
-/* @media screen and (min-width: 1400px) {
-  html {
-    font-size: 0.5rem;
-  }
-}
-
-@media screen and (min-height: 1000px) {
-  html {
-    font-size: 1rem;
-  }
-} */
 
 body{
   background-color: var(--tertiary-color);
   width: 100%;
 }
-
+ 
 .TReportes{
   display: block;
   text-align: center;
@@ -36,24 +25,25 @@ body{
 }
 .losreportes{
   display: flex;
+  flex-wrap: wrap;
   background-color: var(--primary-color-light-2);
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 1px;
-  width: 100vw;
+  width: 120.5rem;
 }
 .mireportes{
   display: grid;
   background-color: #ecdcd5 ;
   margin: 0 auto;
   padding: 1px;
-  width: 100%;
+  width: 60rem;
 }
 .mireportes1{
   display: grid;
   background-color: var(--primary-color-light-2);
   margin: 1px;
   padding: 1px;
-  width: 100%;
+  width: 60rem;
 }
 .opciones{
   display:inline-block;
