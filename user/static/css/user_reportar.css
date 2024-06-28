@@ -17,7 +17,18 @@ body{
   background-color: var(--tertiary-color);
   width: 100%;
 }
- 
+
+section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 1px;
+  width: 120.5rem;
+  border-radius: 2rem;
+}
+
 .TReportes{
   display: block;
   text-align: center;
@@ -30,6 +41,7 @@ body{
   margin: 2rem auto;
   padding: 1px;
   width: 120.5rem;
+  border-radius: 2rem;
 }
 .mireportes{
   display: grid;
@@ -37,6 +49,7 @@ body{
   margin: 0 auto;
   padding: 1px;
   width: 60rem;
+  border-radius: 2rem 0 0 2rem;
 }
 .mireportes1{
   display: grid;
@@ -44,6 +57,7 @@ body{
   margin: 1px;
   padding: 1px;
   width: 60rem;
+  border-radius: 0 2rem 2rem 0;
 }
 .opciones{
   display:inline-block;
