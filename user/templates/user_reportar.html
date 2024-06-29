@@ -9,7 +9,7 @@
 
 {% block contenido %}
   <section>
-    <form action="{% url 'problema'%}" method="post">
+    <form action="{% url 'problema'%}" method="POST">
       {% csrf_token %}
       <div class="container losreportes"> 
         <div class="container mireportes">
@@ -147,14 +147,13 @@
           <button id="btn-abrir-modal" class="btn enviar" type="button">Enviar</button>
         </div>
       </div>
+      {% include 'partials/modal_user-reportar.html'%}
     </form>
+
   </section>
    
 {% endblock %}
 
-{% block modal %}
-    {% include 'partials/modal_user-reportar.html'%}
-{% endblock %}
 
 {% block scripts %}
     <script src="{% static 'js/user_reportar.js' %}"></script>

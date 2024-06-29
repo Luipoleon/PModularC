@@ -1,7 +1,6 @@
 'use strict';
 
 // Select current page on menú to add class 'MenuPicked'
-
 const reportar = document.querySelectorAll('.nav-item a').item(2);
 let BodyModal = document.querySelector('.modal-body');
 const boton_reportar = document.querySelector('#mandar_reporte_btn');
