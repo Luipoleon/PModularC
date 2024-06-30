@@ -50,8 +50,6 @@ def register(request):
            lastname = form.cleaned_data["lastname"]
 
            validUser = {'email': email}
-
-           print(userExists(email))
            
            if not userExists(email):
                 user = CustomUser.objects.create_user(email=email, password = password)

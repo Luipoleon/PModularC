@@ -1,0 +1,10 @@
+services:
+  django:
+    build: .
+    ports:
+      - "80:8000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: always
