@@ -1,6 +1,7 @@
 services:
   django:
     build: .
+    # image: luishmc/pmodularc-django:latest
     ports:
       - "80:8000"
     volumes:
