@@ -69,10 +69,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
    
 ]
-CORS_ALLOW_CREDENTIALS = True
-
 CORS_ALLOWED_ORIGINS = [
-    "https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net",
+    "https://mantenimientocucei.azurewebsites.net",
+    "http://mantenimientocucei.azurewebsites.net",
 ]
 
 ROOT_URLCONF = 'mysite.urls'
