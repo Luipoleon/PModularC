@@ -2,17 +2,24 @@
 @import url("_navbar_user.css");
 @import url("_footer_user.css");
 
+@media screen and (min-width: 300px) {
+  html {
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 0.5rem;
+  }
+}
+
 @media screen and (min-width: 1400px) {
-    html {
-      font-size: 0.6rem;
-    }
+  html {
+    font-size: 0.6rem;
   }
+}
   
-  @media screen and (min-height: 1000px) {
-    html {
-      font-size: 1rem;
-    }
-  }
 
   /* width */
 body ::-webkit-scrollbar {
@@ -30,3 +37,4 @@ body ::-webkit-scrollbar-thumb {
   background: #aaa;
   border-radius: 10px;
 }
+
