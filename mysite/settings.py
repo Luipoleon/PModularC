@@ -72,7 +72,28 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://mantenimientocucei.azurewebsites.net",
     "http://mantenimientocucei.azurewebsites.net",
+     "http://localhost:8000",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
 
 ROOT_URLCONF = 'mysite.urls'
 BASE_DIR = Path(__file__).resolve().parent.parent
