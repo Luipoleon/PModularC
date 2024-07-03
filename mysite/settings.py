@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.twitter',
     'drf_yasg',
     'rest_framework',
-     'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -66,34 +65,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
    
 ]
-CORS_ALLOWED_ORIGINS = [
-    "https://mantenimientocucei.azurewebsites.net",
-    "http://mantenimientocucei.azurewebsites.net",
-     "http://localhost:8000",
-]
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
 
 ROOT_URLCONF = 'mysite.urls'
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -214,3 +187,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+
+SWAGGER_SETTINGS = {
+    'SPEC_URLS': [
+        {
+            'url': 'http://localhost/api_registros/swagger/',
+            'name': 'API v1',
+        },
+        {
+            'url': 'https://mantenimientocucei.azurewebsites.net/api_registros/swagger/',
+            'name': 'API v1',
+        },
+        {
+            'url': 'http://mantenimientocucei.azurewebsites.net/api_registros/swagger/',
+            'name': 'API v1',
+        },
+        # Add more SPEC_URLS as needed
+    ],
+}
