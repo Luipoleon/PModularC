@@ -190,6 +190,9 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 
 SWAGGER_SETTINGS = {
+    'VALIDATOR_URLS': ['http://localhost/api_registros/swagger/', 
+                        'https://mantenimientocucei.azurewebsites.net/api_registros/swagger/', 
+                        'http://mantenimientocucei.azurewebsites.net/api_registros/swagger/'],
     'SPEC_URLS': [
         {
             'url': 'http://localhost/api_registros/swagger/',
@@ -203,6 +206,6 @@ SWAGGER_SETTINGS = {
             'url': 'http://mantenimientocucei.azurewebsites.net/api_registros/swagger/',
             'name': 'API v1',
         },
-        # Add more SPEC_URLS as needed
     ],
 }
+
