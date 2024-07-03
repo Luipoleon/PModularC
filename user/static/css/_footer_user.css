@@ -4,4 +4,13 @@
 }
 #botfooter{
     background-color: var(--primary-color)!important;
+    padding-left: 2rem !important;
+}
+
+@media screen and (max-width: 1000px){
+    .row{
+        text-align: center !important;
+        padding-left: 0 !important;
+    }
+    
 }
