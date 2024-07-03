@@ -72,6 +72,12 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "*",
+    "https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net",
+]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+    "https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net",
+
 ]
 ROOT_URLCONF = 'mysite.urls'
 BASE_DIR = Path(__file__).resolve().parent.parent
