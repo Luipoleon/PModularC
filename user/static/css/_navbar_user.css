@@ -52,13 +52,16 @@
 
   .exclamacion{
     position: absolute;
+    z-index: 1000;
     top: 0rem;
-    right: 1.6rem;
+    right: 0rem;
     color: red;
     font-size: 1.5rem;
     border-radius: 50%;
     padding: 0.2rem;
     opacity: 0;
+    width: 0;
+    height: 0;
   }
 
   .bell.notifications i:nth-of-type(1){
@@ -68,6 +71,7 @@
   
   .bell.notifications .exclamacion{
     opacity: 1;
+    position: relative;
   }
 
 
@@ -146,7 +150,7 @@
     pointer-events: all;
   }
   .navbar-toggler[aria-expanded="false"] ~ #RMenu {
-    transition: all 2s;
+    transition: all 0s;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
