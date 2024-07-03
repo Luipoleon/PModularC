@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net", "https://testcucei.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net"]
 
 
 
