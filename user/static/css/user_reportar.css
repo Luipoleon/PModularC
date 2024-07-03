@@ -25,7 +25,6 @@ section{
   align-items: center;
   margin: 0 auto;
   padding: 1px;
-  width: 120.5rem;
   border-radius: 2rem;
 }
 
@@ -43,6 +42,7 @@ section{
   width: 120.5rem;
   border-radius: 2rem;
 }
+
 .mireportes{
   display: grid;
   background-color: #ecdcd5 ;
@@ -59,6 +59,39 @@ section{
   width: 60rem;
   border-radius: 0 2rem 2rem 0;
 }
+
+
+@media screen and (max-width: 768px){
+  .losreportes{
+    width: 60.5rem;
+  }
+
+  .mireportes{
+    border-radius: 2rem 2rem 0 0;
+  }
+
+  .mireportes1{
+    border-radius: 0 0 2rem 2rem;
+  }
+}
+
+
+@media screen and (max-width: 620px){
+  .losreportes{
+    width: 91%;
+  }
+
+  .mireportes{
+    width: 100%;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .mireportes1{
+    width: 100%;
+    border-radius: 0 0 1rem 1rem;
+  }
+}
+
 .opciones{
   display:inline-block;
   justify-content: center;
