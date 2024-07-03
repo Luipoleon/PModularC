@@ -2,24 +2,35 @@
 @import url("_navbar_user.css");
 @import url("_footer_user.css");
 
-@media screen and (min-width: 300px) {
-  html {
+@media screen and (max-width: 2000px) {
+  html{
     font-size: 0.6rem;
   }
 }
 
-@media screen and (min-width: 1000px) {
-  html {
+@media screen and (max-width: 1000px) {
+  html{
+    font-size: 0.55rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html{
     font-size: 0.5rem;
   }
 }
 
-@media screen and (min-width: 1400px) {
-  html {
-    font-size: 0.6rem;
+@media screen and (max-width: 500px) {
+  html{
+    font-size: 0.45rem;
   }
 }
-  
+
+@media screen and (max-width: 400px) {
+  html{
+    font-size: 0.35rem;
+  }
+}
 
   /* width */
 body ::-webkit-scrollbar {
