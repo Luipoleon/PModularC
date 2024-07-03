@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net", "https://testcucei.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net"]
 
 
 
@@ -187,3 +187,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+
+SWAGGER_SETTINGS = {
+    'VALIDATOR_URL' : None,
+    'SPEC_URLS': [
+        {
+            'url': 'http://localhost/api_registros/swagger/',
+            'name': 'API v1',
+        },
+        {
+            'url': 'https://mantenimientocucei.azurewebsites.net/api_registros/swagger/',
+            'name': 'API v1',
+        },
+        {
+            'url': 'http://mantenimientocucei.azurewebsites.net/api_registros/swagger/',
+            'name': 'API v1',
+        },
+    ],
+}
+
