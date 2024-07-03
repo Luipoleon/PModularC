@@ -70,7 +70,9 @@ MIDDLEWARE = [
    
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "*",
+]
 ROOT_URLCONF = 'mysite.urls'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
