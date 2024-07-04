@@ -44,7 +44,9 @@
     padding: initial 2rem !important;
   
   }
-  
+  .menuconfig{
+    max-width: fit-content;
+  }
   .menu:hover{
     color: var(--primary-color-light);
     transform: scale(1.05);
@@ -110,15 +112,15 @@
       text-decoration: none !important;
   }
 
-#RMenu{
-  width: 50rem;
-} 
-
 .navbar-toggler{
   transition: all 2s;
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+#RMenu{
+  justify-content: space-around !important;
+} 
 
 
 @media screen and (max-width: 1000px){
