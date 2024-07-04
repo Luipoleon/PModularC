@@ -15,11 +15,10 @@ colores grises
 
 body{
   background-color: var(--tertiary-color);
+  width: 100vw;
+  margin: 0 !important;
 }
 
-.Lnombre{
-  margin-right: 1%;
-}
 
 
 /* Image container */

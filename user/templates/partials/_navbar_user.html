@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav
-  class="navbar p-2 navbar-expand-lg navbar-light sticky-top PrincipalMenu d-flex align-items-center justify-content-between"
+  class="navbar p-2 navbar-expand-lg navbar-light sticky-top PrincipalMenu d-flex align-items-center justify-content-around"
   id="topmenu"
 >
   <div class="container-fluid menumovimiento">
@@ -38,8 +38,8 @@
       </ul>
     </div>
 
-    <div class="d-flex  justify-content-between align-items-center" id="RMenu">
-      <div class="dropdown notifications d-block flex-fill">
+    <div class="d-flex  justify-content-end align-items-center d-" id="RMenu">
+      <div class="dropdown notifications d-block ">
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -71,7 +71,7 @@
         </ul>
       </div>
   
-      <div class="Lnombre px-4 flex-fill d-block">
+      <div class="Lnombre px-4  d-block">
         <h1 class="fs-4 pt-2 px-3">
           <span
             class="fs-8 p-2 rounded bg-gradient"
@@ -82,7 +82,7 @@
         </h1>
       </div>
   
-      <div class="collapse navbar-collapse d-block menuconfig flex-fill" id="navbarNav">
+      <div class="collapse navbar-collapse d-block menuconfig flex-grow-0 pe-4" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a
