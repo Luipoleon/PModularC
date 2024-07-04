@@ -51,3 +51,7 @@ a.link:hover {
 .text-white {
   color: #fff;
 }
+
+select, option, input, button {
+  font-family: inherit;
+}

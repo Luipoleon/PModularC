@@ -20,11 +20,29 @@ aria-hidden="true"
         ></button>
       </div>
       <div class="modal-body">
-        <form class="form-recover-password">
+        <form class="container-fluid">
           {% csrf_token %}
-          <div class="recover-container"></div>
-          <div class="code-container"></div>
-          <div class="mb-3 modal-message"></div>
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label fs-5">Contraseña actual</label>
+            <input
+              type="password"
+              class="form-control fs-5"
+              id="currentPassword"
+              name="currentPassword"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="newPassword" class="form-label fs-5">Nueva contraseña</label>
+            <input
+              type="password"
+              class="form-control fs-5"
+              id="newPassword"
+              name="newPassword"
+              required
+            />
+          </div>
+          <div class="my-3 modal-message bg-secondary text-light ps-2 w-100 fs-5 py-1 d-none"></div>
         </form>
       </div>
       <div class="modal-footer modal-buttons">
@@ -35,8 +53,10 @@ aria-hidden="true"
         >
           Cerrar
         </button>
-        <button type="button" class="btn btn-recover-password fs-5">
-            Enviar
+        <button type="button" id="btnChangePassword" class="btn btn-dark text-ligth fs-5">
+            Enviar <div class="spinner-border position-absolute ms-1 d-none" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
         </button>
       </div>
     </div>

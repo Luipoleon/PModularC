@@ -14,6 +14,8 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from login.forms import LoginForm, RegisterForm
+from django.contrib.auth import authenticate, login, logout
+
 # Zona horaria de México
 timezone = pytz.timezone('America/Mexico_City')
 
@@ -308,26 +310,41 @@ class UsuariosAPIView(APIView):
         serializer = UsuarioSerializer(queryset, many=True)
         return Response(serializer.data)
     
-    # @swagger_auto_schema(
-    #     operation_summary="Create a new user",
-    #     request_body=openapi.Schema(
-    #         type=openapi.TYPE_OBJECT,
-    #         required=['email', 'first_name', 'last_name', 'password'],  # Specify required fields here
-    #         properties={
-    #             'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email of the user'),
-    #             'first_name': openapi.Schema(type=openapi.TYPE_STRING, description='First name of the user'),
-    #             'last_name': openapi.Schema(type=openapi.TYPE_STRING, description='Last name of the user'),
-    #             'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password of the user'),
-    #         },
-    #     ),
-    #     responses={
-    #         201: UsuarioSerializer,
-    #         400: "Invalid data"
-    #     }
-    # )
-
-    # def post():
-    #     pass
+    @swagger_auto_schema(
+        operation_summary="Change user data and password",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['password', 'current_password'],  # Specify required fields here
+            properties={
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='New password'),
+                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Current password'),
+            },
+        ),
+        responses={
+            200: "Password changed",
+            400: "Invalid data"
+        }
+    )
+    def put(self, request, *args, **kwargs):
+        id = request.user.id;
+        email = request.user.email
+        password = request.data['password']
+        current_password = request.data['current_password']
+        if id is not None:
+            try:
+                instance = CustomUser.objects.get(id=id)
+                if not instance.check_password(current_password):
+                    return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+                instance.set_password(password)
+                instance.save()
+                user = authenticate(email = email,  password =  password)
+                login(request, user)
+                return Response({'message': 'Password changed'}, status=200)
+                
+            except CustomUser.DoesNotExist:
+                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class UsuarioAPIView(APIView):
