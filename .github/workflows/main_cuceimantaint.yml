@@ -22,15 +22,15 @@ jobs:
     - name: Log in to registry
       uses: docker/login-action@v2
       with:
-        registry: https://pmodularcontainer.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_a4e88d28dd2748a1825d4ababcdc062a }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_e22a3ef2971642be84f6a5dbb5d75625 }}
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_91cebd59fa7a4543bdca119cb9731fa7 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_d2a5162aa24f47f5a0f37c27a561e359 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: pmodularcontainer.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_a4e88d28dd2748a1825d4ababcdc062a }}/PModular:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_91cebd59fa7a4543bdca119cb9731fa7 }}/PModular:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'cuceimantaint'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0d0b1ac9ef9248d6a31161c84d060060 }}
-        images: 'pmodularcontainer.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_a4e88d28dd2748a1825d4ababcdc062a }}/PModular:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_824ce485feae46a9acdd0877459f4d5e }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_91cebd59fa7a4543bdca119cb9731fa7 }}/PModular:${{ github.sha }}'
