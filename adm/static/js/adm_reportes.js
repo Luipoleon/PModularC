@@ -71,10 +71,31 @@ function filtrar(){
         problemasFiltrados = problemasFiltrados.filter(p => p.tipo_edificio === selectTipoEdificio.value);
     }
     if (selectFecha.value !== 'Todos') {
-        problemasFiltrados = problemasFiltrados.filter(p => p.fecha_creacion === selectFecha.value);
+        // Filtrar por fecha de actualizacion del problema
+        
+        problemasFiltrados = problemasFiltrados.filter(p => {
+            const fechaActual = new Date();
+            const partesFecha = p.fecha_actualizado.split('/');
+            const dia = parseInt(partesFecha[0], 10);
+            const mes = parseInt(partesFecha[1], 10) - 1; // Restamos 1 al mes porque en JavaScript los meses van de 0 a 11
+            const anio = parseInt(partesFecha[2], 10);
+            const fechaActualizacion = new Date(year=anio, month=mes, date=dia);
+            
+            // Restar fecha actualizacion con fecha actual
+            const diferencia = fechaActual - fechaActualizacion;
+            const diasDiferencia = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            console.log(diferencia, diasDiferencia);
+
+            if(selectFecha.value === 'Hoy') return diasDiferencia === 0;
+            if(selectFecha.value === 'Ayer') return diasDiferencia === 1;
+            if(selectFecha.value === '7 días') return diasDiferencia <= 7;
+            if(selectFecha.value === 'Mes') return diasDiferencia <= 30;
+            if(selectFecha.value === 'Año') return diasDiferencia <= 366;
+            return true;
+        });
     }
     
-    numResultados.textContent = `${problemasFiltrados.length} resultados encontrados.`;
+    numResultados.textContent = `${problemasFiltrados.length} resultados encontrados`;
     numPages = Math.ceil(problemasFiltrados.length / selectReportesPorPagina.value);
     pagina = 1;
     // Mostrar boton de siguient pagina si hay mas de una pagina
@@ -304,7 +325,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
         tr.classList.add(claseEstatus);
 
         tr.innerHTML = `
-           <th scope="row">${p.id}</th>
+           <th scope="row row-9">${p.id}</th>
               <td>${p.user_name}#${p.id_usuario} </td>
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
@@ -315,8 +336,9 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
                   <i class="fa-solid fa-arrow-up-long"></i>
                 </button>
               </td>
-              <td class="form-check d-flex justify-content-center mb-2">
+              <td>
                 <input class="form-check-input" type="checkbox" name="option1" value="something">
+                
               </td>
         `;
         contenedorProblemas.appendChild(tr);

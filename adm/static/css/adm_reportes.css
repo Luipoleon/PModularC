@@ -18,6 +18,21 @@ body{
   background-color: var(--tertiary-color);
 }
 
+.filtros{
+  background-color: #aaa;
+  border-radius: 10px ;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  margin-top: 2rem;
+}
+
+.reportes{
+  min-height: calc(100vh - 5rem);
+}
+
+.test{
+  height: 100%;
+}
+
 #mireportes{
   background-color: var(--primary-color-light-2);
   padding: 20px;
@@ -27,6 +42,8 @@ body{
   justify-content: center;
   align-items: center;
 }
+
+
 
 .estatus-en-proceso {
   background-color: #fff59d; /* Amarillo moderado */
