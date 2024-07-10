@@ -46,3 +46,11 @@ body{
   background-color: #90caf9; /* Azul moderado */
   color: #0f3663;
 }
+
+.selecionable {
+  cursor: pointer;
+}
+
+.selecionable:hover {
+    background-color: var(--primary-color-light-1)
+}

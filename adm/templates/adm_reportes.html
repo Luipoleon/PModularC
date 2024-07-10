@@ -5,20 +5,87 @@
 {% block css %} 
   <link rel="stylesheet" href="{% static 'css/adm_reportes.css' %}" /> 
 {% endblock %}
-
+ 
 {% block contenido %}
+  <section> 
+    <div class="container d-flex justify-content-center w-100">
+      <div class="row">
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill ">Estatus</h2>
+          <select id="estatus">
+            <option value="Todos">Todos</option>
+            <option selected value="Procesando">Procesando</option>
+            <option value="Aceptado">Aceptado</option>
+            <option value="Rechazado">Rechazado</option>
+            <option value="Completado">Completado</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill">Fecha</h2>
+          <select id="fecha">
+            <option value="Todos">Todos</option>
+            <option value="Hoy">Hoy</option>
+            <option value="7 días">Hace 7 días</option>
+            <option value="Mes">Hace un mes</option>
+            <option value="Año">Hace un año</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill">Tipo edificio</h2>
+          <select id="tipo_edificio">
+            <option value="Todos">Todos</option>
+            <option value="Academico">Academico</option>
+            <option value="Baños">Baños</option>
+            <option value="Áreas comunes">Áreas comunes</option>
+            <option value="Departamento">Departamento</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill">Gravedad</h2>
+          <select id="gravedad">
+            <option value="Todos">Todos</option>
+            <option value="Menor">Menor</option>
+            <option value="Moderado">Moderado</option>
+            <option value="Serio">Serio</option>
+            <option value="Crítico">Crítico</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill">Tipo problema</h2>
+          <select id="tipo_problema">
+            <option value="Todos">Todos</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Físico">Físico</option>
+            <!-- <option value="Otro">Otro</option> -->
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 flex-fill">Reportes por página</h2>
+          <select id="reportes_pagina">
+            <option selected value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+          </select>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary" id="btn_filtrar">Filtrar</button>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="container mb-4" id="mireportes">
   <h1 class="fw-bold display-5" id="newarrivals">Mis reportes</h1>
   <div class="row">
     <table class="table" >
       <thead>
         <tr>
-          <th scope="col">Reporte #</th>
+          <th class="selecionable" data-orden="asc" id="th_id_reporte" scope="col">Reporte #</th>
           <th scope="col">User</th>
           <th scope='col'>Info</th>
           <th scope="col">Gravedad</th>
           <th scope="col">Estatus</th>
-          <th scope="col">Fecha</th>
+          <th class="selecionable" id="th_fecha" scope="col">Fecha</th>
           <th scope="col">Seguimiento</th>
           <th scope="col">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
@@ -39,7 +106,7 @@
           <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
           <td>{{p.gravedad_problema}}</td>
           <td>{{p.estatus_problematica}}</td>
-          <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
+          <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"d/m/Y" }}</td>
           <td>
             <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
               <i class="fa-solid fa-arrow-up-long"></i>
@@ -57,6 +124,7 @@
           <td colspan="8">
             <button class="btn btn-light invisible" id='btn_problema_anterior'><</button>
             <button class="btn btn-light invisible" id='btn_problem_siguiente'>></button>
+            <span class="ps-3" id="num_resultados"><span/>
           </td>
         </tr>
       </tfoot>

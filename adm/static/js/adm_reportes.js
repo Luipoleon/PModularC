@@ -2,7 +2,7 @@ let BodyModal = document.querySelector('.modal-body');
 let content = "";
 const currentUrl = window.location.href;
 const url = new URL(currentUrl); // obtiene ruta relativa
-
+ 
 // Select current page on menu to add class 'MenuPicked'
 const reportar = document.querySelectorAll('.nav-item a').item(1);
 reportar.id = 'MenuPicked';
@@ -15,8 +15,22 @@ const btnProblemaSiguiente = document.querySelector('#btn_problem_siguiente');
 const btnProblemaAnterior = document.querySelector('#btn_problema_anterior');
 const contenedorProblemas = document.querySelector('#contenedor_problemas');
 let problemas, pagina = 1, numPages;
+let problemasFiltrados;
 
+// DOM filtro de problemas
 
+const selectEstatus = document.querySelector('#estatus')
+const selectGravedad = document.querySelector('#gravedad');
+const selectTipoProblema = document.querySelector('#tipo_problema');
+const selectTipoEdificio = document.querySelector('#tipo_edificio');
+const selectFecha = document.querySelector('#fecha');
+const selectReportesPorPagina = document.querySelector('#reportes_pagina');
+const btnFiltrar = document.querySelector('#btn_filtrar');
+const numResultados = document.querySelector('#num_resultados');
+
+// DOM ordenar por
+const thIdReporte = document.querySelector('#th_id_reporte');
+const thFecha = document.querySelector('#th_fecha');
 
 const statusColors = {
     "Aceptado": 'bg-success text-white',
@@ -24,6 +38,54 @@ const statusColors = {
     "Procesando": 'bg-warning text-dark',
     "Completado": 'bg-info text-white'
 };
+
+thIdReporte.addEventListener('click', (e) => {
+    let orden = e.target.dataset.orden;
+    if (orden === 'asc') {
+        problemasFiltrados = problemasFiltrados.sort((a, b) => a.id - b.id);
+        e.target.dataset.orden = 'desc';
+    } else{
+        problemasFiltrados = problemasFiltrados.sort((a, b) => b.id - a.id);
+        e.target.dataset.orden = 'asc';
+    }
+
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
+    addEvents();
+});
+
+function filtrar(){
+    btnProblemaSiguiente.classList.add('invisible');
+    btnProblemaAnterior.classList.add('invisible');
+
+    problemasFiltrados = problemas;
+    if (selectEstatus.value !== 'Todos') {
+        problemasFiltrados = problemasFiltrados.filter(p => p.estatus_problematica === selectEstatus.value);
+    }
+    if (selectGravedad.value !== 'Todos') {
+        problemasFiltrados = problemasFiltrados.filter(p => p.gravedad_problema === selectGravedad.value);
+    }
+    if (selectTipoProblema.value !== 'Todos') {
+        problemasFiltrados = problemasFiltrados.filter(p => p.tipo_problema === selectTipoProblema.value);
+    }
+    if (selectTipoEdificio.value !== 'Todos') {
+        problemasFiltrados = problemasFiltrados.filter(p => p.tipo_edificio === selectTipoEdificio.value);
+    }
+    if (selectFecha.value !== 'Todos') {
+        problemasFiltrados = problemasFiltrados.filter(p => p.fecha_creacion === selectFecha.value);
+    }
+    
+    numResultados.textContent = `${problemasFiltrados.length} resultados encontrados.`;
+    numPages = Math.ceil(problemasFiltrados.length / selectReportesPorPagina.value);
+    pagina = 1;
+    // Mostrar boton de siguient pagina si hay mas de una pagina
+    if(numPages > 1) btnProblemaSiguiente.classList.remove('invisible');
+
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
+    addEvents();
+
+}
+
+btnFiltrar.addEventListener('click', filtrar);
 
 // Event listener para los botones siguiente pagina
 
@@ -33,7 +95,7 @@ btnProblemaSiguiente.addEventListener('click', () => {
     if(pagina == numPages){
         btnProblemaSiguiente.classList.add('invisible');
     }
-    mostrarProblemas(pagina);
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
     addEvents();
 });
 
@@ -43,7 +105,7 @@ btnProblemaAnterior.addEventListener('click', () => {
     if(pagina <= 1){
         btnProblemaAnterior.classList.add('invisible');
     }
-    mostrarProblemas(pagina);
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
     addEvents();
 });
 
@@ -211,9 +273,8 @@ function cargarProblemas() {
         })
         .then((data) => {
             problemas = data;
-            numPages = Math.ceil(problemas.length / 10);
-            btnProblemaSiguiente.classList.remove('invisible');
-            mostrarProblemas();
+            problemasFiltrados = problemas;
+            filtrar();
             addEvents();
         })
         .catch((error) => {
@@ -221,8 +282,9 @@ function cargarProblemas() {
         });
 }
 
-function mostrarProblemas(pagina=1){
-    let problemasPagina = problemas.slice((pagina-1)*10, pagina*10);
+function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPagina=10){
+    
+    let problemasPagina = problemas.slice((pagina-1)*problemasPorPagina, pagina*problemasPorPagina);
     contenedorProblemas.innerHTML = "";
     problemasPagina.forEach((p) => {
         let tr = document.createElement('tr');
@@ -243,7 +305,7 @@ function mostrarProblemas(pagina=1){
 
         tr.innerHTML = `
            <th scope="row">${p.id}</th>
-              <td>${p.user_email}#${p.id_usuario} </td>
+              <td>${p.user_name}#${p.id_usuario} </td>
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
               <td>${p.estatus_problematica}</td>
