@@ -207,7 +207,7 @@ function addEvents(){
                                         'X-CSRFToken': getCookie('csrftoken')
                                     },
                                     body: JSON.stringify({ 
-                                        status: 'Aceptado',
+                                        estatus: 'Aceptado',
                                         info_adicional: document.querySelector('textarea').value
                                      })
                                 })
@@ -236,7 +236,7 @@ function addEvents(){
                                         'X-CSRFToken': getCookie('csrftoken')
                                     },
                                     body: JSON.stringify({ 
-                                        status: 'Rechazado',
+                                        estatus: 'Rechazado',
                                         info_adicional: document.querySelector('textarea').value
                                      })
                                 })
@@ -309,7 +309,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
               <td>${p.estatus_problematica}</td>
-              <td>${p.fecha_creacion}</td>
+              <td>${p.fecha_actualizado}</td>
               <td>
                 <button id="p.${p.id}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
                   <i class="fa-solid fa-arrow-up-long"></i>

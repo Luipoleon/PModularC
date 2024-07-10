@@ -123,7 +123,8 @@ class ProblemasAPIView(APIView):
         queryset = Problema.objects.all().order_by('id')
         for p in queryset:
             p.fecha_creacion = p.fecha_creacion.astimezone(timezone).strftime('%d/%m/%Y')
-        
+            p.fecha_actualizado = p.fecha_actualizado.astimezone(timezone).strftime('%d/%m/%Y')
+
         serializer = ProblemaSerializer(queryset, many=True)
         list = serializer.data.copy()
         
@@ -240,14 +241,16 @@ class ProblemaAPIView(APIView):
     )
     def put(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        estatus = request.data['status']
+        estatus = request.data['estatus']
         info_adicional = request.data["info_adicional"]
         if id is not None:
             try:
                 instance = Problema.objects.get(id=id)
+                problemaEnCurso = ProblemaEnCurso.objects.get(id_problema=instance)
                 instance.estatus_problematica = estatus
-                instance.info_adicional = info_adicional
+                problemaEnCurso.info_adicional = info_adicional
                 instance.save()
+                problemaEnCurso.save()
                 return Response({'message': 'Status changed'}, status=200)
                 
             except Problema.DoesNotExist:
