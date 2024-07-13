@@ -119,23 +119,21 @@ class ProblemasAPIView(APIView):
     """
     permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
     def get(self, request, *args, **kwargs):
-        # List all objects
-        queryset = Problema.objects.all().order_by('id')
-        for p in queryset:
-            p.fecha_creacion = p.fecha_creacion.astimezone(timezone).strftime('%d/%m/%Y')
-            p.fecha_actualizado = p.fecha_actualizado.astimezone(timezone).strftime('%d/%m/%Y')
-
-        serializer = ProblemaSerializer(queryset, many=True)
-        list = serializer.data.copy()
+        # Prefetch related user data to avoid multiple queries
+        queryset = Problema.objects.all().select_related('id_usuario').order_by('id')
         
-        if request.user.is_staff:
-            # Add user.email to every dict in list
+        # Process queryset to format dates and add user_name if user is staff
+        problemas = []
+        for problema in queryset:
+            problema_dict = ProblemaSerializer(problema).data
+            problema_dict['fecha_creacion'] = problema.fecha_creacion.astimezone(timezone).strftime('%d/%m/%Y')
+            problema_dict['fecha_actualizado'] = problema.fecha_actualizado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
             if request.user.is_staff:
-                # Add user.email to every dict in list
-                for item in list:
-                    item['user_name'] = request.user.first_name
-           
-        return Response(list)
+                problema_dict['user_name'] = problema.id_usuario.first_name
+            
+            problemas.append(problema_dict)
+        
+        return Response(problemas)
     
     @swagger_auto_schema(
         operation_summary="Create a new Problema object",

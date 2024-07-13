@@ -53,6 +53,36 @@ thIdReporte.addEventListener('click', (e) => {
     addEvents();
 });
 
+thFecha.addEventListener('click', (e) => {
+    let orden = e.target.dataset.orden;
+    
+    const parseFechaHora = (fechaHoraStr) => {
+        const [fecha, hora] = fechaHoraStr.split(' ');
+        const [dia, mes, anio] = fecha.split('/');
+        const [horas, minutos, segundos] = hora.split(':');
+        return new Date(anio, mes - 1, dia, horas, minutos, segundos);
+    };
+    
+    if (orden === 'asc') {
+        problemasFiltrados = problemasFiltrados.sort((a, b) => {
+            const fechaA = parseFechaHora(a.fecha_actualizado);
+            const fechaB = parseFechaHora(b.fecha_actualizado);
+            return fechaA - fechaB;
+        });
+        e.target.dataset.orden = 'desc';
+    } else {
+        problemasFiltrados = problemasFiltrados.sort((a, b) => {
+            const fechaA = parseFechaHora(a.fecha_actualizado);
+            const fechaB = parseFechaHora(b.fecha_actualizado);
+            return fechaB - fechaA;
+        });
+        e.target.dataset.orden = 'asc';
+    }
+
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
+    addEvents();
+});
+
 function filtrar(){
     btnProblemaSiguiente.classList.add('invisible');
     btnProblemaAnterior.classList.add('invisible');
@@ -168,11 +198,22 @@ function addEvents(){
                     .then((data) => {
                         if (statusProblema === "Aceptado") {
                             divAdminInfo.innerHTML += `
-                                <div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                                <div class='row h3'>
+                                <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
-                                    <textarea class='col border border-2 text-center'>${data.info_adicional}</textarea></div>
+                                </div>
+                                 <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+    
+                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2"  data-bs-dismiss="modal">
+                                        Rechazar
+                                    </button>
+                                    
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
+                                        Aceptar
+                                     </button>
+                                </div>
                             `;
                         } else if (statusProblema === "Procesando") {
                             divAdminInfo.innerHTML += `
@@ -188,16 +229,25 @@ function addEvents(){
                                         Rechazar
                                     </button>
                                     
-                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2">
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
                                         Aceptar
                                      </button>
                                 </div>
                             `;
                         } else if (statusProblema === "Rechazado") {
                             divAdminInfo.innerHTML += `
-                                <div class='row h3'><span class='col border border-2'><strong>Rechazado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de rechazo</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Motivo de rechazo</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                 <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+    
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
+                                        Aceptar
+                                     </button>
+                                </div>
                             `;
                         } else if (statusProblema === "Completado") {
                             divAdminInfo.innerHTML += `
@@ -239,7 +289,15 @@ function addEvents(){
                                     return response.json();
                                 })
                                 .then(data => {
-                                    // Manejar la respuesta del servidor aquí
+                                    const problemaceptado = problemas.find(p=>p.id==idProblema);
+                                    problemaceptado.estatus_problematica = 'Aceptado';
+                                    const fecha_actual = new Date();
+                                    const dia = fecha_actual.getDate();
+                                    const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0'); // Los meses son indexados desde 0, por lo que añadimos 1
+                                    const anio = fecha_actual.getFullYear();
+                                    const fechaStr = `${dia}/${mes}/${anio}`;
+                                    problemaceptado.fecha_actualizado = fechaStr;
+                                    filtrar();
                                 })
                                 .catch(error => {
                                     console.error('Hubo un problema con la operación fetch:', error);

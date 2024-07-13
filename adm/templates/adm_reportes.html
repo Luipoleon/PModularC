@@ -88,7 +88,7 @@
             <th scope='col'>Info</th>
             <th scope="col">Gravedad</th>
             <th scope="col">Estatus</th>
-            <th class="selecionable" id="th_fecha" scope="col">Fecha</th>
+            <th class="selecionable" data-orden="asc" id="th_fecha" scope="col">Fecha</th>
             <th scope="col">Seguimiento</th>
             <th scope="col">
               <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
@@ -109,7 +109,7 @@
             <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
             <td>{{p.gravedad_problema}}</td>
             <td>{{p.estatus_problematica}}</td>
-            <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"d/m/Y" }}</td>
+            <td>{{p.fecha_actualizado|timezone:"America/Mexico_City"|date:"d/m/Y H:i:s" }}</td>
             <td>
               <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes">
                 <i class="fa-solid fa-arrow-up-long"></i>
