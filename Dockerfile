@@ -1,5 +1,5 @@
 # Use the official Python image from the Docker Hub
-FROM python:latest
+FROM python:alpine3.20
 
 # Expose the port that the Django development server will run on
 EXPOSE 8000

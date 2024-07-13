@@ -3,9 +3,19 @@ services:
     build: .
     # image: luishmc/pmodularc-django:latest
     ports:
-      - "80:8000"
+      - "8000:8000"
     volumes:
       - .:/usr/src/app
     environment:
       - PYTHONUNBUFFERED=1
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      -  ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - django
     restart: always
