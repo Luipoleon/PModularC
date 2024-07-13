@@ -5,63 +5,142 @@
 {% block css %} 
   <link rel="stylesheet" href="{% static 'css/adm_reportes.css' %}" /> 
 {% endblock %}
-
+ 
 {% block contenido %}
-  <div class="container mb-4" id="mireportes">
-  <h1 class="fw-bold display-5" id="newarrivals">Mis reportes</h1>
-  <div class="row">
-    <table class="table" >
-      <thead>
-        <tr>
-          <th scope="col">Reporte #</th>
-          <th scope="col">User</th>
-          <th scope='col'>Info</th>
-          <th scope="col">Gravedad</th>
-          <th scope="col">Estatus</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Seguimiento</th>
-          <th scope="col">
-            <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
-            {% comment %} <label class="form-check-label">All</label> {% endcomment %}
-          </th>
-        </tr>
-      </thead>
-      <tbody id = 'contenedor_problemas'>
-        {% for p in problemas %}
-        <tr class="
-            {% if p.estatus_problematica == 'Procesando' %}estatus-en-proceso{% endif %}
-            {% if p.estatus_problematica == 'Aceptado' %}estatus-aceptado{% endif %}
-            {% if p.estatus_problematica == 'Rechazado' %}estatus-rechazado{% endif %}
-            {% if p.estatus_problematica == 'Completado' %}estatus-completado{% endif %}
-        ">
-          <th scope="row">{{p.id}}</th>
-          <td>{{p.id_usuario.first_name}}#{{p.id_usuario.id}} </td>
-          <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
-          <td>{{p.gravedad_problema}}</td>
-          <td>{{p.estatus_problematica}}</td>
-          <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"m/d/Y" }}</td>
-          <td>
-            <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
-              <i class="fa-solid fa-arrow-up-long"></i>
-            </button>
-          </td>
-          <td class="form-check d-flex justify-content-center mb-2">
-            <input class="form-check-input" type="checkbox" name="option1" value="something">
-            {% comment %} <label class="form-check-label">Option 1</label> {% endcomment %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot class='mt-2 pt-2 container'>
-        <tr>
-          <td colspan="8">
-            <button class="btn btn-light invisible" id='btn_problema_anterior'><</button>
-            <button class="btn btn-light invisible" id='btn_problem_siguiente'>></button>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+  <div class="d-flex">
+  <section class="d-flex flex-column justify-content-start container reportes">
+    <section class="d-block filtros py-4 px-2 container flex-grow-0"> 
+    <div>
+      <div class="row  d-flex justify-content-center w-100 text-center">
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3 ">Estatus</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="estatus">
+            <option value="Todos">Todos</option>
+            <option selected value="Procesando">Procesando</option>
+            <option value="Aceptado">Aceptado</option>
+            <option value="Rechazado">Rechazado</option>
+            <option value="Completado">Completado</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3">Fecha</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="fecha">
+            <option value="Todos">Todos</option>
+            <option value="Hoy">Hoy</option>
+            <option value="Ayer">Ayer</option>
+            <option value="7 días">Hace 7 días</option>
+            <option value="Mes">Hace un mes</option>
+            <option value="Año">Hace un año</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3">Tipo edificio</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="tipo_edificio">
+            <option value="Todos">Todos</option>
+            <option value="Academico">Academico</option>
+            <option value="Baños">Baños</option>
+            <option value="Áreas comunes">Áreas comunes</option>
+            <option value="Departamento">Departamento</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3">Gravedad</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="gravedad">
+            <option value="Todos">Todos</option>
+            <option value="Menor">Menor</option>
+            <option value="Moderado">Moderado</option>
+            <option value="Serio">Serio</option>
+            <option value="Crítico">Crítico</option>
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3">Tipo problema</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="tipo_problema">
+            <option value="Todos">Todos</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Físico">Físico</option>
+            <!-- <option value="Otro">Otro</option> -->
+          </select>
+        </div>
+        <div class="col">
+          <h2 class="fw-bold display-5 fs-3">Reportes por página</h2>
+          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="reportes_pagina">
+            <option selected value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+          </select>
+        </div>
+        <div class="col d-flex align-items-end px-4 py-2 justify-content-center flex-grow-0">
+          <button class="btn btn-dark fs-5" id="btn_filtrar">Filtrar</button>
+        </div>
+      </div>
+    </div>
+    </section>
+    <section class="container mx-auto my-5 mb-4" id="mireportes">
+    <h1 class="fw-bold display-5" id="newarrivals">Mis reportes</h1>
+    <div class="row d-flex flex-column">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="selecionable" data-orden="asc" id="th_id_reporte" scope="col">Reporte #</th>
+            <th scope="col">User</th>
+            <th scope='col'>Info</th>
+            <th scope="col">Gravedad</th>
+            <th scope="col">Estatus</th>
+            <th class="selecionable" id="th_fecha" scope="col">Fecha</th>
+            <th scope="col">Seguimiento</th>
+            <th scope="col">
+              <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
+              {% comment %} <label class="form-check-label">All</label> {% endcomment %}
+            </th>
+          </tr>
+        </thead>
+        <tbody id='contenedor_problemas'>
+          {% for p in problemas %}
+          <tr class="
+              {% if p.estatus_problematica == 'Procesando' %}estatus-en-proceso{% endif %}
+              {% if p.estatus_problematica == 'Aceptado' %}estatus-aceptado{% endif %}
+              {% if p.estatus_problematica == 'Rechazado' %}estatus-rechazado{% endif %}
+              {% if p.estatus_problematica == 'Completado' %}estatus-completado{% endif %}
+          ">
+            <th scope="row">{{p.id}}</th>
+            <td>{{p.id_usuario.first_name}}#{{p.id_usuario.id}} </td>
+            <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
+            <td>{{p.gravedad_problema}}</td>
+            <td>{{p.estatus_problematica}}</td>
+            <td>{{p.fecha_creacion|timezone:"America/Mexico_City"|date:"d/m/Y" }}</td>
+            <td>
+              <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes">
+                <i class="fa-solid fa-arrow-up-long"></i>
+              </button>
+            </td>
+            <td>
+              <input class="form-check-input" type="checkbox" name="option1" value="something">
+              {% comment %} <label class="form-check-label">Option 1</label> {% endcomment %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot class='mt-2 pt-2 container' >
+          <tr>
+            <td colspan="8">
+              <div class="d-flex justify-content-center w-100 py-1">
+                <button class="btn btn-light invisible flex-grow-0 px-3" id='btn_problema_anterior'>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button class="btn btn-light invisible flex-grow-0 px-3" id='btn_problem_siguiente'>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <div class="ps-3 text-end flex-grow-1 fst-italic" id="num_resultados"><div/>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    </section>
+  </section>
   </div>
 {% endblock %}
 {% block modal %}
