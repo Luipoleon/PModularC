@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-hdpk0^d%-jg!*n%&9oh_2@-qoph(+cy53!2uj+bxa(m&70%93&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'cuceimantaint.azurewebsites.net', 'localhost']
+ALLOWED_HOSTS = ['*', 'cuceimantaint.azurewebsites.net', 'localhost', 'cuceimantein.site']
 
-CSRF_TRUSTED_ORIGINS = ["https://cuceimantaint.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://cuceimantaint.azurewebsites.net", "https://cuceimantein.site", "https://www.cuceimantein.site"]
 
 
 

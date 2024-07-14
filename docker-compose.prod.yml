@@ -1,0 +1,21 @@
+services:
+  django:
+    image: luishmc/pmodular:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl/ssl_certificate.pem:/etc/nginx/ssl/ssl_certificate.pem:ro
+      - ./ssl/ssl_certificate.key:/etc/nginx/ssl/ssl_certificate.key:ro
+    depends_on:
+      - django
+    restart: always
