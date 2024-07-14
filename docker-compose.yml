@@ -1,6 +1,8 @@
 services:
   django:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -13,11 +15,8 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl/ssl_certificate.pem:/etc/nginx/ssl/ssl_certificate.pem:ro
-      - ./ssl/ssl_certificate.key:/etc/nginx/ssl/ssl_certificate.key:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:mi
     depends_on:
       - django
     restart: always
