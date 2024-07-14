@@ -13,15 +13,32 @@
     <div>
       <div class="row  d-flex justify-content-center w-100 text-center">
         <div class="col">
-          <h2 class="fw-bold display-5 fs-3 ">Estatus</h2>
-          <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="estatus">
-            <option value="Todos">Todos</option>
-            <option selected value="Procesando">Procesando</option>
-            <option value="Aceptado">Aceptado</option>
-            <option value="Rechazado">Rechazado</option>
-            <option value="Completado">Completado</option>
-          </select>
-        </div>
+          <h2 class="fw-bold display-5 fs-3">Estatus</h2>
+          <div class="form-check w-75 m-auto mt-4 fs-5">
+              <input class="form-check-input" type="checkbox" value="Procesando" id="estatusProcesando" checked>
+              <label class="form-check-label" for="estatusProcesando">
+                  Procesando
+              </label>
+          </div>
+          <div class="form-check w-75 m-auto mt-2 fs-5">
+              <input class="form-check-input" type="checkbox" value="Aceptado" id="estatusAceptado">
+              <label class="form-check-label" for="estatusAceptado">
+                  Aceptado
+              </label>
+          </div>
+          <div class="form-check w-75 m-auto mt-2 fs-5">
+              <input class="form-check-input" type="checkbox" value="Rechazado" id="estatusRechazado">
+              <label class="form-check-label" for="estatusRechazado">
+                  Rechazado
+              </label>
+          </div>
+          <div class="form-check w-75 m-auto mt-2 fs-5">
+              <input class="form-check-input" type="checkbox" value="Completado" id="estatusCompletado">
+              <label class="form-check-label" for="estatusCompletado">
+                  Completado
+              </label>
+          </div>
+      </div>
         <div class="col">
           <h2 class="fw-bold display-5 fs-3">Fecha</h2>
           <select class="form-select w-75 m-auto mt-4 fs-5 text-center" id="fecha">
@@ -86,13 +103,17 @@
             <th class="selecionable" data-orden="asc" id="th_id_reporte" scope="col">Reporte #</th>
             <th scope="col">User</th>
             <th scope='col'>Info</th>
-            <th scope="col">Gravedad</th>
+            <th class="selecionable" data-orden="asc" id="thGravedad" scope="col">Gravedad</th>
             <th scope="col">Estatus</th>
             <th class="selecionable" data-orden="asc" id="th_fecha" scope="col">Fecha</th>
             <th scope="col">Seguimiento</th>
             <th scope="col">
-              <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
-              {% comment %} <label class="form-check-label">All</label> {% endcomment %}
+              <select class="form-select" id="estatusSelect">
+                <option value="" disabled selected>Selecciona una Accion</option>
+                <option value="Aceptar">Aceptar</option>
+                <option value="Rechazar">Rechazar</option>
+                <option value="Completar">Completar</option>
+              </select>
             </th>
           </tr>
         </thead>

@@ -52,6 +52,42 @@ thIdReporte.addEventListener('click', (e) => {
     mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
     addEvents();
 });
+// Mapeo de gravedad a valores numéricos para la comparación
+const gravedadOrden = {
+    'Menor': 1,
+    'Moderado': 2,
+    'Serio': 3,
+    'Crítico': 4
+};
+
+// Seleccionar el elemento del encabezado de la columna de gravedad
+const thGravedad = document.getElementById('thGravedad');
+
+// Añadir el evento para la columna de gravedad
+thGravedad.addEventListener('click', (e) => {
+    let orden = e.target.dataset.orden;
+    console.log('Orden actual:', orden); // Verifica el estado actual
+
+    if (orden === 'asc') {
+        problemasFiltrados = problemasFiltrados.sort((a, b) => {
+            console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
+            return gravedadOrden[a.gravedad] - gravedadOrden[b.gravedad];
+        });
+        e.target.dataset.orden = 'desc'; // Cambia a descendente
+    } else {
+        problemasFiltrados = problemasFiltrados.sort((a, b) => {
+            console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
+            return gravedadOrden[b.gravedad] - gravedadOrden[a.gravedad];
+        });
+        e.target.dataset.orden = 'asc'; // Cambia a ascendente
+    }
+
+    // Actualiza la vista con los problemas ordenados
+    mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
+    // Reaplicar eventos después de actualizar la vista
+    addEvents();
+});
+
 
 thFecha.addEventListener('click', (e) => {
     let orden = e.target.dataset.orden;
@@ -83,14 +119,23 @@ thFecha.addEventListener('click', (e) => {
     addEvents();
 });
 
-function filtrar(){
+function filtrar() {
     btnProblemaSiguiente.classList.add('invisible');
     btnProblemaAnterior.classList.add('invisible');
 
     problemasFiltrados = problemas;
-    if (selectEstatus.value !== 'Todos') {
-        problemasFiltrados = problemasFiltrados.filter(p => p.estatus_problematica === selectEstatus.value);
+
+    // Obtener los checkboxes seleccionados
+    const estatusSeleccionados = [];
+    document.querySelectorAll('.form-check-input:checked').forEach(checkbox => {
+        estatusSeleccionados.push(checkbox.value);
+    });
+
+    // Filtrar por estatus si no se seleccionan todos los checkboxes
+    if (estatusSeleccionados.length > 0 && estatusSeleccionados.length < 4) {
+        problemasFiltrados = problemasFiltrados.filter(p => estatusSeleccionados.includes(p.estatus_problematica));
     }
+
     if (selectGravedad.value !== 'Todos') {
         problemasFiltrados = problemasFiltrados.filter(p => p.gravedad_problema === selectGravedad.value);
     }
@@ -101,40 +146,46 @@ function filtrar(){
         problemasFiltrados = problemasFiltrados.filter(p => p.tipo_edificio === selectTipoEdificio.value);
     }
     if (selectFecha.value !== 'Todos') {
-        // Filtrar por fecha de actualizacion del problema
-        
         problemasFiltrados = problemasFiltrados.filter(p => {
             const fechaActual = new Date();
             const partesFecha = p.fecha_actualizado.split('/');
             const dia = parseInt(partesFecha[0], 10);
-            const mes = parseInt(partesFecha[1], 10) - 1; // Restamos 1 al mes porque en JavaScript los meses van de 0 a 11
+            const mes = parseInt(partesFecha[1], 10) - 1;
             const anio = parseInt(partesFecha[2], 10);
-            const fechaActualizacion = new Date(year=anio, month=mes, date=dia);
-            
-            // Restar fecha actualizacion con fecha actual
+            const fechaActualizacion = new Date(anio, mes, dia);
+
             const diferencia = fechaActual - fechaActualizacion;
             const diasDiferencia = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-            console.log(diferencia, diasDiferencia);
 
-            if(selectFecha.value === 'Hoy') return diasDiferencia === 0;
-            if(selectFecha.value === 'Ayer') return diasDiferencia === 1;
-            if(selectFecha.value === '7 días') return diasDiferencia <= 7;
-            if(selectFecha.value === 'Mes') return diasDiferencia <= 30;
-            if(selectFecha.value === 'Año') return diasDiferencia <= 366;
+            if (selectFecha.value === 'Hoy') return diasDiferencia === 0;
+            if (selectFecha.value === 'Ayer') return diasDiferencia === 1;
+            if (selectFecha.value === '7 días') return diasDiferencia <= 7;
+            if (selectFecha.value === 'Mes') return diasDiferencia <= 30;
+            if (selectFecha.value === 'Año') return diasDiferencia <= 366;
             return true;
         });
     }
-    
+
     numResultados.textContent = `${problemasFiltrados.length} resultados encontrados`;
     numPages = Math.ceil(problemasFiltrados.length / selectReportesPorPagina.value);
     pagina = 1;
-    // Mostrar boton de siguient pagina si hay mas de una pagina
-    if(numPages > 1) btnProblemaSiguiente.classList.remove('invisible');
+    if (numPages > 1) btnProblemaSiguiente.classList.remove('invisible');
 
     mostrarProblemas(pagina, problemasFiltrados, selectReportesPorPagina.value);
     addEvents();
-
 }
+
+// Escuchar cambios en los checkboxes
+document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const checkedBoxes = document.querySelectorAll('.form-check-input:checked');
+        if (checkedBoxes.length === 0) {
+            checkbox.checked = true; // Evitar que todos los checkboxes estén desmarcados
+        }
+        filtrar();
+    });
+});
+
 
 btnFiltrar.addEventListener('click', filtrar);
 
@@ -160,7 +211,8 @@ btnProblemaAnterior.addEventListener('click', () => {
     addEvents();
 });
 
-function addEvents(){
+function addEvents() {
+    // Manejo de eventos para el botón de seguimiento
     Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function(element) {
         element.addEventListener('click', function() {
             let datosUser = this.closest('tr');
@@ -169,17 +221,16 @@ function addEvents(){
             const divProblemaInfo = document.createElement("div");
             divAdminInfo.classList.add("AdminInfo", "col");
             divProblemaInfo.classList.add("ProblemaInfo", "col");
-    
+
             let idProblema = datosUser.querySelector('th').textContent; // Utilizamos let para evitar problemas de alcance
-    
             let colorEstatus = statusColors[statusProblema] || '';
-    
+
             divAdminInfo.innerHTML = `
                 <div class='text-center h2'><strong>PROBLEMA #${idProblema}</strong></div>
                 <div class='row h3'><span class='col border border-2'><strong>Estatus</strong></span> <span class='col border border-2 text-center ${colorEstatus}'>${statusProblema}</span></div>
             `;
             divProblemaInfo.innerHTML = `<div class='text-center h2'><strong>INFORMACION ENVIADA</strong></div>`;
-    
+
             if (["Aceptado", "Procesando", "Rechazado", "Completado"].includes(statusProblema)) {
                 BodyModal.innerHTML = `<div id="loading" class="loading-container">
                                             <div class="spinner-border text-primary" role="status">
@@ -187,7 +238,7 @@ function addEvents(){
                                             </div>
                                         </div>`;
                 const baseUrl = `${url.origin}`;
-    
+
                 fetch(`/api_registros/problema_en_curso/${idProblema}/`)
                     .then((response) => {
                         if (!response.ok) {
@@ -196,7 +247,7 @@ function addEvents(){
                         return response.json();
                     })
                     .then((data) => {
-                        if (statusProblema === "Aceptado") {
+                        if (statusProblema === "Aceptado" || statusProblema === "Procesando") {
                             divAdminInfo.innerHTML += `
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
@@ -205,33 +256,12 @@ function addEvents(){
                                     <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
                                 </div>
                                 <div class='row h3 text-start'>
-    
-                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2"  data-bs-dismiss="modal">
+                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2" data-bs-dismiss="modal">
                                         Rechazar
                                     </button>
-                                    
-                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema" class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
                                         Aceptar
-                                     </button>
-                                </div>
-                            `;
-                        } else if (statusProblema === "Procesando") {
-                            divAdminInfo.innerHTML += `
-                                <div class='row h3 text-center'>
-                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
-                                </div>
-                                 <div class='row h3 text-start'>
-                                    <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
-                                </div>
-                                <div class='row h3 text-start'>
-    
-                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2"  data-bs-dismiss="modal">
-                                        Rechazar
                                     </button>
-                                    
-                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
-                                        Aceptar
-                                     </button>
                                 </div>
                             `;
                         } else if (statusProblema === "Rechazado") {
@@ -243,10 +273,9 @@ function addEvents(){
                                     <textarea class='col border border-2 text-center' placeholder="${data.info_adicional}"></textarea>
                                 </div>
                                 <div class='row h3 text-start'>
-    
-                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema"   class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
+                                    <button type="button" data-idProblema='${idProblema}' id="aceptar_problema" class="btn btn-success col fs-5 me-2" data-bs-dismiss="modal">
                                         Aceptar
-                                     </button>
+                                    </button>
                                 </div>
                             `;
                         } else if (statusProblema === "Completado") {
@@ -258,19 +287,18 @@ function addEvents(){
                                 <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
                             `;
                         }
-    
+
                         updateProblemInfo(divProblemaInfo, data.problema);
                         BodyModal.innerHTML = ""; // Limpiamos el contenido anterior
                         BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
                         BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
-    
+
                         // Configuramos los event listeners después de insertar los botones en el DOM
                         const btnStatusAceptar = document.querySelector('#aceptar_problema');
                         const btnStatusRechazar = document.querySelector('#rechazar_problema');
-    
+
                         if (btnStatusAceptar) {
                             btnStatusAceptar.addEventListener('click', function() {
-                            
                                 fetch(`/api_registros/problema/${idProblema}/`, {
                                     method: 'PUT',
                                     headers: {
@@ -289,25 +317,29 @@ function addEvents(){
                                     return response.json();
                                 })
                                 .then(data => {
-                                    const problemaceptado = problemas.find(p=>p.id==idProblema);
-                                    problemaceptado.estatus_problematica = 'Aceptado';
-                                    const fecha_actual = new Date();
-                                    const dia = fecha_actual.getDate();
-                                    const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0'); // Los meses son indexados desde 0, por lo que añadimos 1
-                                    const anio = fecha_actual.getFullYear();
-                                    const fechaStr = `${dia}/${mes}/${anio}`;
-                                    problemaceptado.fecha_actualizado = fechaStr;
-                                    filtrar();
+                                    const problemaceptado = problemas.find(p => p.id == idProblema);
+                                    if (problemaceptado) {
+                                        problemaceptado.estatus_problematica = 'Aceptado';
+                                        const fecha_actual = new Date();
+                                        const dia = fecha_actual.getDate();
+                                        const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0');
+                                        const anio = fecha_actual.getFullYear();
+                                        const horas = fecha_actual.getHours().toString().padStart(2, '0');
+                                        const minutos = fecha_actual.getMinutes().toString().padStart(2, '0');
+                                        const segundos = fecha_actual.getSeconds().toString().padStart(2, '0');
+                                        const fechaStr = `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+                                        problemaceptado.fecha_actualizado = fechaStr;
+                                        filtrar(); // Actualizar la tabla o la vista según sea necesario
+                                    }
                                 })
                                 .catch(error => {
                                     console.error('Hubo un problema con la operación fetch:', error);
                                 });
                             });
                         }
-    
+
                         if (btnStatusRechazar) {
                             btnStatusRechazar.addEventListener('click', function() {
-                                // Event listener para el botón rechazar
                                 fetch(`/api_registros/problema/${idProblema}/`, {
                                     method: 'PUT',
                                     headers: {
@@ -328,10 +360,8 @@ function addEvents(){
                                 .catch(error => {
                                     console.error('Hubo un problema con la operación fetch:', error);
                                 });
-                                
                             });
                         }
-    
                     })
                     .catch((error) => {
                         console.error('There was a problem with the fetch operation:', error);
@@ -339,7 +369,91 @@ function addEvents(){
             }
         });
     });
+
+    // Manejo de eventos para el select box
+    document.getElementById('estatusSelect').addEventListener('change', function() {
+        const selectedOption = this.value;
+    
+        let mensajeConfirmacion = '';
+        let nuevoEstatus = '';
+    
+        // Determinar el mensaje de confirmación y el nuevo estatus basado en la opción seleccionada
+        switch (selectedOption) {
+            case 'Aceptar':
+                mensajeConfirmacion = '¿Estás seguro de que quieres aceptar todos los problemas seleccionados?';
+                nuevoEstatus = 'Aceptado';
+                break;
+            case 'Rechazar':
+                mensajeConfirmacion = '¿Estás seguro de que quieres rechazar todos los problemas seleccionados?';
+                nuevoEstatus = 'Rechazado';
+                break;
+            case 'Completar':
+                mensajeConfirmacion = '¿Estás seguro de que quieres completar todos los problemas seleccionados?';
+                nuevoEstatus = 'Completado';
+                break;
+            default:
+                return; // Salir si la opción seleccionada no es válida
+        }
+    
+        // Mostrar un cuadro de confirmación
+        const confirmar = window.confirm(mensajeConfirmacion);
+    
+        if (confirmar) {
+            // Iterar sobre todas las filas de la tabla
+            const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            selectedCheckboxes.forEach(checkbox => {
+                let row = checkbox.closest('tr');
+                let idProblema = row.querySelector('th').textContent;
+    
+                fetch(`/api_registros/problema/${idProblema}/`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        estatus: nuevoEstatus,
+                        info_adicional: 'Tu problema esta en proceso', // Aquí podrías recoger la información adicional si es necesario
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const problemaActualizado = problemas.find(p => p.id == idProblema);
+                    if (problemaActualizado) {
+                        problemaActualizado.estatus_problematica = nuevoEstatus;
+                        const fecha_actual = new Date();
+                        const dia = fecha_actual.getDate();
+                        const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0');
+                        const anio = fecha_actual.getFullYear();
+                        const horas = fecha_actual.getHours().toString().padStart(2, '0');
+                        const minutos = fecha_actual.getMinutes().toString().padStart(2, '0');
+                        const segundos = fecha_actual.getSeconds().toString().padStart(2, '0');
+                        const fechaStr = `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+                        problemaActualizado.fecha_actualizado = fechaStr;
+                        filtrar(); // Actualizar la tabla o la vista según sea necesario
+                    }
+                })
+                .catch(error => {
+                    console.error('Hubo un problema con la operación fetch:', error);
+                });
+            });
+    
+            // Restablecer el select box a la opción por defecto
+            this.value = '';
+        } else {
+            // Opcional: Restablecer el select box a la opción por defecto si se cancela
+            this.value = '';
+        }
+    });
+      
 }
+
+
 
 // Cargar la información de los problemas en la tabla
 function cargarProblemas() {
