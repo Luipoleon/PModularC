@@ -15,9 +15,9 @@ schema_view = get_schema_view(
     openapi.Info(
         title="API de registros",
         default_version='v1',
-        description="Your API description",
+        description="""API de registros para interactuar con la base de datos de la aplicación, utilizar el método adecuado HTTP o HTTPS para acceder a los recursos, según sea el caso pare evitar errores.""",
         terms_of_service="https://www.yourapp.com/terms/",
-        contact=openapi.Contact(email="contact@yourapp.com"),
+        contact=openapi.Contact(email="contacto@cuceimantein.com"),
         license=openapi.License(name="Your License"),
     ),
     generator_class=CustomSchemaGenerator,  # Use CustomSchemaGenerator

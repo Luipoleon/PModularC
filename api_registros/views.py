@@ -22,11 +22,16 @@ timezone = pytz.timezone('America/Mexico_City')
 
 class NotificacionesAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de notificaciones basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
+
+    @swagger_auto_schema(
+        operation_summary="Listar todos los objetos Notificación",
+    )
+
     def get(self, request, *args, **kwargs):
-        # List all objects
+        # Listar todos los objetos
         queryset = Notification.objects.filter(user=request.user).order_by('id')
         serializer = NotificacionSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -35,80 +40,86 @@ class NotificacionesAPIView(APIView):
 class NotificacionAPIView(APIView):
 
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de notificaciones basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
-
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
+    @swagger_auto_schema(
+        operation_summary="Recuperar un solo objeto Notificación",
+        responses={
+            200: NotificacionSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            # Retrieve a single object
+            # Recuperar un solo objeto
             try:
                 instance = Notification.objects.get(id=id)
                 if(instance.user != request.user):
-                    return Response({'error': 'Notification does not belong to user'}, status=400)
+                    return Response({'error': 'La notificación no pertenece al usuario'}, status=400)
                 serializer = NotificacionSerializer(instance)
                 return Response(serializer.data)
             except Problema.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-          return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+          return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(
-        operation_summary="Mark a notification as read",
+        operation_summary="Marcar una notificación como leída",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['id'],  # Specify required fields here
+            required=['id'],  # Especificar los campos requeridos aquí
             properties={
-                'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID of the notification'),
+                'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID de la notificación'),
             },
         ),
         responses={
-            200: "Notification marked as read",
-            400: "Invalid data"
+            200: "Notificación marcada como leída",
+            400: "Datos inválidos"
         }
     )
     def put(self, request, *args, **kwargs):
         notification_id = kwargs.get('id')
         notification = Notification.objects.get(id=notification_id)
         if(notification.user != request.user):
-            return Response({'error': 'Notification does not belong to user'}, status=400)
+            return Response({'error': 'La notificación no pertenece al usuario'}, status=400)
         notification.read_status = True
         notification.save()
-        return Response({'message': 'Notification marked as read'}, status=200)
+        return Response({'message': 'Notificación marcada como leída'}, status=200)
     
     @swagger_auto_schema(
-        operation_summary="Delete a notification",
+        operation_summary="Eliminar una notificación",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
         ),
         responses={
-            200: "Notification deleted successfully",
-            400: "Invalid data"
+            200: "Notificación eliminada exitosamente",
+            400: "Datos inválidos"
         }
     )
     def delete(self, request, *args, **kwargs):
         try:
-            # Parse JSON body
+            # Analizar el cuerpo JSON
             notification_id = kwargs.get('id')
 
-            # Check if ID is provided
+            # Verificar si se proporciona el ID
             if not notification_id:
-                return Response({'error': 'Notification ID not provided'}, status=400)
+                return Response({'error': 'ID de notificación no proporcionado'}, status=400)
             
             try:
-                # Retrieve notification by ID
+                # Recuperar la notificación por ID
                 notification = Notification.objects.get(id=notification_id)
                 if(notification.user != request.user):
-                    return Response({'error': 'Notification does not belong to user'}, status=400)
+                    return Response({'error': 'La notificación no pertenece al usuario'}, status=400)
                 notification.delete()
-                return Response({'message': 'Notification deleted successfully'}, status=200)
+                return Response({'message': 'Notificación eliminada exitosamente'}, status=200)
             
             except ObjectDoesNotExist:
-                return Response({'error': 'Notification not found'}, status=404)
+                return Response({'error': 'Notificación no encontrada'}, status=404)
         
         except json.JSONDecodeError:
-            return Response({'error': 'Invalid JSON'}, status=400)
+            return Response({'error': 'JSON inválido'}, status=400)
         
         except Exception as e:
             return Response({'error': str(e)}, status=500)  
@@ -116,14 +127,22 @@ class NotificacionAPIView(APIView):
 
 class ProblemasAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de problemas basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
+
+    @swagger_auto_schema(
+        operation_summary="Listar todos los objetos Problema",
+        responses = {
+            200: ProblemaSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
-        # Prefetch related user data to avoid multiple queries
+        # Obtener todos los objetos
         queryset = Problema.objects.all().select_related('id_usuario').order_by('id')
         
-        # Process queryset to format dates and add user_name if user is staff
+        # Procesar la consulta para formatear las fechas y agregar el nombre de usuario si el usuario es personal
         problemas = []
         for problema in queryset:
             problema_dict = ProblemaSerializer(problema).data
@@ -137,33 +156,33 @@ class ProblemasAPIView(APIView):
         return Response(problemas)
     
     @swagger_auto_schema(
-        operation_summary="Create a new Problema object",
+        operation_summary="Crear un nuevo objeto Problema",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['id_usuario', 'tipo_edificio', 'tipo_problema', 'gravedad_problema', 'descripcion_problema', 'ubicacion_exacta'],  # Specify required fields here
+            required=['id_usuario', 'tipo_edificio', 'tipo_problema', 'gravedad_problema', 'descripcion_problema', 'ubicacion_exacta'],  # Especificar los campos requeridos aquí
             properties={
-                'id_usuario': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID of the user'),
-                'tipo_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Type of building'),
-                'estatus_problematica': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='Procesando'),
-                'letra_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Letter of the building', default=None, blank=True, null=True),
-                'numero_salon': openapi.Schema(type=openapi.TYPE_INTEGER, description='Number of the salon', default=None, blank=True, null=True),
-                'piso_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Floor of the bathroom', default=None, blank=True, null=True),
-                'tipo_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Type of bathroom', default=None, blank=True, null=True,),
-                'edificio_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Building of the bathroom', default=None, blank=True, null=True),
-                'tipo_area': openapi.Schema(type=openapi.TYPE_STRING, description='Type of common area', default=None, blank=True, null=True),
-                'ubicacion_area': openapi.Schema(type=openapi.TYPE_STRING, description='Location of the common area', default=None, blank=True, null=True),
-                'tipo_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Type of department', default=None, blank=True, null=True),
-                'tipo_edificio_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Type of building for department', default=None, blank=True, null=True),
-                'ubicacion_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Location of the department', default=None, blank=True, null=True),
-                'tipo_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Type of problem'),
-                'gravedad_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Severity of the problem'),
-                'descripcion_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Description of the problem'),
-                'ubicacion_exacta': openapi.Schema(type=openapi.TYPE_STRING, description='Exact location of the problem', default=None, blank=True, null=True),
+                'id_usuario': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID del usuario'),
+                'tipo_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de edificio'),
+                'estatus_problematica': openapi.Schema(type=openapi.TYPE_STRING, description='Estado del problema', default='Procesando'),
+                'letra_edificio': openapi.Schema(type=openapi.TYPE_STRING, description='Letra del edificio', default=None, blank=True, null=True),
+                'numero_salon': openapi.Schema(type=openapi.TYPE_INTEGER, description='Número del salón', default=None, blank=True, null=True),
+                'piso_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Piso del baño', default=None, blank=True, null=True),
+                'tipo_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de baño', default=None, blank=True, null=True,),
+                'edificio_baño': openapi.Schema(type=openapi.TYPE_STRING, description='Edificio del baño', default=None, blank=True, null=True),
+                'tipo_area': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de área común', default=None, blank=True, null=True),
+                'ubicacion_area': openapi.Schema(type=openapi.TYPE_STRING, description='Ubicación del área común', default=None, blank=True, null=True),
+                'tipo_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de departamento', default=None, blank=True, null=True),
+                'tipo_edificio_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de edificio para departamento', default=None, blank=True, null=True),
+                'ubicacion_departamento': openapi.Schema(type=openapi.TYPE_STRING, description='Ubicación del departamento', default=None, blank=True, null=True),
+                'tipo_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de problema'),
+                'gravedad_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Gravedad del problema'),
+                'descripcion_problema': openapi.Schema(type=openapi.TYPE_STRING, description='Descripción del problema'),
+                'ubicacion_exacta': openapi.Schema(type=openapi.TYPE_STRING, description='Ubicación exacta del problema', default=None, blank=True, null=True),
             },
         ),
         responses={
             201: ProblemaSerializer,
-            400: "Invalid data"
+            400: "Datos inválidos"
         }
     )
 
@@ -205,38 +224,45 @@ class ProblemasAPIView(APIView):
  
 class ProblemaAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de problemas basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
 
+    @swagger_auto_schema( 
+        operation_summary="Recuperar un solo objeto Problema",
+        responses = {
+            200: ProblemaSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            # Retrieve a single object
+            # Recuperar un solo objeto
             try:
                 instance = Problema.objects.get(id=id)
                 serializer = ProblemaSerializer(instance)
                 return Response(serializer.data)
             except Problema.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-          return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+          return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
     
 
     @swagger_auto_schema(
-        operation_summary="Change problem status",
+        operation_summary="Cambiar el estado del problema",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['estatus'],  # Specify required fields here
+            required=['estatus'],  # Especificar los campos requeridos aquí
             properties={
-                'estatus': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem'),
-                'info_adicional' : openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='...'),
-                'comentario_completado' : openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='...'),
+                'estatus': openapi.Schema(type=openapi.TYPE_STRING, description='Estado del problema'),
+                'info_adicional' : openapi.Schema(type=openapi.TYPE_STRING, description='Información adicional del problema', default='...'),
+                'comentario_completado' : openapi.Schema(type=openapi.TYPE_STRING, description='Comentario de completado del problema', default='...'),
             },
         ),
         responses={
             201: ProblemaSerializer,
-            400: "Invalid data"
+            400: "Datos inválidos"
         }
     )
     def put(self, request, *args, **kwargs):
@@ -260,24 +286,32 @@ class ProblemaAPIView(APIView):
                 
                 instance.save()
                 problemaEnCurso.save()
-                return Response({'message': 'Status changed'}, status=200)
+                return Response({'message': 'Estado cambiado'}, status=200)
                 
             except Problema.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
    
 
 class ProblemasEnCursoAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de problemas en curso basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
+
+    @swagger_auto_schema(
+        operation_summary="Listar todos los objetos Problema en Curso",
+        responses = {
+            200: ProblemaSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
-        # List all objects
+        # Listar todos los objetos
         queryset = ProblemaEnCurso.objects.all().order_by('id')
         serializer = ProblemaEnCursoSerializer(queryset, many=True)
-        # Process queryset to format dates and add user_name if user is staff
+        # Procesar la consulta para formatear las fechas y agregar el nombre de usuario si el usuario es personal
         problemas = []
         for problema in queryset:
             problema_dict = ProblemaEnCursoSerializer(problema).data
@@ -292,14 +326,14 @@ class ProblemasEnCursoAPIView(APIView):
     
 class ProblemaEnCursoAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+     Vista para manejar operaciones de listado y recuperación de usuarios basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
     @swagger_auto_schema(
-    operation_summary="Retrieve a single Problema object",
+    operation_summary="Recuperar un solo objeto Problema en Curso con el ID del problema",
         responses={
             200: ProblemaSerializer,
-            404: "Object not found"
+            404: "Objeto no encontrado"
         }
     )
 
@@ -307,7 +341,7 @@ class ProblemaEnCursoAPIView(APIView):
     def get(self, request, *args, **kwargs):
         id_problema = kwargs.get('id_problema')
         if id_problema is not None:
-            # Retrieve a single object
+            # Recuperar un solo objeto
             try:
                 instance = ProblemaEnCurso.objects.get(id_problema=id_problema)
                 serializer = ProblemaEnCursoSerializer(instance)
@@ -328,34 +362,42 @@ class ProblemaEnCursoAPIView(APIView):
 
                 return Response(dict)
             except ProblemaEnCurso.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UsuariosAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de usuarios basadas en el tipo de solicitud.
     """
-    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    permission_classes = [IsAuthenticated]  # Asegura que solo los usuarios autenticados puedan acceder
+
+    @swagger_auto_schema(
+        operation_summary="Listar todos los objetos Usuario",
+        responses = {
+            200: UsuarioSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
-        # List all objects
+        # Listar todos los objetos
         queryset = CustomUser.objects.all().order_by('id')
         serializer = UsuarioSerializer(queryset, many=True)
         return Response(serializer.data)
     
     @swagger_auto_schema(
-        operation_summary="Change user data and password",
+        operation_summary="Cambiar datos de usuario y contraseña",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['password', 'current_password'],  # Specify required fields here
+            required=['password', 'current_password'],  # Especificar los campos requeridos aquí
             properties={
-                'password': openapi.Schema(type=openapi.TYPE_STRING, description='New password'),
-                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Current password'),
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Nueva contraseña'),
+                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Contraseña actual'),
             },
         ),
         responses={
-            200: "Password changed",
-            400: "Invalid data"
+            200: "Contraseña cambiada",
+            400: "Datos inválidos"
         }
     )
     def put(self, request, *args, **kwargs):
@@ -367,24 +409,31 @@ class UsuariosAPIView(APIView):
             try:
                 instance = CustomUser.objects.get(id=id)
                 if not instance.check_password(current_password):
-                    return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Contraseña inválida'}, status=status.HTTP_400_BAD_REQUEST)
                 instance.set_password(password)
                 instance.save()
                 user = authenticate(email = email,  password =  password)
                 login(request, user)
-                return Response({'message': 'Password changed'}, status=200)
+                return Response({'message': 'Contraseña cambiada'}, status=200)
                 
             except CustomUser.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class UsuarioAPIView(APIView):
     """
-    View for handling both list and retrieve operations based on the request type.
+    Vista para manejar operaciones de listado y recuperación de usuarios basadas en el tipo de solicitud.
     """
     permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    @swagger_auto_schema(
+        operation_summary="Mostrar un solo objeto Usuario",
+        responses = {
+            200: UsuarioSerializer,
+            404: "Objeto no encontrado"
+        }
+    )
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
         if id is not None:
@@ -399,18 +448,18 @@ class UsuarioAPIView(APIView):
           return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
         
     @swagger_auto_schema(
-        operation_summary="Change user data and password",
-        request_body=openapi.Schema(
+            operation_summary="Cambiar datos de usuario y contraseña desde el Administrador",
+            request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['password', 'current_password'],  # Specify required fields here
+            required=['password', 'current_password'],  # Especificar los campos requeridos aquí
             properties={
-                'password': openapi.Schema(type=openapi.TYPE_STRING, description='New password'),
-                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Current password'),
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Nueva contraseña'),
+                'current_password': openapi.Schema(type=openapi.TYPE_STRING, description='Contraseña actual'),
             },
         ),
         responses={
-            200: "Password changed",
-            400: "Invalid data"
+            200: "Contraseña cambiada",
+            400: "Datos inválidos"
         }
     )
     def put(self, request, *args, **kwargs):
@@ -421,12 +470,12 @@ class UsuarioAPIView(APIView):
             try:
                 instance = CustomUser.objects.get(id=id)
                 if not instance.check_password(current_password):
-                    return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Contraseña inválida'}, status=status.HTTP_400_BAD_REQUEST)
                 instance.set_password(password)
                 instance.save()
-                return Response({'message': 'Password changed'}, status=200)
+                return Response({'message': 'Contraseña cambiada'}, status=200)
                 
             except CustomUser.DoesNotExist:
-                return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'Objeto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'error': 'ID not provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'ID no proporcionado.'}, status=status.HTTP_400_BAD_REQUEST)
