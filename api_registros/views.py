@@ -15,6 +15,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from login.forms import LoginForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
+from datetime import datetime
 
 # Zona horaria de México
 timezone = pytz.timezone('America/Mexico_City')
@@ -230,6 +231,7 @@ class ProblemaAPIView(APIView):
             properties={
                 'estatus': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem'),
                 'info_adicional' : openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='...'),
+                'comentario_completado' : openapi.Schema(type=openapi.TYPE_STRING, description='Status of the problem', default='...'),
             },
         ),
         responses={
@@ -240,13 +242,22 @@ class ProblemaAPIView(APIView):
     def put(self, request, *args, **kwargs):
         id = kwargs.get('id')
         estatus = request.data['estatus']
-        info_adicional = request.data["info_adicional"]
+        info_adicional = request.data.get("info_adicional")
+        comentario_completado = request.data.get("comentario_completado")
         if id is not None:
             try:
                 instance = Problema.objects.get(id=id)
                 problemaEnCurso = ProblemaEnCurso.objects.get(id_problema=instance)
                 instance.estatus_problematica = estatus
-                problemaEnCurso.info_adicional = info_adicional
+                if info_adicional is not None:
+                    problemaEnCurso.info_adicional = info_adicional
+                problemaEnCurso.comentario_completado = info_adicional
+
+                if estatus == "Completado":
+                    problemaEnCurso.fecha_completado = datetime.now()
+                    if comentario_completado is not None:
+                        problemaEnCurso.comentario_completado = comentario_completado
+                
                 instance.save()
                 problemaEnCurso.save()
                 return Response({'message': 'Status changed'}, status=200)
@@ -266,7 +277,17 @@ class ProblemasEnCursoAPIView(APIView):
         # List all objects
         queryset = ProblemaEnCurso.objects.all().order_by('id')
         serializer = ProblemaEnCursoSerializer(queryset, many=True)
-        return Response(serializer.data)
+        # Process queryset to format dates and add user_name if user is staff
+        problemas = []
+        for problema in queryset:
+            problema_dict = ProblemaEnCursoSerializer(problema).data
+            if problema_dict['fecha_aceptado'] is not None:
+                problema_dict['fecha_aceptado'] = problema.fecha_aceptado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+            if problema_dict['fecha_completado'] is not None:
+                problema_dict['fecha_completado'] = problema.fecha_completado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+            problemas.append(problema_dict)
+        
+        return Response(problemas)
     
     
 class ProblemaEnCursoAPIView(APIView):
@@ -292,11 +313,19 @@ class ProblemaEnCursoAPIView(APIView):
                 serializer = ProblemaEnCursoSerializer(instance)
                 dict = serializer.data.copy()
                 problema = Problema.objects.get(id=dict['id_problema'])
-                serializer = ProblemaSerializer(problema)
 
-                dict['problema'] = serializer.data
+                dict['problema'] = ProblemaSerializer(problema).data
+                dict['problema']['fecha_creacion'] = problema.fecha_creacion.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+                dict['problema']['fecha_actualizado'] = problema.fecha_actualizado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+            
+                if dict['fecha_aceptado'] is not None:
+                    dict['fecha_aceptado'] = instance.fecha_aceptado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+                if dict['fecha_completado'] is not None:
+                    dict['fecha_completado'] = instance.fecha_completado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
+
                 dict['adminName'] = instance.id_administrador.first_name
                 dict.pop('id_problema', None)
+
                 return Response(dict)
             except ProblemaEnCurso.DoesNotExist:
                 return Response({'error': 'Object not found.'}, status=status.HTTP_404_NOT_FOUND)
