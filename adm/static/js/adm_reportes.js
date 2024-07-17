@@ -247,7 +247,7 @@ function addEvents() {
                         return response.json();
                     })
                     .then((data) => {
-                        if (statusProblema === "Aceptado" || statusProblema === "Procesando") {
+                        if (statusProblema === "Procesando") {
                             divAdminInfo.innerHTML += `
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
@@ -264,7 +264,27 @@ function addEvents() {
                                     </button>
                                 </div>
                             `;
-                        } else if (statusProblema === "Rechazado") {
+                        } else if (statusProblema === "Aceptado") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <div class='col border border-2 text-center'>${data.info_adicional}</div>
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.comentario_completado}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2" data-bs-dismiss="modal">
+                                        Cancelar
+                                    </button>
+                                    <button type="button" data-idProblema='${idProblema}' id="completar_problema" class="btn btn-primary col fs-5 me-2" data-bs-dismiss="modal">
+                                        Completar
+                                    </button>
+                                </div>
+                            `;
+                        }else if (statusProblema === "Rechazado") {
                             divAdminInfo.innerHTML += `
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
@@ -280,11 +300,23 @@ function addEvents() {
                             `;
                         } else if (statusProblema === "Completado") {
                             divAdminInfo.innerHTML += `
-                                <div class='row h3'><span class='col border border-2'><strong>Completado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center text-success'>${data.fecha_completado.slice(0, 10)}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <div class='col border border-2 text-center'>${data.info_adicional}</div>
+                                </div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Fecha Aceptado> ${data.fecha_completado.slice(0, 10)}</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.comentario_completado}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <button type="button" data-idProblema='${idProblema}' id="completar_problema" class="btn btn-primary col fs-5 me-2" data-bs-dismiss="modal">
+                                        Actualizar
+                                    </button>
+                                </div>
                             `;
                         }
 
@@ -296,6 +328,7 @@ function addEvents() {
                         // Configuramos los event listeners después de insertar los botones en el DOM
                         const btnStatusAceptar = document.querySelector('#aceptar_problema');
                         const btnStatusRechazar = document.querySelector('#rechazar_problema');
+                        const btnStatusCompletar = document.querySelector('#completar_problema');
 
                         if (btnStatusAceptar) {
                             btnStatusAceptar.addEventListener('click', function() {
