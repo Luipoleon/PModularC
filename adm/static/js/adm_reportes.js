@@ -280,6 +280,9 @@ function addEvents() {
                                 <div class='row h3 text-start'>
                                     <div class='col border border-2 text-center'>${data.info_adicional}</div>
                                 </div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion completado</strong></span> 
+                                </div>
                                 <div class='row h3 text-start'>
                                     <textarea class='col border border-2 text-center' placeholder="${data.comentario_completado}"></textarea>
                                 </div>
@@ -337,7 +340,7 @@ function addEvents() {
                         // Configuramos los event listeners después de insertar los botones en el DOM
                         const btnStatusAceptar = document.querySelector('#aceptar_problema');
                         const btnStatusRechazar = document.querySelector('#rechazar_problema');
-                        const btnStatusCompletar = document.querySelector('#completar_problema');
+                        //const btnStatusCompletar = document.querySelector('#completar_problema');
 
                         if (btnStatusAceptar) {
                             btnStatusAceptar.addEventListener('click', function() {
