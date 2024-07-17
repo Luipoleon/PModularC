@@ -16,6 +16,7 @@ const btnProblemaAnterior = document.querySelector('#btn_problema_anterior');
 const contenedorProblemas = document.querySelector('#contenedor_problemas');
 let problemas, pagina = 1, numPages;
 let problemasFiltrados;
+let estatusCheckboxSeleccionado = '';
 
 // DOM filtro de problemas
 
@@ -71,13 +72,13 @@ thGravedad.addEventListener('click', (e) => {
     if (orden === 'asc') {
         problemasFiltrados = problemasFiltrados.sort((a, b) => {
             console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
-            return gravedadOrden[a.gravedad] - gravedadOrden[b.gravedad];
+            return gravedadOrden[a.gravedad_problema] - gravedadOrden[b.gravedad_problema];
         });
         e.target.dataset.orden = 'desc'; // Cambia a descendente
     } else {
         problemasFiltrados = problemasFiltrados.sort((a, b) => {
             console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
-            return gravedadOrden[b.gravedad] - gravedadOrden[a.gravedad];
+            return gravedadOrden[b.gravedad_problema] - gravedadOrden[a.gravedad_problema];
         });
         e.target.dataset.orden = 'asc'; // Cambia a ascendente
     }
@@ -158,7 +159,7 @@ function filtrar() {
             const diasDiferencia = Math.floor(diferencia / (1000 * 60 * 60 * 24));
 
             if (selectFecha.value === 'Hoy') return diasDiferencia === 0;
-            if (selectFecha.value === 'Ayer') return diasDiferencia === 1;
+            if (selectFecha.value === 'Ayer') return diasDiferencia <= 1;
             if (selectFecha.value === '7 días') return diasDiferencia <= 7;
             if (selectFecha.value === 'Mes') return diasDiferencia <= 30;
             if (selectFecha.value === 'Año') return diasDiferencia <= 366;
@@ -186,8 +187,14 @@ document.querySelectorAll('.form-check-input').forEach(checkbox => {
     });
 });
 
+document.querySelectorAll('.filtros .form-select').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        filtrar();
+    });
+});
 
-btnFiltrar.addEventListener('click', filtrar);
+
+// btnFiltrar.addEventListener('click', filtrar);
 
 // Event listener para los botones siguiente pagina
 
@@ -424,6 +431,7 @@ function addEvents() {
                 })
                 .then(data => {
                     const problemaActualizado = problemas.find(p => p.id == idProblema);
+                    console.log(problemaActualizado);
                     if (problemaActualizado) {
                         problemaActualizado.estatus_problematica = nuevoEstatus;
                         const fecha_actual = new Date();
@@ -479,6 +487,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
     
     let problemasPagina = problemas.slice((pagina-1)*problemasPorPagina, pagina*problemasPorPagina);
     contenedorProblemas.innerHTML = "";
+    estatusCheckboxSeleccionado = '';
     problemasPagina.forEach((p) => {
         let tr = document.createElement('tr');
         let claseEstatus;
@@ -501,7 +510,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
               <td>${p.user_name}#${p.id_usuario} </td>
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
-              <td>${p.estatus_problematica}</td>
+              <td class="estatus_problematica">${p.estatus_problematica}</td>
               <td>${p.fecha_actualizado}</td>
               <td>
                 <button id="p.${p.id}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
@@ -513,6 +522,35 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
                 
               </td>
         `;
+
+        tr.querySelector('.form-check-input').addEventListener('change', function() {
+            console.log('Checkbox seleccionado:', this.checked);
+            if (estatusCheckboxSeleccionado === '') {
+                estatusCheckboxSeleccionado = p.estatus_problematica;
+                document.querySelectorAll('table tbody tr').forEach(tr => {
+                    estatus_problematica = tr.querySelector('.estatus_problematica').textContent;
+                    checkbox = tr.querySelector('.form-check-input');
+             
+                    if (estatus_problematica !== estatusCheckboxSeleccionado) {
+                        console.log(estatus_problematica, estatusCheckboxSeleccionado);
+                        checkbox.disabled = true;
+                    } else {
+                        // checkbox.classList.remove('disabled');
+                        checkbox.disabled = false;
+                    }
+                });
+            } else {
+                  let checkboxSeleccionados = 
+                  document.querySelectorAll('table .form-check-input:checked');
+                    if (checkboxSeleccionados.length === 0) {
+                        estatusCheckboxSeleccionado = '';
+                        document.querySelectorAll('table tbody tr').forEach(tr => {
+                            tr.querySelector('.form-check-input').disabled = false;
+                        });
+                    }
+                  
+            }
+        });
         contenedorProblemas.appendChild(tr);
     });
 }
