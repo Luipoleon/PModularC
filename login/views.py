@@ -1,11 +1,19 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
-from login.models import CustomUser
+from login.models import CustomUser, CodigoSeguridad
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
+from mailersend import emails
+import secrets
+import string
+import json
 from .forms import LoginForm, RegisterForm
 
-
+# Código para recuperar constraseña
+def generar_codigo_seguridad(length=6):
+    alphabet = string.ascii_letters + string.digits
+    codigo = ''.join(secrets.choice(alphabet) for i in range(length))
+    return codigo
 
 # Create your views here.
 
@@ -83,6 +91,74 @@ def logout_view(request):
 
 
 
+def enviar_correo(destinatario_email, destinatario_nombre, asunto, mensaje):
+    mailer = emails.NewEmail("mlsn.a977aab3339211488d1f0a777df5e0666718feb65538b05bb27e12defab96d3a")
+
+    # define an empty dict to populate with mail values
+    mail_body = {}
+
+    mail_from = {
+        "name": "Luis Hernández",
+        "email": "MS_cGk1rl@cuceimantein.site",
+    }
+
+    recipients = [
+        {
+            "name": destinatario_nombre,
+            "email": destinatario_email,
+        }
+    ]
+
+    reply_to = {
+        "name": "Luis Hernández",
+        "email": "contacto@cuceimantein.site",
+    }
+
+    mailer.set_mail_from(mail_from, mail_body)
+    mailer.set_mail_to(recipients, mail_body)
+    mailer.set_subject(asunto, mail_body)
+    mailer.set_html_content(mensaje, mail_body)
+    mailer.set_plaintext_content("T", mail_body)
+    mailer.set_reply_to(reply_to, mail_body)
+
+    # using print() will also return status code and data
+    mailer.send(mail_body)
 
 
-    
+# views.py
+
+def enviar_codigo_recuperacion(request):
+    email =  json.loads(request.body).get('email')
+    try:
+        usuario = CustomUser.objects.get(email=email)
+        request.user = usuario
+        codigo = generar_codigo_seguridad()
+        CodigoSeguridad.objects.create(usuario=usuario, codigo=codigo)
+        enviar_correo(usuario.email, usuario.first_name, "Recuperación de contraseña", f"Su código de recuperación es: {codigo}")
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'message': 'Correo no registrado', 'error': True})
+    return JsonResponse({'message': 'Correo enviado con éxito', 'error': False})
+
+def validar_codigo_recuperacion(request):
+    codigo = json.loads(request.body).get('code')
+    usuario = request.user
+    try:
+        codigo_obj = CodigoSeguridad.objects.get(usuario=usuario, codigo=codigo)
+        return JsonResponse({'message': 'Código correcto', 'error': False})
+    except CodigoSeguridad.DoesNotExist:
+        return JsonResponse({'message': 'Código incorrecto', 'error': True})
+
+def recuperar_contraseña(request):
+    if request.method == 'POST':
+        codigo = request.POST.get('code_recover')
+        nueva_contraseña = request.POST.get('nueva_contraseña')
+        usuario = request.user
+        try:
+            codigo_obj = CodigoSeguridad.objects.get(usuario=usuario, codigo=codigo)
+            usuario.set_password(nueva_contraseña)
+            usuario.save()
+            codigo_obj.delete()
+            return HttpResponse('Contraseña actualizada con éxito')
+        except CodigoSeguridad.DoesNotExist:
+            return HttpResponse('Código incorrecto')
+    return render(request, 'recuperar_contraseña.html')
