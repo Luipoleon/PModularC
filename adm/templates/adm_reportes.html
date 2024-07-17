@@ -5,7 +5,7 @@
 {% block css %} 
   <link rel="stylesheet" href="{% static 'css/adm_reportes.css' %}" /> 
 {% endblock %}
- 
+  
 {% block contenido %}
   <div class="d-flex">
   <section class="d-flex flex-column justify-content-start container reportes">
@@ -88,9 +88,9 @@
             <option value="25">25</option>
           </select>
         </div>
-        <div class="col d-flex align-items-end px-4 py-2 justify-content-center flex-grow-0">
+        {% comment %} <div class="col d-flex align-items-end px-4 py-2 justify-content-center flex-grow-0">
           <button class="btn btn-dark fs-5" id="btn_filtrar">Filtrar</button>
-        </div>
+        </div> {% endcomment %}
       </div>
     </div>
     </section>
@@ -129,7 +129,7 @@
             <td>{{p.id_usuario.first_name}}#{{p.id_usuario.id}} </td>
             <td>{{p.tipo_edificio}} | {{p.tipo_problema}}</td>
             <td>{{p.gravedad_problema}}</td>
-            <td>{{p.estatus_problematica}}</td>
+            <td class="estatus_problematica">{{p.estatus_problematica}}</td>
             <td>{{p.fecha_actualizado|timezone:"America/Mexico_City"|date:"d/m/Y H:i:s" }}</td>
             <td>
               <button id="p.{{p.id}}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes">

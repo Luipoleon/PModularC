@@ -2,7 +2,7 @@ let BodyModal = document.querySelector('.modal-body');
 let content = "";
 const currentUrl = window.location.href;
 const url = new URL(currentUrl); // obtiene ruta relativa
- 
+  
 // Select current page on menu to add class 'MenuPicked'
 const reportar = document.querySelectorAll('.nav-item a').item(1);
 reportar.id = 'MenuPicked';
@@ -15,7 +15,7 @@ const btnProblemaSiguiente = document.querySelector('#btn_problem_siguiente');
 const btnProblemaAnterior = document.querySelector('#btn_problema_anterior');
 const contenedorProblemas = document.querySelector('#contenedor_problemas');
 let problemas, pagina = 1, numPages;
-let problemasFiltrados;
+let problemasFiltrados = [];
 
 // DOM filtro de problemas
 
@@ -32,12 +32,15 @@ const numResultados = document.querySelector('#num_resultados');
 const thIdReporte = document.querySelector('#th_id_reporte');
 const thFecha = document.querySelector('#th_fecha');
 
+
 const statusColors = {
     "Aceptado": 'bg-success text-white',
     "Rechazado": 'bg-danger text-white',
     "Procesando": 'bg-warning text-dark',
     "Completado": 'bg-info text-white'
 };
+
+let estatusCheckboxSeleccionado = '';
 
 thIdReporte.addEventListener('click', (e) => {
     let orden = e.target.dataset.orden;
@@ -66,18 +69,15 @@ const thGravedad = document.getElementById('thGravedad');
 // Añadir el evento para la columna de gravedad
 thGravedad.addEventListener('click', (e) => {
     let orden = e.target.dataset.orden;
-    console.log('Orden actual:', orden); // Verifica el estado actual
-
+    
     if (orden === 'asc') {
         problemasFiltrados = problemasFiltrados.sort((a, b) => {
-            console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
-            return gravedadOrden[a.gravedad] - gravedadOrden[b.gravedad];
+            return gravedadOrden[a.gravedad_problema] - gravedadOrden[b.gravedad_problema];
         });
         e.target.dataset.orden = 'desc'; // Cambia a descendente
     } else {
         problemasFiltrados = problemasFiltrados.sort((a, b) => {
-            console.log('Comparando:', a.gravedad, b.gravedad); // Verifica los valores de gravedad
-            return gravedadOrden[b.gravedad] - gravedadOrden[a.gravedad];
+            return gravedadOrden[b.gravedad_problema] - gravedadOrden[a.gravedad_problema];
         });
         e.target.dataset.orden = 'asc'; // Cambia a ascendente
     }
@@ -187,7 +187,15 @@ document.querySelectorAll('.form-check-input').forEach(checkbox => {
 });
 
 
-btnFiltrar.addEventListener('click', filtrar);
+document.querySelectorAll('.form-select').forEach(select => {
+    select.addEventListener('change', function() {
+        filtrar();
+    });
+});
+
+
+
+// btnFiltrar.addEventListener('click', filtrar);
 
 // Event listener para los botones siguiente pagina
 
@@ -324,6 +332,7 @@ function addEvents() {
                         BodyModal.innerHTML = ""; // Limpiamos el contenido anterior
                         BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
                         BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
+
 
                         // Configuramos los event listeners después de insertar los botones en el DOM
                         const btnStatusAceptar = document.querySelector('#aceptar_problema');
@@ -512,6 +521,8 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
     
     let problemasPagina = problemas.slice((pagina-1)*problemasPorPagina, pagina*problemasPorPagina);
     contenedorProblemas.innerHTML = "";
+    estatusCheckboxSeleccionado = ''
+
     problemasPagina.forEach((p) => {
         let tr = document.createElement('tr');
         let claseEstatus;
@@ -534,7 +545,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
               <td>${p.user_name}#${p.id_usuario} </td>
               <td>${p.tipo_edificio} | ${p.tipo_problema}</td>
               <td>${p.gravedad_problema}</td>
-              <td>${p.estatus_problematica}</td>
+              <td class="estatus_problematica">${p.estatus_problematica}</td>
               <td>${p.fecha_actualizado}</td>
               <td>
                 <button id="p.${p.id}" class="seguimiento_p btn btn-secondary" href="#!" data-bs-toggle="modal" data-bs-target="#InformacionReportes"> 
@@ -547,6 +558,33 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
               </td>
         `;
         contenedorProblemas.appendChild(tr);
+        tr.querySelector('.form-check-input').addEventListener('change', function() {
+            if (estatusCheckboxSeleccionado === '') {
+                estatusCheckboxSeleccionado = p.estatus_problematica;
+                document.querySelectorAll('table tbody tr').forEach(tr => {
+                    estatus_problematica = tr.querySelector('.estatus_problematica').textContent;
+                    checkbox = tr.querySelector('.form-check-input');
+             
+                    if (estatus_problematica !== estatusCheckboxSeleccionado) {
+                        console.log(estatus_problematica, estatusCheckboxSeleccionado);
+                        checkbox.disabled = true;
+                    } else {
+                        // checkbox.classList.remove('disabled');
+                        checkbox.disabled = false;
+                    }
+                });
+            } else {
+                  let checkboxSeleccionados = 
+                  document.querySelectorAll('table .form-check-input:checked');
+                    if (checkboxSeleccionados.length === 0) {
+                        estatusCheckboxSeleccionado = '';
+                        document.querySelectorAll('table tbody tr').forEach(tr => {
+                            tr.querySelector('.form-check-input').disabled = false;
+                        });
+                    }
+                  
+            }
+        });
     });
 }
 
@@ -617,5 +655,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-addEvents();
+
 cargarProblemas();
+addEvents();
