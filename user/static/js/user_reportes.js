@@ -53,13 +53,13 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                         divAdminInfo.innerHTML += `
                             <div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
                             <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
+                            <div class='row h3'><span class='col border border-2'><strong>Información adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
                         `;
                     } else if (statusProblema === "Procesando") {
                         divAdminInfo.innerHTML += `
                             <div class='row h3'><span class='col border border-2'><strong>Aceptado por</strong></span> <span class='col border border-2 text-center'>Pendiente</span></div>
                             <div class='row h3'><span class='col border border-2'><strong>Fecha de aceptado</strong></span> <span class='col border border-2 text-center'>Pendiente</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>Pendiente</span></div>
+                            <div class='row h3'><span class='col border border-2'><strong>Información adicional</strong></span> <span class='col border border-2 text-center'>Pendiente</span></div>
                         `;
                     } else if (statusProblema === "Rechazado") {
                         divAdminInfo.innerHTML += `
@@ -71,9 +71,9 @@ Array.from(document.getElementsByClassName('seguimiento_p')).forEach(function (e
                         divAdminInfo.innerHTML += `
                             <div class='row h3'><span class='col border border-2'><strong>Completado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
                             <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
+                            <div class='row h3'><span class='col border border-2'><strong>Información adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
                             <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center text-success'>${data.fecha_completado.slice(0, 10)}</span></div>
-                            <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
+                            <div class='row h3'><span class='col border border-2'><strong>Información sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
                         
 
                         `;
@@ -95,9 +95,24 @@ function updateProblemInfo(divProblemaInfo, problema) {
     problema.id = null;
     problema.estatus_problematica = null;
     problema.id_usuario = null;
+    problema.fecha_actualizado = null;
+
+    // Diccionario para renombrar las claves
+    const clavesRenombradas = {
+        tipo_edificio: 'Tipo de Edificio',
+        fecha_creacion: 'Fecha de Creación',
+        piso_baño: 'Piso del Baño',
+        tipo_baño: 'Tipo de Baño',
+        edificio_baño: 'Edificio del Baño',
+        tipo_problema: 'Tipo de Problema',
+        gravedad_problema: 'Gravedad',
+        descripcion_problema: 'Descripción',
+        ubicacion_exacta: 'Ubicación Exacta'
+    };
 
     Object.entries(problema).forEach(([clave, valor]) => {
         if (valor != null) {
+            let claveRenombrada = clavesRenombradas[clave] || clave;
             let tipoColorTexto = '';
             if (clave == 'tipo_problema') {
                 switch (valor) {
@@ -134,10 +149,11 @@ function updateProblemInfo(divProblemaInfo, problema) {
                         colorTexto = '';
                         tiempoEstimado = '';
                 }
-                divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${clave}</strong></span> <span class='col border border-2 text-center ${colorTexto}'>${valor} | ${tiempoEstimado} |</span></div>`;
+                divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${claveRenombrada}</strong></span> <span class='col border border-2 text-center ${colorTexto}'>${valor} | ${tiempoEstimado} |</span></div>`;
                 return;
             }
-            divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${clave}</strong></span> <span class='col border border-2 text-center ${tipoColorTexto}'>${valor}</span></div>`;
+            divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${claveRenombrada}</strong></span> <span class='col border border-2 text-center ${tipoColorTexto}'>${valor}</span></div>`;
         }
     });
 }
+
