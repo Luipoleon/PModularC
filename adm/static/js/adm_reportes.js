@@ -588,7 +588,7 @@ btnCambiarEstatus.addEventListener('click', function() {
             });
     
             // Restablecer el select box a la opción por defecto
-            selectedOption.value = '';
+            selectedOption.value = '';  
 
 });
 
@@ -655,14 +655,32 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
 
         tr.querySelector('.form-check-input').addEventListener('change', function() {
             console.log('Checkbox seleccionado:', this.checked);
+            let selectboxdisable = document.getElementById('estatusSelect');
             if (estatusCheckboxSeleccionado === '') {
                 estatusCheckboxSeleccionado = p.estatus_problematica;
+                // Estamos seleccionando por numero donde 0 es Seleccionar accion y 3 completado
+                switch(estatusCheckboxSeleccionado){
+                    case 'Procesando':
+                        selectboxdisable.children.item(3).disabled=true;
+                        break
+                    case 'Aceptado':
+                        selectboxdisable.children.item(1).disabled=true;
+                        break
+                    case 'Rechazado':
+                        selectboxdisable.children.item(2).disabled=true;
+                        selectboxdisable.children.item(3).disabled=true;
+                        break
+                    case 'Completado':
+                        selectboxdisable.children.item(1).disabled=true;
+                        selectboxdisable.children.item(2).disabled=true;
+                        selectboxdisable.children.item(3).disabled=true;
+                        break   
+                }
                 document.querySelectorAll('table tbody tr').forEach(tr => {
                     estatus_problematica = tr.querySelector('.estatus_problematica').textContent;
                     checkbox = tr.querySelector('.form-check-input');
-             
                     if (estatus_problematica !== estatusCheckboxSeleccionado) {
-                        console.log(estatus_problematica, estatusCheckboxSeleccionado);
+                        // console.log(estatus_problematica, estatusCheckboxSeleccionado);
                         checkbox.disabled = true;
                     } else {
                         // checkbox.classList.remove('disabled');
@@ -670,9 +688,13 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
                     }
                 });
             } else {
+
                   let checkboxSeleccionados = 
                   document.querySelectorAll('table .form-check-input:checked');
-                    if (checkboxSeleccionados.length === 0) {
+                  if (checkboxSeleccionados.length === 0) {
+                    selectboxdisable.children.item(1).disabled=false;
+                    selectboxdisable.children.item(2).disabled=false;
+                    selectboxdisable.children.item(3).disabled=false;
                         estatusCheckboxSeleccionado = '';
                         document.querySelectorAll('table tbody tr').forEach(tr => {
                             tr.querySelector('.form-check-input').disabled = false;
@@ -773,6 +795,10 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+document.getElementById('btnCerrarModal').addEventListener('click',()=>{
+    const selectedOption = document.getElementById('estatusSelect');
+    selectedOption.value = '';  
+});
 
 addEvents();
 cargarProblemas();
