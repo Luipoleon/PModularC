@@ -7,5 +7,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('send-code/', views.enviar_codigo_recuperacion, name="send-code"),
     path('validate-code/', views.validar_codigo_recuperacion, name="validatecode"),
-    path('user/change-password/', views.recuperar_contraseña, name="changepassword"),
+    path('change-password/', views.recuperar_contraseña, name="changepassword"),
 ]

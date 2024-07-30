@@ -1,4 +1,4 @@
-let BodyModal = document.querySelector('.modal-body');
+let BodyModal = document.querySelector('#InformacionReportes .modal-body');
 let content = "";
 const currentUrl = window.location.href;
 const url = new URL(currentUrl); // obtiene ruta relativa
@@ -33,6 +33,20 @@ const numResultados = document.querySelector('#num_resultados');
 const thIdReporte = document.querySelector('#th_id_reporte');
 const thFecha = document.querySelector('#th_fecha');
 
+// Búsqueda
+
+const inputBusqueda = document.querySelector('#inputBusqueda');
+const btnBusqueda = document.querySelector('#btnBusqueda');
+const formBusqueda = document.querySelector('#formBusqueda');
+let problemasBusqueda = [];
+
+// Modal Info Adicional
+let modal = new bootstrap.Modal(document.getElementById('InfoAdiccional'));
+const btnCambiarEstatus = document.getElementById("btnCambiarEstatus");
+const textAreaInfoAdicional = document.getElementById("infoAdicional");
+const spanNuevoEstatus = document.getElementById("tituloNuevoEstatus");
+
+
 const statusColors = {
     "Aceptado": 'bg-success text-white',
     "Rechazado": 'bg-danger text-white',
@@ -63,6 +77,36 @@ const gravedadOrden = {
 
 // Seleccionar el elemento del encabezado de la columna de gravedad
 const thGravedad = document.getElementById('thGravedad');
+
+// Barra de búsqueda	
+formBusqueda.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let busqueda = inputBusqueda.value.toLowerCase();
+    if(busqueda === '') {
+        problemasBusqueda = problemas;
+    } 
+    else if(!isNaN(busqueda)) {
+        problemasBusqueda = problemas.filter(p => p.id == busqueda);
+    } else{
+
+        if(busqueda.includes('#')) {
+            busqueda = busqueda.split('#')[1];
+            problemasBusqueda = problemas.filter(p => {
+                return p.id_usuario == busqueda;
+            });
+        } else{
+            problemasBusqueda = problemas.filter(p => {
+                return p.user_name.toLowerCase().includes(busqueda)
+            });
+        }
+    }
+
+    inputBusqueda.value = '';
+    numResultados.textContent = `${problemasFiltrados.length} resultados encontrados`;
+    filtrar();
+    
+
+});
 
 // Añadir el evento para la columna de gravedad
 thGravedad.addEventListener('click', (e) => {
@@ -124,7 +168,7 @@ function filtrar() {
     btnProblemaSiguiente.classList.add('invisible');
     btnProblemaAnterior.classList.add('invisible');
 
-    problemasFiltrados = problemas;
+    problemasFiltrados = problemasBusqueda;
 
     // Obtener los checkboxes seleccionados
     const estatusSeleccionados = [];
@@ -379,34 +423,39 @@ function addEvents() {
 
     // Manejo de eventos para el select box
     document.getElementById('estatusSelect').addEventListener('change', function() {
-        const selectedOption = this.value;
-    
-        let mensajeConfirmacion = '';
-        let nuevoEstatus = '';
-    
-        // Determinar el mensaje de confirmación y el nuevo estatus basado en la opción seleccionada
-        switch (selectedOption) {
-            case 'Aceptar':
-                mensajeConfirmacion = '¿Estás seguro de que quieres aceptar todos los problemas seleccionados?';
-                nuevoEstatus = 'Aceptado';
-                break;
-            case 'Rechazar':
-                mensajeConfirmacion = '¿Estás seguro de que quieres rechazar todos los problemas seleccionados?';
-                nuevoEstatus = 'Rechazado';
-                break;
-            case 'Completar':
-                mensajeConfirmacion = '¿Estás seguro de que quieres completar todos los problemas seleccionados?';
-                nuevoEstatus = 'Completado';
-                break;
-            default:
-                return; // Salir si la opción seleccionada no es válida
-        }
-    
-        // Mostrar un cuadro de confirmación
-        const confirmar = window.confirm(mensajeConfirmacion);
-    
-        if (confirmar) {
-            // Iterar sobre todas las filas de la tabla
+        textAreaInfoAdicional.value = '';
+        spanNuevoEstatus.textContent = this.value;
+        modal.show();
+    });
+      
+}
+
+// Event listener para el botón de Confirmar cambio de estatus
+
+btnCambiarEstatus.addEventListener('click', function() {
+            const selectedOption = document.getElementById('estatusSelect');
+
+            // let mensajeConfirmacion = '';
+            let nuevoEstatus = '';
+            let infoAdicional = textAreaInfoAdicional.value;
+
+            // Determinar el mensaje de confirmación y el nuevo estatus basado en la opción seleccionada
+            switch (selectedOption.value) {
+                case 'Aceptar':
+                    nuevoEstatus = 'Aceptado';
+                    break;
+                case 'Rechazar':
+                    nuevoEstatus = 'Rechazado';
+                    break;
+                case 'Completar':
+                    nuevoEstatus = 'Completado';
+                    break;
+                default:
+                    return; // Salir si la opción seleccionada no es válida
+            }
+         
+
+
             const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
             selectedCheckboxes.forEach(checkbox => {
                 let row = checkbox.closest('tr');
@@ -420,7 +469,7 @@ function addEvents() {
                     },
                     body: JSON.stringify({
                         estatus: nuevoEstatus,
-                        info_adicional: 'Tu problema esta en proceso', // Aquí podrías recoger la información adicional si es necesario
+                        info_adicional: infoAdicional, // Aquí podrías recoger la información adicional si es necesario
                     })
                 })
                 .then(response => {
@@ -452,16 +501,9 @@ function addEvents() {
             });
     
             // Restablecer el select box a la opción por defecto
-            this.value = '';
-        } else {
-            // Opcional: Restablecer el select box a la opción por defecto si se cancela
-            this.value = '';
-        }
-    });
-      
-}
+            selectedOption.value = '';
 
-
+});
 
 // Cargar la información de los problemas en la tabla
 function cargarProblemas() {
@@ -475,6 +517,7 @@ function cargarProblemas() {
         .then((data) => {
             problemas = data;
             problemasFiltrados = problemas;
+            problemasBusqueda = problemas;
             filtrar();
             addEvents();
         })
@@ -502,7 +545,7 @@ function mostrarProblemas(pagina=1, problemas=problemasFiltrados, problemasPorPa
         } else if (p.estatus_problematica === 'Completado') {
             claseEstatus = 'estatus-completado';
         }
-
+ 
         tr.classList.add(claseEstatus);
 
         tr.innerHTML = `

@@ -35,6 +35,8 @@ type="email"
 required
 />`;
 
+
+
 // Utility functions
 
 // Validates a field based on its name
@@ -92,80 +94,132 @@ btnForgotPassword.addEventListener("click", () => {
 
 // Event listener for the "Recover Password" button
 btnRecoverPassword.addEventListener("click", () => {
-  if (document.querySelector("#code_recover")) {
-    const codeRecoverContent = ` <label for="code_recover" class="col-form-label w-100"
-    >Ingresa el código que fue enviado a ${
-      document.querySelector("#email_recover").value
-    }:
-    </label>
-    <input
-    type="text"
-    name="code_recover"
-    id="code_recover"
-    class="form-control form-control-lg fs-4"
-    required
-    />`;
-    
-    fetch("/validate-code/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      body: JSON.stringify({
-        code: document.querySelector("#code_recover").value,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok.");
-        }
-        return response.json();
+  if (btnRecoverPassword.textContent === "Enviar código") {
+    if (validateField("email")) {
+      fetch("/send-code/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: JSON.stringify({
+          email: document.querySelector("#email_recover").value,
+        }),
       })
-      .then((data) => {
-        if (data.error) {
-          alert("El código es incorrecto");
-          return;
-        }
-        alert("Código correcto");
-        // btnRecoverPassword.textContent = "Verificar Código";
-        // recoverContainer.innerHTML = "";
-        // codeContainer.innerHTML = codeRecoverContent;
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error) {
+            alert("El correo no está registrado");
+            return;
+          }
+          codeContainer.innerHTML = ` <label for="code_recover" class="col-form-label w-100"
+          >Ingresa el código que fue enviado a ${
+               document.querySelector("#email_recover").value}:
+          </label>
+          <input
+            type="text"
+            name="code_recover"
+            id="code_recover"
+            class="form-control form-control-lg fs-4"
+            required
+          />`;
+          btnRecoverPassword.textContent = "Verificar código";
+          recoverContainer.innerHTML = "";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  } else if (btnRecoverPassword.textContent === "Verificar código") {
+    if (validateField("code_recover")) {
+      fetch("/validate-code/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: JSON.stringify({
+          code: document.querySelector("#code_recover").value,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    // formRecoverPassword.submit();
-  } else if (validateField("email")) {
-    fetch("/send-code/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      body: JSON.stringify({
-        email: document.querySelector("#email_recover").value,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok.");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.error) {
-          alert("El correo no está registrado");
-          return;
-        }
-        btnRecoverPassword.textContent = "Verificar Código";
-        recoverContainer.innerHTML = "";
-        codeContainer.innerHTML = codeRecoverContent;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
- 
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error) {
+            alert("El código es incorrecto");
+            return;
+          }
+          alert("Código correcto");
+          btnRecoverPassword.textContent = "Cambiar Contraseña";
+          codeContainer.innerHTML = "";
+          recoverContainer.innerHTML = `<label for="password_recover" class="col-form-label w-100"
+          >Ingresa tu nueva contraseña:
+          </label>
+          <input
+          type="password"
+          name="password_recover"
+          id="password_recover"
+          class="form-control form-control-lg fs-4"
+          required
+          />
+          <label for="password_recover_confirm" class="col-form-label w-100"
+          >Confirma tu nueva contraseña:
+          </label>
+          <input
+          type="password"
+          name="password_recover_confirm"
+          id="password_recover_confirm"
+          class="form-control form-control-lg fs-4"
+          required
+          />`;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  } else if (btnRecoverPassword.textContent === "Cambiar Contraseña") {
+    if (validateField("password_recover") && validateField("password_recover_confirm")) {
+      if (document.querySelector("#password_recover").value === document.querySelector("#password_recover_confirm").value) {
+        fetch("/change-password/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: JSON.stringify({
+            password: document.querySelector("#password_recover").value,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.error) {
+              alert("Error al cambiar la contraseña");
+              return;
+            }
+            alert("Contraseña cambiada correctamente");
+            window.location.href = "/login/";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } else {
+        alert("Las contraseñas no coinciden");
+      }
+    }
   }
 });
 
