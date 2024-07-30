@@ -277,10 +277,10 @@ class ProblemaAPIView(APIView):
                 instance.estatus_problematica = estatus
                 if info_adicional is not None:
                     problemaEnCurso.info_adicional = info_adicional
-                problemaEnCurso.comentario_completado = info_adicional
 
                 if estatus == "Completado":
-                    problemaEnCurso.fecha_completado = datetime.now()
+                    if problemaEnCurso.fecha_aceptado == " ":
+                        problemaEnCurso.fecha_completado = datetime.now()
                     if comentario_completado is not None:
                         problemaEnCurso.comentario_completado = comentario_completado
                 

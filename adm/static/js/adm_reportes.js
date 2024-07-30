@@ -298,7 +298,7 @@ function addEvents() {
                         return response.json();
                     })
                     .then((data) => {
-                        if (statusProblema === "Aceptado" || statusProblema === "Procesando") {
+                        if (statusProblema === "Procesando") {
                             divAdminInfo.innerHTML += `
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
@@ -315,7 +315,30 @@ function addEvents() {
                                     </button>
                                 </div>
                             `;
-                        } else if (statusProblema === "Rechazado") {
+                        } else if (statusProblema === "Aceptado") {
+                            divAdminInfo.innerHTML += `
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <div class='col border border-2 text-center'>${data.info_adicional}</div>
+                                </div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion completado</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.comentario_completado}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <button type="button" data-idProblema='${idProblema}' id="rechazar_problema" class="btn btn-danger col fs-5 me-2" data-bs-dismiss="modal">
+                                        Cancelar
+                                    </button>
+                                    <button type="button" data-idProblema='${idProblema}' id="completar_problema" class="btn btn-primary col fs-5 me-2" data-bs-dismiss="modal">
+                                        Completar
+                                    </button>
+                                </div>
+                            `;
+                        }else if (statusProblema === "Rechazado") {
                             divAdminInfo.innerHTML += `
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
@@ -331,11 +354,26 @@ function addEvents() {
                             `;
                         } else if (statusProblema === "Completado") {
                             divAdminInfo.innerHTML += `
-                                <div class='row h3'><span class='col border border-2'><strong>Completado por</strong></span> <span class='col border border-2 text-center'>${data.adminName}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center'>${data.fecha_aceptado.slice(0, 10)}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Informacion adicional</strong></span> <span class='col border border-2 text-center'>${data.info_adicional}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Fecha de completado</strong></span> <span class='col border border-2 text-center text-success'>${data.fecha_completado.slice(0, 10)}</span></div>
-                                <div class='row h3'><span class='col border border-2'><strong>Informacion sobre completado</strong></span> <span class='col border border-2 text-center text-success'>${data.comentario_completado}</span></div>
+                             <div class='row h3'>
+                                    <span class='col border border-2'><strong>Fecha Completado</strong></span><span class='col border border-2 text-center ${colorEstatus}'>${data.fecha_completado.split(" ")[0]}</span>
+                                </div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion adicional</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <div class='col border border-2 text-center'>${data.info_adicional}</div>
+                                </div>
+                                <div class='row h3 text-center'>
+                                    <span class='col border border-2'><strong>Informacion completado</strong></span> 
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <textarea class='col border border-2 text-center' placeholder="${data.comentario_completado}"></textarea>
+                                </div>
+                                <div class='row h3 text-start'>
+                                    <button type="button" data-idProblema='${idProblema}' id="completar_problema" class="btn btn-primary col fs-5 me-2" data-bs-dismiss="modal">
+                                        Actualizar
+                                    </button>
+                                </div>
                             `;
                         }
 
@@ -344,9 +382,11 @@ function addEvents() {
                         BodyModal.insertAdjacentElement("afterbegin", divProblemaInfo);
                         BodyModal.insertAdjacentElement("afterbegin", divAdminInfo);
 
-                        // Configuramos los event listeners después de insertar los botones en el DOM
-                        const btnStatusAceptar = document.querySelector('#aceptar_problema');
-                        const btnStatusRechazar = document.querySelector('#rechazar_problema');
+
+                        // Asegúrate de que estas referencias sean correctas
+                        const btnStatusAceptar = document.getElementById('aceptar_problema');
+                        const btnStatusRechazar = document.getElementById('rechazar_problema');
+                        const btnStatusCompletado = document.getElementById('completar_problema');
 
                         if (btnStatusAceptar) {
                             btnStatusAceptar.addEventListener('click', function() {
@@ -358,8 +398,9 @@ function addEvents() {
                                     },
                                     body: JSON.stringify({ 
                                         estatus: 'Aceptado',
-                                        info_adicional: document.querySelector('textarea').value
-                                     })
+                                        info_adicional: document.querySelector('textarea').value,
+                                        comentario_completado : "",
+                                    })
                                 })
                                 .then(response => {
                                     if (!response.ok) {
@@ -368,19 +409,11 @@ function addEvents() {
                                     return response.json();
                                 })
                                 .then(data => {
-                                    const problemaceptado = problemas.find(p => p.id == idProblema);
-                                    if (problemaceptado) {
-                                        problemaceptado.estatus_problematica = 'Aceptado';
-                                        const fecha_actual = new Date();
-                                        const dia = fecha_actual.getDate();
-                                        const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0');
-                                        const anio = fecha_actual.getFullYear();
-                                        const horas = fecha_actual.getHours().toString().padStart(2, '0');
-                                        const minutos = fecha_actual.getMinutes().toString().padStart(2, '0');
-                                        const segundos = fecha_actual.getSeconds().toString().padStart(2, '0');
-                                        const fechaStr = `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
-                                        problemaceptado.fecha_actualizado = fechaStr;
-                                        filtrar(); // Actualizar la tabla o la vista según sea necesario
+                                    const problemaAceptado = problemas.find(p => p.id == idProblema);
+                                    if (problemaAceptado) {
+                                        problemaAceptado.estatus_problematica = 'Aceptado';
+                                        actualizarFechaActualizada(problemaAceptado);
+                                        filtrar();
                                     }
                                 })
                                 .catch(error => {
@@ -400,7 +433,7 @@ function addEvents() {
                                     body: JSON.stringify({ 
                                         estatus: 'Rechazado',
                                         info_adicional: document.querySelector('textarea').value
-                                     })
+                                    })
                                 })
                                 .then(response => {
                                     if (!response.ok) {
@@ -408,11 +441,65 @@ function addEvents() {
                                     }
                                     return response.json();
                                 })
+                                .then(data => {
+                                    const problemaRechazado = problemas.find(p => p.id == idProblema);
+                                    if (problemaRechazado) {
+                                        problemaRechazado.estatus_problematica = 'Rechazado';
+                                        actualizarFechaActualizada(problemaRechazado);
+                                        filtrar();
+                                    }
+                                })
                                 .catch(error => {
                                     console.error('Hubo un problema con la operación fetch:', error);
                                 });
                             });
                         }
+                        if (btnStatusCompletado) {
+                            btnStatusCompletado.addEventListener('click', function() {
+                                fetch(`/api_registros/problema/${idProblema}/`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCookie('csrftoken')
+                                    },
+                                    body: JSON.stringify({ 
+                                        estatus: 'Completado',
+                                        comentario_completado : document.querySelector('textarea').value,
+                                    })
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    const problemaCompletado = problemas.find(p => p.id == idProblema);
+                                    if (problemaCompletado) {
+                                        problemaCompletado.estatus_problematica = 'Completado';
+                                        actualizarFechaActualizada(problemaCompletado);
+                                        filtrar();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Hubo un problema con la operación fetch:', error);
+                                });
+                            });
+                        }
+                        
+
+                        function actualizarFechaActualizada(problema) {
+                            const fecha_actual = new Date();
+                            const dia = fecha_actual.getDate();
+                            const mes = (fecha_actual.getMonth() + 1).toString().padStart(2, '0');
+                            const anio = fecha_actual.getFullYear();
+                            const horas = fecha_actual.getHours().toString().padStart(2, '0');
+                            const minutos = fecha_actual.getMinutes().toString().padStart(2, '0');
+                            const segundos = fecha_actual.getSeconds().toString().padStart(2, '0');
+                            const fechaStr = `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+                            problema.fecha_actualizado = fechaStr;
+                        }
+
                     })
                     .catch((error) => {
                         console.error('There was a problem with the fetch operation:', error);
@@ -603,8 +690,30 @@ function updateProblemInfo(divProblemaInfo, problema) {
     problema.estatus_problematica = null;
     problema.id_usuario = null;
 
+    // Diccionario para renombrar las claves
+    const clavesRenombradas = {
+        tipo_edificio: 'Tipo de Edificio',
+        fecha_creacion: 'Fecha de Creación',
+        fecha_actualizado: 'Ultima Actualización',
+        letra_edificio: 'Letra del edificio',
+        numero_salon: 'Numero de salon',
+        piso_baño: 'Piso del Baño',
+        tipo_baño: 'Tipo de Baño',
+        edificio_baño: 'Edificio del Baño',
+        tipo_area: 'Tipo de area',
+        ubicacion_area: 'Ubicación del area',
+        tipo_departamento: 'Tipo departamento',
+        tipo_edificio_departamento: 'Nombre del departamento',
+        ubicacion_departamento: 'Ubicación departamento',
+        tipo_problema: 'Tipo de Problema',
+        gravedad_problema: 'Gravedad',
+        descripcion_problema: 'Descripción',
+        ubicacion_exacta: 'Ubicación Exacta'
+    };
+
     Object.entries(problema).forEach(([clave, valor]) => {
         if (valor != null) {
+            let claveRenombrada = clavesRenombradas[clave] || clave;
             let tipoColorTexto = '';
             if (clave == 'tipo_problema') {
                 switch (valor) {
@@ -641,10 +750,10 @@ function updateProblemInfo(divProblemaInfo, problema) {
                         colorTexto = '';
                         tiempoEstimado = '';
                 }
-                divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${clave}</strong></span> <span class='col border border-2 text-center ${colorTexto}'>${valor} | ${tiempoEstimado} |</span></div>`;
+                divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${claveRenombrada}</strong></span> <span class='col border border-2 text-center ${colorTexto}'>${valor} | ${tiempoEstimado} |</span></div>`;
                 return;
             }
-            divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${clave}</strong></span> <span class='col border border-2 text-center ${tipoColorTexto}'>${valor}</span></div>`;
+            divProblemaInfo.innerHTML += `<div class='row h3'><span class='col border border-2'><strong>${claveRenombrada}</strong></span> <span class='col border border-2 text-center ${tipoColorTexto}'>${valor}</span></div>`;
         }
     });
 }
