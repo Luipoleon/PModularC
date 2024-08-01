@@ -207,7 +207,7 @@ class ProblemasAPIView(APIView):
                 report = serializer.save()
                 reporteEnProceso = ProblemaEnCursoSerializer(data={
                     'id_problema': report.id,
-                    'id_administrador': None,
+                    'id_administrador': 1,
                     'info_adicional': '...'
                 })
                 if reporteEnProceso.is_valid():
