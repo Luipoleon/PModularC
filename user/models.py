@@ -29,7 +29,7 @@ class Problema(models.Model):
     
 class ProblemaEnCurso(models.Model):
     id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
-    id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null = True)
     info_adicional = models.TextField(blank=True)
     fecha_aceptado = models.DateTimeField(auto_now_add=True)
     fecha_completado = models.DateTimeField(blank=True, null=True)

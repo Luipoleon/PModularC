@@ -207,7 +207,7 @@ class ProblemasAPIView(APIView):
                 report = serializer.save()
                 reporteEnProceso = ProblemaEnCursoSerializer(data={
                     'id_problema': report.id,
-                    'id_administrador': 1,
+                    'id_administrador': None,
                     'info_adicional': '...'
                 })
                 if reporteEnProceso.is_valid():
@@ -274,6 +274,7 @@ class ProblemaAPIView(APIView):
             try:
                 instance = Problema.objects.get(id=id)
                 problemaEnCurso = ProblemaEnCurso.objects.get(id_problema=instance)
+                problemaEnCurso.id_administrador = request.user
                 instance.estatus_problematica = estatus
                 if info_adicional is not None:
                     problemaEnCurso.info_adicional = info_adicional
