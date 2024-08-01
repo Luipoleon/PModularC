@@ -359,6 +359,7 @@ class ProblemaEnCursoAPIView(APIView):
                     dict['fecha_completado'] = instance.fecha_completado.astimezone(timezone).strftime('%d/%m/%Y %H:%M:%S')
 
                 dict['adminName'] = instance.id_administrador.first_name
+                dict['id_admnistrador'] = instance.id_administrador.first_name
                 dict.pop('id_problema', None)
 
                 return Response(dict)
