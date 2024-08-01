@@ -317,6 +317,9 @@ function addEvents() {
                             `;
                         } else if (statusProblema === "Aceptado") {
                             divAdminInfo.innerHTML += `
+                                <div class='row h3'>
+                                    <span class='col border border-2'><strong>Aceptado por</strong></span><span class='col border border-2 text-center ${colorEstatus}'>${data.id_administrador}</span>
+                                </div>
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
                                 </div>
@@ -340,6 +343,9 @@ function addEvents() {
                             `;
                         }else if (statusProblema === "Rechazado") {
                             divAdminInfo.innerHTML += `
+                                <div class='row h3'>
+                                    <span class='col border border-2'><strong>Rechazado por</strong></span><span class='col border border-2 text-center ${colorEstatus}'>${data.id_administrador}</span>
+                                </div>
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
                                 </div>
@@ -356,6 +362,9 @@ function addEvents() {
                             divAdminInfo.innerHTML += `
                              <div class='row h3'>
                                     <span class='col border border-2'><strong>Fecha Completado</strong></span><span class='col border border-2 text-center ${colorEstatus}'>${data.fecha_completado.split(" ")[0]}</span>
+                                </div>
+                                <div class='row h3'>
+                                    <span class='col border border-2'><strong>Completado por</strong></span><span class='col border border-2 text-center ${colorEstatus}'>${data.id_administrador}</span>
                                 </div>
                                 <div class='row h3 text-center'>
                                     <span class='col border border-2'><strong>Informacion adicional</strong></span> 
