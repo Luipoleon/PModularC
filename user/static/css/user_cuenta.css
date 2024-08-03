@@ -17,10 +17,7 @@ body{
   background-color: var(--tertiary-color);
 }
 
-.Lnombre{
-  margin-left: 30%;
-  margin-right: 5%;
-}
+
 .Titulo{
   color: var(--dark-grey);
   font-size: 30px;
@@ -33,4 +30,8 @@ body{
 .cuenta-container{
   height: calc(100vh - 24rem);
   margin-top: 2rem;
+}
+
+.spinner-border {
+  font-size: 1rem;
 }

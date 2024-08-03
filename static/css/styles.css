@@ -3,6 +3,7 @@
 :root {
   --primary-color: #e2936f;
   --primary-color-light: #e39774;
+  --primary-color-light-1: #ebbfaa;
   --primary-color-light-2: #f2cfbf;
   --primary-color-dark: #cb8464;
   --primary-color-dark-2: #b57659;
@@ -50,4 +51,8 @@ a.link:hover {
 
 .text-white {
   color: #fff;
+}
+
+select, option, input, button {
+  font-family: inherit;
 }

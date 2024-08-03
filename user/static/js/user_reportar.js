@@ -5,7 +5,7 @@ const reportar = document.querySelectorAll('.nav-item a').item(2);
 let BodyModal = document.querySelector('.modal-body');
 const boton_reportar = document.querySelector('#mandar_reporte_btn');
 reportar.id = 'MenuPicked';
-
+ 
 // Get DOM elements
 // Formulario de reporte
 const formReporte = document.getElementById('formReport');

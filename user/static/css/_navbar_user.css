@@ -31,6 +31,7 @@
     font-size: 18px;
     width: 100%;
     margin: 2px;
+    transition: all 0.3s;
   }
   #MenuPicked{
     background: linear-gradient(50deg, #ddd 0%, #fff 100%);
@@ -43,7 +44,9 @@
     padding: initial 2rem !important;
   
   }
-  
+  .menuconfig{
+    max-width: fit-content;
+  }
   .menu:hover{
     color: var(--primary-color-light);
     transform: scale(1.05);
@@ -51,13 +54,16 @@
 
   .exclamacion{
     position: absolute;
+    z-index: 1000;
     top: 0rem;
-    right: 1.6rem;
+    right: 0rem;
     color: red;
     font-size: 1.5rem;
     border-radius: 50%;
     padding: 0.2rem;
     opacity: 0;
+    width: 0;
+    height: 0;
   }
 
   .bell.notifications i:nth-of-type(1){
@@ -67,6 +73,7 @@
   
   .bell.notifications .exclamacion{
     opacity: 1;
+    position: relative;
   }
 
 
@@ -104,3 +111,50 @@
       color: #6c757d;
       text-decoration: none !important;
   }
+
+.navbar-toggler{
+  transition: all 2s;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#RMenu{
+  justify-content: space-around !important;
+} 
+
+
+@media screen and (max-width: 1000px){
+  .navbar-toggler[aria-expanded="true"] ~ #RMenu {
+    width: 100%;
+    transition: all 1s;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .navbar-toggler[aria-expanded="false"] ~ #RMenu {
+    transition: all 1s;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+}
+
+
+@media screen and (max-width: 600px){
+
+  .navbar-toggler[aria-expanded="true"] ~ #RMenu {
+    transition: all 2s;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+    margin-top: 2rem !important;
+    pointer-events: all;
+  }
+  .navbar-toggler[aria-expanded="false"] ~ #RMenu {
+    transition: all 0s;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

@@ -9,6 +9,7 @@ class Problema(models.Model):
     tipo_edificio = models.CharField(max_length=100) # este es el si es academico, baño etc..
     estatus_problematica = models.CharField(max_length=100, default="Procesando") # estatus aceptado, rechazado etc.. al estar completado crea un registro en otra tabla
     fecha_creacion = models.DateTimeField(auto_now_add=True) #fecha de creacion
+    fecha_actualizado = models.DateTimeField(auto_now=True) #fecha de actualizacion
     letra_edificio = models.CharField(max_length=1, blank=True, null=True) #especial academico
     numero_salon = models.IntegerField(blank=True, null=True) #especial academico y baño
     piso_baño = models.CharField(max_length=100, blank=True, null=True) #especial baño
@@ -28,7 +29,7 @@ class Problema(models.Model):
     
 class ProblemaEnCurso(models.Model):
     id_problema = models.ForeignKey(Problema, on_delete=models.CASCADE)
-    id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    id_administrador = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null = True)
     info_adicional = models.TextField(blank=True)
     fecha_aceptado = models.DateTimeField(auto_now_add=True)
     fecha_completado = models.DateTimeField(blank=True, null=True)

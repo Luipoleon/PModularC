@@ -15,11 +15,10 @@ colores grises
 
 body{
   background-color: var(--tertiary-color);
+  width: 100vw;
+  margin: 0 !important;
 }
 
-.Lnombre{
-  margin-right: 1%;
-}
 
 
 /* Image container */
@@ -45,7 +44,7 @@ body{
   position: absolute;
   opacity: 2;
   color: #000;
-  padding: 15rem 10rem;
+  padding: 10% 15%;
   text-transform: uppercase;
   line-height: 1.8;
   letter-spacing: 0.2rem;
@@ -53,7 +52,8 @@ body{
   text-align: center;
 }
 
-.span-1{
+
+.div-1{
   color: #000;
   background-color: rgba(209, 58, 31, 0.274);
   font-size: 2rem;
@@ -62,7 +62,7 @@ body{
   border-radius: 4px;
 }
 
-.span-2{
+.div-2{
   color: rgb(209, 58, 31);
   margin-left: 8rem;
   font-size: 1.9rem;
@@ -74,7 +74,7 @@ body{
 
 
 
-.span-3{
+.div-3{
   color: #000;
   background-color: #eeeeee85;
   font-size: 3.5rem;
@@ -86,7 +86,7 @@ body{
 
 }
 
-.span-4{
+.div-4{
   color: #fff;
   background-color: #00000080;
   font-size: 1.5rem;
@@ -97,4 +97,16 @@ body{
   width: 17rem;
   border-radius: 4px;
   z-index:1;
+}
+
+@media screen and (max-width: 768px){
+  .title-img{
+    padding: 30% 8%;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .title-img{
+    padding: 35% 6%;
+  }
 }

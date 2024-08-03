@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-hdpk0^d%-jg!*n%&9oh_2@-qoph(+cy53!2uj+bxa(m&70%93&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'mantenimientocucei.azurewebsites.net', 'localhost']
+ALLOWED_HOSTS = ['*', 'cuceimantaint.azurewebsites.net', 'localhost', 'cuceimantein.site']
 
-CSRF_TRUSTED_ORIGINS = ["https://mantenimientocucei.azurewebsites.net", "http://mantenimientocucei.azurewebsites.net"]
+CSRF_TRUSTED_ORIGINS = ["https://cuceimantaint.azurewebsites.net", "https://cuceimantein.site", "https://www.cuceimantein.site"]
 
 
 
@@ -207,3 +207,13 @@ SWAGGER_SETTINGS = {
     ],
 }
 
+
+
+# Email config  Mailersend
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.mailersend.net'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'MS_cGk1rl@cuceimantein.site'
+# EMAIL_HOST_PASSWORD = 'v1Nd3WsTVvHgxbYx'

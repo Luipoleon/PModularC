@@ -24,7 +24,13 @@ class ProblemasAdmin(admin.ModelAdmin):
             return ('tipo_departamento', 'tipo_edificio_departamento', 'ubicacion_departamento') + shared_fields
         else:
             return super().get_fields(request, obj)
+class ProblemasencursoAdmin(admin.ModelAdmin):
 
-admin.site.register(ProblemaEnCurso)
+    model = ProblemaEnCurso
+    list_display = [ 'id']
+
+    
+admin.site.register(ProblemaEnCurso,ProblemasencursoAdmin)
 admin.site.register(Problema, ProblemasAdmin)
 admin.site.register(Notification)
+

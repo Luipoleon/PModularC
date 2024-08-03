@@ -1,0 +1,22 @@
+.modal-content {
+    width: 100%;
+}
+
+@media screen and (max-width: 992px) {
+    .modal-content {
+        width: 100%;
+    }
+}
+
+.spinner-border {
+width: 3rem;
+height: 3rem;
+border-width: .3rem;
+}
+
+.loading-container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+}
